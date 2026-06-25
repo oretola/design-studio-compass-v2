@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Studio Compass · DJDS</title>
+<meta name="description" content="DJDS's way of developing an informed concept — principles, precedents, templates, checklist, and the questions — at the moment you need them." />
+<style>
+  :root{
+    --bg:#0e1116;
+    --panel:#161b22;
+    --panel-2:#1c232d;
+    --line:#2a3340;
+    --ink:#e8edf2;
+    --muted:#9aa7b4;
+    --faint:#828fa0;
+    --accent:#e8a33d;       /* compass amber */
+    --accent-2:#5db0a8;     /* teal */
+    --radius:14px;
+    --maxw:1080px;
+    font-synthesis-weight:none;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(232,163,61,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(93,176,168,.08), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.locked{overflow:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  /* Header */
+  header{padding:46px 0 18px}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .mark{flex:0 0 auto}
+  .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  h1{font-size:clamp(28px,4.5vw,44px);line-height:1.08;margin:.18em 0 0;letter-spacing:-.02em}
+  .lede{color:var(--muted);max-width:62ch;margin:14px 0 0;font-size:clamp(15px,2vw,17px)}
+
+  /* Search + controls */
+  .controls{position:sticky;top:0;z-index:20;padding:18px 0 14px;margin-top:26px;
+    background:linear-gradient(var(--bg) 78%, transparent);
+    backdrop-filter:saturate(120%) blur(2px)}
+  .search{position:relative}
+  .search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--faint)}
+  #q{
+    width:100%;padding:15px 16px 15px 46px;font-size:16px;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;outline:none;
+  }
+  #q::placeholder{color:var(--faint)}
+  #q:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,163,61,.15)}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{
+    appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--panel);
+    color:var(--muted);font:inherit;font-size:13px;font-weight:600;
+    padding:9px 15px;min-height:38px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;
+    transition:.14s ease;
+  }
+  .chip:hover{color:var(--ink);border-color:#3a4555}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.6}
+  .chip .ct{font-variant-numeric:tabular-nums;opacity:.65;font-weight:500}
+
+  /* Results */
+  main{padding:8px 0 60px}
+  .count{color:var(--faint);font-size:13px;margin:6px 2px 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;
+    transition:.14s ease;position:relative;overflow:hidden;text-align:left;
+    font:inherit;color:inherit;width:100%;cursor:default;
+  }
+  button.card{cursor:pointer}
+  .card:hover{border-color:#3a4555;transform:translateY(-2px)}
+  .card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--cat-color,var(--accent));opacity:.85}
+  .card .tag{
+    align-self:flex-start;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    color:var(--cat-color,var(--accent));
+  }
+  .card h3{margin:0;font-size:17px;line-height:1.25;letter-spacing:-.01em}
+  .card .made{font-size:13px;color:var(--ink);font-weight:600}
+  .card .made b{color:var(--cat-color);font-weight:600}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  .card .meta{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;padding-top:4px}
+  .card .meta span{font-size:11.5px;color:var(--faint);background:var(--panel-2);
+    border:1px solid var(--line);padding:3px 8px;border-radius:6px}
+  .card .ck{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+  .card .ck li{display:flex;gap:9px;font-size:13.5px;color:var(--muted)}
+  .card .ck li::before{content:"";flex:0 0 auto;margin-top:6px;width:6px;height:6px;border-radius:2px;
+    background:var(--cat-color,var(--accent));opacity:.8}
+  .card .fresh{font-size:11.5px;color:var(--faint);display:flex;align-items:center;gap:6px}
+  .card .fresh::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-2);opacity:.8}
+  .card .open{margin-top:6px;align-self:flex-start;font-size:13px;font-weight:700;color:var(--cat-color)}
+  .card .open .arr{transition:.14s ease;display:inline-block}
+  button.card:hover .open .arr{transform:translateX(3px)}
+
+  .empty{text-align:center;color:var(--faint);padding:50px 24px;border:1px dashed var(--line);border-radius:var(--radius)}
+  .empty b{color:var(--muted)}
+  .empty .lk,.contribute{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
+  .empty .lk:hover,.contribute:hover{border-color:currentColor}
+  .empty .clear{appearance:none;font:inherit;font-weight:700;color:var(--muted);background:none;border:0;cursor:pointer;text-decoration:underline}
+
+  /* Drawer freshness/steward + contribution footer */
+  .dfoot{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between}
+  .dfoot .who b{color:var(--muted);font-weight:600}
+  .dfoot a{color:var(--cat-color,var(--accent));font-weight:700;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
+  .dfoot a:hover{border-color:currentColor}
+
+  footer{border-top:1px solid var(--line);padding:24px 0 50px;color:var(--faint);font-size:12.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
+  .pill{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  mark{background:rgba(232,163,61,.28);color:inherit;border-radius:3px;padding:0 1px}
+  kbd{font:inherit;font-size:11px;background:var(--panel-2);border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--muted)}
+
+  /* ---------- Accessibility ---------- */
+  /* High-contrast focus ring for keyboard users on every interactive element */
+  a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+  #q:focus-visible{outline-offset:0}
+  /* Honor the OS "reduce motion" setting — no slides, no hover lifts */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important;
+      scroll-behavior:auto !important}
+    .card:hover{transform:none}
+    .drawer{transition:none}
+  }
+
+  /* ---------- Detail drawer ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(5,8,12,.62);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:.18s ease;z-index:50}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(680px,100%);
+    background:var(--bg);border-left:1px solid var(--line);z-index:60;
+    transform:translateX(100%);transition:transform .24s cubic-bezier(.2,.7,.2,1);
+    overflow-y:auto;box-shadow:-30px 0 80px rgba(0,0,0,.45);
+  }
+  .drawer.show{transform:translateX(0)}
+  .drawer .dwrap{padding:0 30px 56px}
+  .dhead{position:sticky;top:0;background:linear-gradient(var(--bg) 80%,transparent);
+    padding:26px 30px 14px;margin:0 -30px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  .dtag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--cat-color,var(--accent))}
+  .dclose{appearance:none;cursor:pointer;flex:0 0 auto;width:42px;height:42px;border-radius:10px;
+    border:1px solid var(--line);background:var(--panel);color:var(--muted);font-size:18px;line-height:1}
+  .dclose:hover{color:var(--ink);border-color:#3a4555}
+  .drawer h2{font-size:25px;line-height:1.15;letter-spacing:-.02em;margin:.1em 0 0}
+  .dsub{color:var(--muted);margin:10px 0 0;font-size:15px;max-width:66ch}
+  .dmade{margin:20px 0 0;padding:16px 18px;border-radius:12px;background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--cat-color,var(--accent))}
+  .dmade .lab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .dmade .val{font-size:17px;font-weight:600;margin-top:4px}
+  .dmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .dmeta span{font-size:11.5px;color:var(--faint);background:var(--panel-2);border:1px solid var(--line);padding:3px 8px;border-radius:6px}
+  section.blk{margin-top:30px}
+  section.blk > h4{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--cat-color,var(--accent));margin:0 0 12px;font-weight:700}
+  section.blk > h4::after{content:"";flex:1;height:1px;background:var(--line)}
+  section.blk p{margin:0;color:var(--muted);font-size:15px;line-height:1.6;max-width:66ch}
+  ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 16px 40px;color:var(--muted);font-size:14.5px}
+  ol.steps li:last-child{padding-bottom:0}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:26px;height:26px;
+    border-radius:50%;background:var(--panel);border:1px solid var(--line);color:var(--cat-color);
+    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.steps li::after{content:"";position:absolute;left:13px;top:26px;bottom:6px;width:1px;background:var(--line)}
+  ol.steps li:last-child::after{display:none}
+  ol.steps li b{color:var(--ink);font-weight:600}
+  ul.qs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+  ul.qs li{padding:13px 16px;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+    color:var(--ink);font-size:15px;display:flex;gap:11px}
+  ul.qs li::before{content:"?";flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:rgba(110,168,254,.16);color:#6ea8fe;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center}
+  .res{display:flex;flex-direction:column;gap:9px}
+  .res a{display:flex;align-items:center;gap:13px;text-decoration:none;padding:13px 15px;
+    background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);transition:.14s ease}
+  .res a:hover{border-color:var(--cat-color);background:var(--panel-2)}
+  .res .ic{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:var(--panel-2);
+    display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--line)}
+  .res .rt{font-weight:600;font-size:14.5px}
+  .res .rk{font-size:12px;color:var(--faint)}
+  .res .dl{margin-left:auto;color:var(--cat-color);font-size:13px;font-weight:700}
+  .related{display:flex;flex-wrap:wrap;gap:8px}
+  .related button{appearance:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;
+    color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 12px}
+  .related button:hover{color:var(--ink);border-color:#3a4555}
+
+  @media (max-width:560px){
+    .dhead,.drawer .dwrap{padding-left:20px;padding-right:20px}
+    .dhead{margin-left:-20px;margin-right:-20px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg class="mark" width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+        <circle cx="19" cy="19" r="17" stroke="#e8a33d" stroke-width="2"/>
+        <path d="M19 7 L23 19 L19 31 L15 19 Z" fill="#5db0a8"/>
+        <path d="M19 7 L23 19 L19 19 Z" fill="#e8a33d"/>
+        <circle cx="19" cy="19" r="2.2" fill="#0e1116" stroke="#e8edf2" stroke-width="1.4"/>
+      </svg>
+      <div>
+        <div class="kicker">DJDS · Designing Justice + Designing Spaces</div>
+        <h1>Design Studio Compass</h1>
+      </div>
+    </div>
+    <p class="lede">
+      Our way of developing an informed concept — the principles we hold, the precedents we
+      learn from, the templates we reuse, the checklist we run, and the questions we keep asking —
+      surfaced at the moment you're actually doing the work.
+    </p>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" autocomplete="off" placeholder="Search the compass — e.g. “massing”, “community visuals”, “who is not in the room?”" aria-label="Search" />
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filter by type"></div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="count" id="count" role="status" aria-live="polite"></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      No matches. Try a broader term, or <b>clear filters</b> to see everything.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Design Studio Compass · internal studio reference · <a class="contribute" id="footContribute" href="#">Spotted a gap? Add to the compass →</a></span>
+    <span class="pill">Press <kbd>/</kbd> to search</span>
+  </div>
+</footer>
+
+<!-- Detail drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" tabindex="-1"></aside>
+
+<script>
+/* ----------------------------------------------------------------------------
+   PLACEHOLDER CONTENT — invented for the demo. Not real DJDS projects or clients.
+---------------------------------------------------------------------------- */
+const CATS = {
+  precedent: {label:"Precedent", color:"#5db0a8"},
+  template:  {label:"Template",  color:"#a78bfa"},
+  principle: {label:"Principle", color:"#e8a33d"},
+  checklist: {label:"Checklist", color:"#f0746e"},
+  question:  {label:"Question",  color:"#6ea8fe"},
+};
+
+const ITEMS = [
+  /* ===================== PRECEDENTS (the hero object) ===================== */
+  {
+    cat:"precedent", id:"hope-reentry-massing",
+    title:"Hope Reentry Campus — 3 Conceptual Massing Strategies",
+    updated:"May 2026", steward:"Lena Ortiz",
+    made:"3 conceptual massing options, each centering a different reentry priority",
+    body:"How the studio turned site analysis + engagement with formerly incarcerated residents into three legible massing strategies for the campus that the client and community connected with at concept review.",
+    meta:["massing","concept phase","reentry","community-led","design review"],
+    thinking:"The team had rich engagement data but a client who 'thinks in buildings.' Rather than present one polished scheme, they made three massings that each foreground a different thing residents asked for — a place to gather, privacy and autonomy after years of being watched, and a welcome that reads as anti-institutional from the street. Showing the trade-offs as form let non-designers argue about values, not aesthetics. The three weren't options to pick from so much as a way to make residents' priorities debatable in the open.",
+    process:[
+      "<b>Cluster the engagement data</b> into 3–5 recurring community priorities; name each in residents' own words.",
+      "<b>Translate each priority into a massing move</b> — e.g. 'a place to gather' → a carved central court.",
+      "<b>Build three massings</b> that each let one priority win, and show what it costs the others.",
+      "<b>Annotate each scheme</b> with the one sentence argument it makes and whose voice it centers.",
+      "<b>Render at 'sketch fidelity'</b> — warm, hand-feel visuals, not slick CGI, so people read them as in-progress.",
+      "<b>Present as a set</b>, framing the review as 'which trade-offs are right,' not 'which do you like.'",
+    ],
+    questions:[
+      "Which community priorities are we letting compete, and which did we quietly drop?",
+      "Does each massing make an argument a resident in the room would recognize as theirs?",
+      "What does a first-time visitor feel approaching each scheme?",
+      "Is the fidelity honest about how settled (or not) these ideas are?",
+    ],
+    resources:[
+      {t:"Massing Strategy Deck — template", k:"Keynote / PDF · 14 slides", ic:"📊", href:"#"},
+      {t:"Engagement-to-Form mapping worksheet", k:"Miro board template", ic:"🗺️", href:"#"},
+      {t:"Sketch-fidelity render settings", k:"Enscape preset + LUT", ic:"🎨", href:"#"},
+      {t:"Concept review facilitation script", k:"Google Doc", ic:"📝", href:"#"},
+    ],
+    related:["informed-concept-brief","argument-question","power-map"],
+  },
+  {
+    cat:"precedent", id:"warm-landing-journey",
+    title:"A Warm Landing Place — Resident Journey Storyboard",
+    updated:"Mar 2026", steward:"Marcus Webb",
+    made:"A storyboard following one resident's first 90 days through the building",
+    body:"A narrative artifact that tested whether the reentry-housing plan supported dignity day-to-day — and gave the community something concrete to react to.",
+    meta:["storyboard","journey mapping","reentry housing","dignity"],
+    thinking:"Plans abstract away lived experience. The team built a day-in-the-life storyboard for a composite resident — synthesized from engagement, not a persona cliché — so stakeholders could feel the design from inside it: where you wait, who sees you, what closes behind you. It surfaced a surveilled chokepoint nobody had noticed in plan view.",
+    process:[
+      "<b>Define a composite resident</b> from engagement data — not a persona cliché, a real synthesis.",
+      "<b>Walk the plan as them</b>, hour by hour, listing every threshold and gaze.",
+      "<b>Storyboard 8–10 key moments</b>, each tied to a plan location.",
+      "<b>Flag dignity failures</b> — moments of exposure, waiting, or dead-ends.",
+      "<b>Bring it to the community</b> to correct and add moments you missed.",
+    ],
+    questions:[
+      "Where is this person watched, and does it serve them or just the institution?",
+      "What does the building make them wait for?",
+      "Whose day did we forget to storyboard?",
+    ],
+    resources:[
+      {t:"Resident Journey storyboard — template", k:"Figma file", ic:"🎞️", href:"#"},
+      {t:"Composite-persona synthesis guide", k:"Google Doc", ic:"📝", href:"#"},
+      {t:"Dignity-failure annotation key", k:"PDF", ic:"🔑", href:"#"},
+    ],
+    related:["site-read","return-question","co-design-plan"],
+  },
+  {
+    cat:"precedent", id:"restore-oakland-stacking",
+    title:"Restore Oakland — Program-Stacking & Adjacency Studies",
+    updated:"Feb 2026", steward:"Priya Nair",
+    made:"3 program-stacking schemes showing how the building's justice partners share space",
+    body:"Restore Oakland brings multiple movement organizations under one roof. The studio made three stacking strategies so partners could argue adjacencies — who shares a door, who needs separation — before the plan hardened.",
+    meta:["adjacency","program stacking","social justice hub","adaptive reuse"],
+    thinking:"A multi-tenant hub is a coalition made physical. Who is on the ground floor, who shares an entrance, and who gets acoustic separation are political questions before they're spatial ones. Rather than resolve them in the studio, the team made three stacking schemes that each optimize a different value — visibility of the organizing work, privacy for survivors' services, and revenue for the ground-floor restaurant — so partners could see the trade-offs and choose together.",
+    process:[
+      "<b>List every tenant</b> and what each needs from the building — entrance, acoustics, visibility, hours.",
+      "<b>Map required and forbidden adjacencies</b> into a simple matrix with the partners.",
+      "<b>Build three stacking schemes</b>, each letting one value win.",
+      "<b>Annotate what each optimizes</b> and what it asks each partner to give up.",
+      "<b>Render at sketch fidelity</b> and walk the partners through as a set.",
+    ],
+    questions:[
+      "Whose work is on the street, and what does that say about who the building is for?",
+      "Which adjacencies are political, not just functional?",
+      "Who did we ask to compromise, and were they in the room?",
+    ],
+    resources:[
+      {t:"Adjacency matrix — template", k:"Google Sheet", ic:"🧮", href:"#"},
+      {t:"Program-stacking diagram — template", k:"Figma file", ic:"🧱", href:"#"},
+      {t:"Tenant needs interview guide", k:"Google Doc", ic:"🎙️", href:"#"},
+      {t:"Concept review facilitation script", k:"Google Doc", ic:"📝", href:"#"},
+    ],
+    related:["power-map","informed-concept-brief","not-in-room-question"],
+  },
+
+  /* ===================== TEMPLATES ===================== */
+  {
+    cat:"template", id:"informed-concept-brief",
+    title:"Informed Concept Brief (1 page)",
+    updated:"Apr 2026", steward:"Deanna Cole",
+    made:"The studio's standard concept one-pager",
+    body:"Forces a concept to state its argument, who authored it, the irreducible core, the precedent it leans on, and the open questions.",
+    meta:["brief","deliverable","concept phase"],
+    thinking:"A concept that can't fit on one page usually isn't informed yet — it's still a collection of moves. The brief is the gate that turns moves into an argument.",
+    process:[
+      "<b>State the argument</b> the building makes in one sentence.",
+      "<b>Name who authored it with us</b> from the community.",
+      "<b>Define the irreducible core</b> that survives a budget cut.",
+      "<b>Cite the precedent</b> you actually examined.",
+      "<b>List the open questions</b> you're carrying into review.",
+    ],
+    resources:[
+      {t:"Informed Concept Brief — template", k:"Google Doc / InDesign", ic:"📄", href:"#"},
+      {t:"Worked example (Hope Reentry Campus)", k:"PDF", ic:"📎", href:"#"},
+    ],
+    related:["hope-reentry-massing","argument-question","gate-checklist"],
+  },
+  {
+    cat:"template", id:"co-design-plan",
+    title:"Community Co-Design Session Plan",
+    updated:"Jan 2026", steward:"Marcus Webb",
+    made:"Agenda, roles, and material kit for a 2-hour participatory session",
+    body:"Includes how to capture dissent, not just consensus — so the session produces authorship, not just buy-in.",
+    meta:["facilitation","engagement"],
+    thinking:"Engagement that only records agreement launders the studio's preferences as community will. The plan builds in dissent capture so disagreement becomes a finding.",
+    process:[
+      "<b>Send a pre-read</b> and a real invitation, not a notice.",
+      "<b>Assign facilitation roles</b> — lead, scribe, dissent-keeper.",
+      "<b>Give participants materials to make</b>, not only react to.",
+      "<b>Capture dissent</b> on its own grid.",
+      "<b>Share synthesis back</b> before the next phase.",
+    ],
+    resources:[
+      {t:"Co-Design Session Plan — template", k:"Google Doc", ic:"📝", href:"#"},
+      {t:"Material kit checklist", k:"PDF", ic:"🧰", href:"#"},
+      {t:"Dissent capture grid", k:"Miro template", ic:"🗳️", href:"#"},
+    ],
+    related:["warm-landing-journey","power-map","co-design-checklist"],
+  },
+  {
+    cat:"template", id:"site-read",
+    title:"Site Read Worksheet",
+    updated:"Apr 2026", steward:"Lena Ortiz",
+    made:"Structured walk-through capture",
+    body:"Thresholds, sightlines, who currently uses the space, and what it signals to a first-time visitor.",
+    meta:["site visit","analysis"],
+    thinking:"A site read done as a checklist still misses the felt experience. This worksheet pairs measured capture with a 'what does this signal' prompt at every threshold.",
+    process:[
+      "<b>Photograph the entry sequence</b> as a visitor experiences it.",
+      "<b>Map sightlines and surveillance</b> points.",
+      "<b>Log current users and uses.</b>",
+      "<b>Record the first-impression signal</b> before anyone speaks.",
+    ],
+    resources:[
+      {t:"Site Read Worksheet — template", k:"PDF / Field-ready", ic:"📋", href:"#"},
+      {t:"Threshold photo shot-list", k:"Google Doc", ic:"📷", href:"#"},
+    ],
+    related:["warm-landing-journey","threshold-question","site-checklist"],
+  },
+  {
+    cat:"template", id:"power-map",
+    title:"Stakeholder & Power Map",
+    updated:"Dec 2025", steward:"Priya Nair",
+    made:"A map of who decides, who's affected, and who's left out",
+    body:"Reused at every phase gate to keep the concept honest about whose voice it centers.",
+    meta:["stakeholders","power"],
+    thinking:"Concepts harden around whoever is loudest in the room. The power map makes the missing voices visible before that happens.",
+    process:[
+      "<b>List the deciders</b> and the affected.",
+      "<b>Name the missing voices.</b>",
+      "<b>Plot influence vs. interest.</b>",
+      "<b>Decide who you'll go to</b> before the concept hardens.",
+    ],
+    resources:[
+      {t:"Power Map — template", k:"Miro / Figjam", ic:"🗺️", href:"#"},
+    ],
+    related:["co-design-plan","not-in-room-question"],
+  },
+
+  /* ===================== PRINCIPLES ===================== */
+  {cat:"principle", id:"closest", title:"The people closest to the problem are closest to the solution",
+   body:"Design with, not for. Build their authorship into the concept, not just their feedback.",
+   meta:["co-design","equity"]},
+  {cat:"principle", id:"argument", title:"A building is an argument",
+   body:"Every plan takes a position about who belongs, who is watched, and who decides. Name it before you defend the form.",
+   meta:["values","narrative"]},
+  {cat:"principle", id:"repair", title:"Repair over removal",
+   body:"Favor concepts that restore relationships and capacity over concepts that isolate. Ask what the space helps people return to.",
+   meta:["restorative","care"]},
+  {cat:"principle", id:"dignity", title:"Dignity is measurable in detail",
+   body:"Light, acoustics, sightlines, a door that closes. Dignity lives in resolution, not in the mission statement.",
+   meta:["human-scale","detail"]},
+  {cat:"principle", id:"core", title:"The concept must survive a hostile budget",
+   body:"Identify the irreducible core that delivers the value even when the money shrinks.",
+   meta:["feasibility","phasing"]},
+
+  /* ===================== CHECKLISTS ===================== */
+  {cat:"checklist", id:"gate-checklist", title:"Before you call a concept 'informed'",
+   body:"Run this gate before the concept leaves the studio for client review.",
+   items:[
+     "At least one person who will use the space helped shape it",
+     "The argument the building makes is written down",
+     "The irreducible core survives a 30% budget cut",
+     "We named who is missing from the room",
+     "Every precedent cited was actually examined, not just admired",
+   ],
+   meta:["gate","quality"]},
+  {cat:"checklist", id:"site-checklist", title:"Site visit — don't leave without",
+   body:"The minimum capture from a first site read.",
+   items:[
+     "Photographed the entry sequence as a visitor experiences it",
+     "Noted every point where someone is watched or processed",
+     "Talked to one person who currently uses the space",
+     "Recorded what the space signals before anyone speaks",
+   ],
+   meta:["site visit","fieldwork"]},
+  {cat:"checklist", id:"co-design-checklist", title:"Co-design session — facilitation",
+   body:"So the session produces authorship, not just buy-in.",
+   items:[
+     "Participants given materials to make, not only react",
+     "Dissent recorded as a finding, not smoothed over",
+     "Decisions made in the room are visibly theirs",
+     "Synthesis shared back before the next phase",
+   ],
+   meta:["facilitation","engagement"]},
+
+  /* ===================== THE QUESTIONS ===================== */
+  {cat:"question", id:"not-in-room-question", title:"Who is not in the room?",
+   body:"And what would change about the concept if they were? Name them before the design hardens.",
+   meta:["power","engagement"]},
+  {cat:"question", id:"argument-question", title:"What argument is this building making?",
+   body:"About who belongs, who is trusted, who is watched. If you can't say it, the concept isn't informed yet.",
+   meta:["values","narrative"]},
+  {cat:"question", id:"return-question", title:"What does this space help people return to?",
+   body:"Family, work, community, dignity. If the answer is 'nothing,' reconsider the concept.",
+   meta:["restorative","outcomes"]},
+  {cat:"question", id:"core-question", title:"What's the irreducible core?",
+   body:"If the budget halved tomorrow, what one move still delivers the value?",
+   meta:["feasibility","phasing"]},
+  {cat:"question", id:"threshold-question", title:"What does a first-time visitor feel at the door?",
+   body:"Before any staff member speaks — what does the threshold communicate?",
+   meta:["threshold","dignity"]},
+];
+
+const BY_ID = Object.fromEntries(ITEMS.map(i=>[i.id,i]));
+
+/* Contribution intake — a pre-filled email that posts straight into a shared Slack channel.
+   PLACEHOLDER address below. To get the real one: in Slack open the channel → Integrations →
+   "Send emails to this channel" → copy the generated address and paste it here.
+   (Any inbox or Google Form address works here too.) */
+const INTAKE = "compass-a1b2c3d4@designingjustice.slack.com";
+function mailto(subject,body){
+  return `mailto:${INTAKE}?subject=${encodeURIComponent(subject)}`+
+         (body?`&body=${encodeURIComponent(body)}`:"");
+}
+
+/* ------------------------------------------------------------------ render */
+const grid = document.getElementById("grid");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+const qEl = document.getElementById("q");
+const filtersEl = document.getElementById("filters");
+
+let active = new Set(); // empty = all
+
+const counts = Object.fromEntries(Object.keys(CATS).map(c=>[c,0]));
+ITEMS.forEach(i=>counts[i.cat]++);
+Object.entries(CATS).forEach(([key,c])=>{
+  const b=document.createElement("button");
+  b.className="chip";b.dataset.cat=key;b.setAttribute("aria-pressed","false");
+  b.style.color=c.color;
+  b.innerHTML=`<span class="dot"></span>${c.label}s <span class="ct">${counts[key]}</span>`;
+  b.onclick=()=>{ active.has(key)?active.delete(key):active.add(key); syncChips(); render(); };
+  filtersEl.appendChild(b);
+});
+function syncChips(){
+  [...filtersEl.children].forEach(b=>{
+    const on=active.has(b.dataset.cat);
+    b.setAttribute("aria-pressed",on?"true":"false");
+    b.style.background=on?CATS[b.dataset.cat].color:"";
+    b.style.color=on?"#0e1116":CATS[b.dataset.cat].color;
+    b.style.borderColor=on?CATS[b.dataset.cat].color:"";
+  });
+}
+
+function esc(s){return String(s).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]))}
+function hl(s,q){
+  s=esc(s); if(!q) return s;
+  const re=new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+  return s.replace(re,"<mark>$1</mark>");
+}
+function haystack(i){
+  return [i.title,i.made,i.body,i.thinking,(i.items||[]).join(" "),
+    (i.process||[]).join(" "),(i.questions||[]).join(" "),
+    (i.meta||[]).join(" "),i.steward||"",CATS[i.cat].label].join(" ").toLowerCase();
+}
+const hasDetail = i => i.thinking || i.process || i.questions || i.resources;
+
+function render(){
+  const q=qEl.value.trim();
+  const ql=q.toLowerCase();
+  const list=ITEMS.filter(i=>{
+    if(active.size && !active.has(i.cat)) return false;
+    if(ql && !haystack(i).includes(ql)) return false;
+    return true;
+  });
+
+  grid.innerHTML="";
+  emptyEl.hidden = list.length>0;
+  if(!list.length){
+    const subj = q ? `Compass: add an entry for “${q}”` : "Compass: suggest a new entry";
+    const body = q ? `I searched the Design Studio Compass for “${q}” and didn't find it.\n\nWhat I was looking for:\n\nWhere it should live (precedent / template / principle / checklist / question):\n`
+                   : `Suggested addition to the Design Studio Compass:\n\n`;
+    emptyEl.innerHTML = q
+      ? `Nothing in the compass for <b>“${esc(q)}”</b> yet.<br>`+
+        `<a class="lk" href="${mailto(subj,body)}">Add it to the compass →</a> &nbsp;·&nbsp; `+
+        `<button class="clear" type="button" id="clearAll">clear search &amp; filters</button>`
+      : `Nothing matches those filters.<br>`+
+        `<button class="clear" type="button" id="clearAll">clear filters</button>`;
+    const cb=emptyEl.querySelector("#clearAll");
+    if(cb) cb.onclick=()=>{qEl.value="";active.clear();syncChips();render();qEl.focus();};
+  }
+  countEl.textContent = list.length
+    ? `${list.length} ${list.length===1?"entry":"entries"}${q?` matching “${q}”`:""}${active.size?` · ${[...active].map(c=>CATS[c].label).join(", ")}`:""}`
+    : "";
+
+  list.forEach(i=>{
+    const c=CATS[i.cat];
+    const detail=hasDetail(i);
+    const card=document.createElement(detail?"button":"article");
+    card.className="card";card.style.setProperty("--cat-color",c.color);
+    if(detail){card.type="button";card.onclick=()=>openDrawer(i.id);}
+    let html=`<span class="tag">${c.label}</span><h3>${hl(i.title,q)}</h3>`;
+    if(i.made) html+=`<div class="made"><b>Made:</b> ${hl(i.made,q)}</div>`;
+    html+=`<p>${hl(i.body,q)}</p>`;
+    if(i.items) html+=`<ul class="ck">${i.items.map(t=>`<li>${hl(t,q)}</li>`).join("")}</ul>`;
+    if(i.meta) html+=`<div class="meta">${i.meta.map(m=>`<span>${hl(m,q)}</span>`).join("")}</div>`;
+    if(i.updated) html+=`<div class="fresh">Updated ${hl(i.updated,q)}${i.steward?` · ${hl(i.steward,q)}`:""}</div>`;
+    if(detail) html+=`<span class="open">Open the anatomy <span class="arr">→</span></span>`;
+    card.innerHTML=html;
+    grid.appendChild(card);
+  });
+}
+
+/* ------------------------------------------------------------------ drawer */
+const scrim=document.getElementById("scrim");
+const drawer=document.getElementById("drawer");
+let lastFocus=null;
+
+function openDrawer(id){
+  const i=BY_ID[id]; if(!i) return;
+  const c=CATS[i.cat];
+  lastFocus=document.activeElement;
+  drawer.style.setProperty("--cat-color",c.color);
+
+  let h=`<div class="dhead">
+      <div><div class="dtag">${c.label}</div><h2 id="dtitle">${esc(i.title)}</h2></div>
+      <button class="dclose" id="dclose" aria-label="Close">✕</button>
+    </div><div class="dwrap">`;
+  if(i.body) h+=`<p class="dsub">${esc(i.body)}</p>`;
+  if(i.made) h+=`<div class="dmade"><div class="lab">What was made</div><div class="val">${esc(i.made)}</div></div>`;
+  if(i.meta) h+=`<div class="dmeta">${i.meta.map(m=>`<span>${esc(m)}</span>`).join("")}</div>`;
+
+  if(i.thinking) h+=`<section class="blk"><h4>The thinking</h4><p>${esc(i.thinking)}</p></section>`;
+  if(i.process) h+=`<section class="blk"><h4>The process</h4><ol class="steps">${i.process.map(s=>`<li>${s}</li>`).join("")}</ol></section>`;
+  if(i.questions) h+=`<section class="blk"><h4>Critical questions</h4><ul class="qs">${i.questions.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></section>`;
+  if(i.items) h+=`<section class="blk"><h4>Checklist</h4><ul class="qs">${i.items.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></section>`;
+  if(i.resources) h+=`<section class="blk"><h4>Resources &amp; downloads</h4><div class="res">${
+    i.resources.map(r=>`<a href="${r.href}"><span class="ic">${r.ic||"📎"}</span>
+      <span><span class="rt">${esc(r.t)}</span><br><span class="rk">${esc(r.k||"")}</span></span>
+      <span class="dl">Open →</span></a>`).join("")}</div></section>`;
+
+  const rel=(i.related||[]).map(r=>BY_ID[r]).filter(Boolean);
+  if(rel.length) h+=`<section class="blk"><h4>Related in the compass</h4><div class="related">${
+    rel.map(r=>`<button data-go="${r.id}">${CATS[r.cat].label} · ${esc(r.title)}</button>`).join("")}</div></section>`;
+
+  // freshness + ownership + ungated contribution (from the intranet research)
+  const who = (i.steward||i.updated) ? `<span class="who">${
+      i.steward?`Stewarded by <b>${esc(i.steward)}</b>`:""}${
+      i.steward&&i.updated?" · ":""}${i.updated?`Updated ${esc(i.updated)}`:""}</span>` : `<span></span>`;
+  h+=`<div class="dfoot">${who}<a href="${mailto(`Compass edit: ${i.title}`,`Suggested change to "${i.title}":\n\n`)}">Suggest an edit →</a></div>`;
+  h+=`</div>`;
+
+  drawer.innerHTML=h;
+  drawer.querySelector("#dclose").onclick=closeDrawer;
+  drawer.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{drawer.scrollTop=0;openDrawer(b.dataset.go);});
+  scrim.classList.add("show");drawer.classList.add("show");
+  document.body.classList.add("locked");
+  drawer.querySelector("#dclose").focus();
+}
+// keep keyboard focus inside the open drawer (focus trap)
+function trapTab(e){
+  if(e.key!=="Tab" || !drawer.classList.contains("show")) return;
+  const f=drawer.querySelectorAll('a[href],button,input,[tabindex]:not([tabindex="-1"])');
+  if(!f.length) return;
+  const first=f[0], last=f[f.length-1];
+  if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
+}
+document.addEventListener("keydown",trapTab);
+function closeDrawer(){
+  scrim.classList.remove("show");drawer.classList.remove("show");
+  document.body.classList.remove("locked");
+  if(lastFocus) lastFocus.focus();
+}
+scrim.onclick=closeDrawer;
+
+/* ------------------------------------------------------------------ keys */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if(drawer.classList.contains("show")){closeDrawer();return;}
+    if(document.activeElement===qEl){qEl.value="";render();}
+  }
+  if(e.key==="/" && document.activeElement!==qEl && !drawer.classList.contains("show")){
+    e.preventDefault();qEl.focus();
+  }
+});
+// footer contribution link
+document.getElementById("footContribute").href =
+  mailto("Compass: suggest a new entry",
+    "Suggested addition to the Design Studio Compass:\n\nName:\nType (precedent / template / principle / checklist / question):\nWhat it is / what was made:\nLink(s):\n");
+
+qEl.addEventListener("input",render);
+render();
+</script>
+</body>
+</html>
