@@ -25,13 +25,15 @@ The page has a **mode toggle** at the top:
   with a faceted filter rail; opens a **full, shareable detail view**.
 
 ### Example Library specifics
-- **Facets** (filter rail, multi-select within a facet, AND across facets, live counts):
-  `phase`, `deliverable_type`, `process_type`, `concept_tags`, `project`. Concept Development
-  entries are sorted to the top under a "start here" band.
+- **Filters** use a familiar dropdown filter bar — `Phase ▾ · Deliverable ▾ · Process ▾ ·
+  Concept focus ▾ · Project ▾` — each opening a menu of options with live counts (multi-select
+  within a facet, AND across facets). Active filters show as removable chips with a "Clear all".
+  Concept Development entries are sorted to the top under a "start here" band.
 - **Detail is shareable** — opening an example sets `#/example/:id`; paste that URL to send a
   teammate straight to that breadcrumb. Back/Esc returns to the library.
-- **Thumbnails** are generated as self-contained SVGs per `deliverable_type` (no external assets);
-  set an entry's `thumbnail` to a real image URL to override.
+- **Thumbnails** use the real DJDS project images (placeholders pulled from designingjustice.org).
+  If an image fails to load, the card falls back to a self-contained generated SVG per
+  `deliverable_type` — set an entry's `thumbnail` to any image URL to change it.
 - **Nominate flow** — "+ Nominate an example" composes a structured nomination to the Slack
   `INTAKE` (Slack-only in v1; nothing persists in-app — the design director curates accepted
   nominations into the `EXAMPLES` array, which deploys via git → Vercel). Framed for the end of a
