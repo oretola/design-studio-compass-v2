@@ -13,6 +13,38 @@ actually doing the work.
 - Related entries cross-link, so a precedent points you to the template that built it.
 - Everything is one static page — no build step.
 
+## Two tiers: Method Compass + Example Library
+
+The page has a **mode toggle** at the top:
+
+- **Method Compass** — the original reference: principles, precedents, templates, checklist, and
+  the questions (the `ITEMS` array, browsed by type, opened in a slide-in drawer).
+- **Example Library** — a curated, visual-first collection of *best-example* design work (the
+  `EXAMPLES` array). Each entry is a "breadcrumb": a real project asset wrapped in narrative
+  (the why), steps (the how), resources, and source links to Drive. Browsed as visual cards
+  with a faceted filter rail; opens a **full, shareable detail view**.
+
+### Example Library specifics
+- **Facets** (filter rail, multi-select within a facet, AND across facets, live counts):
+  `phase`, `deliverable_type`, `process_type`, `concept_tags`, `project`. Concept Development
+  entries are sorted to the top under a "start here" band.
+- **Detail is shareable** — opening an example sets `#/example/:id`; paste that URL to send a
+  teammate straight to that breadcrumb. Back/Esc returns to the library.
+- **Thumbnails** are generated as self-contained SVGs per `deliverable_type` (no external assets);
+  set an entry's `thumbnail` to a real image URL to override.
+- **Nominate flow** — "+ Nominate an example" composes a structured nomination to the Slack
+  `INTAKE` (Slack-only in v1; nothing persists in-app — the design director curates accepted
+  nominations into the `EXAMPLES` array, which deploys via git → Vercel). Framed for the end of a
+  charrette/concept review, while the thinking is fresh. Required: thumbnail + title +
+  deliverable_type + a start to the narrative.
+- Seed content uses real DJDS project names not used in the Compass (Center for Equity, RJ HQ,
+  The LOVE Building, Near Westside Peacemaking Center, Safe Healing Center, Community Works,
+  4345 Crenshaw, Gulf Coast Innovation Center); process content is illustrative.
+
+### Deferred (not in v1, by design)
+Live Drive sync, accounts/roles, in-app shared persistence (commit-on-submit or a backend),
+bulk migration, and the separate catch-all visual reference library.
+
 ## Content model
 
 All content is **made-up placeholder data** for the demo — no real projects, systems, or client
