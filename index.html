@@ -265,6 +265,10 @@
   .vcard .vchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
   .vcard .vchips span{font-size:11px;color:var(--faint);background:var(--panel-2);border:1px solid var(--line);padding:3px 7px;border-radius:6px}
   .vcard.concept::before{background:var(--accent)}
+  .vcard.placeholder{opacity:.6;cursor:default;border-style:dashed}
+  .vcard.placeholder .thumb{filter:grayscale(.55)}
+  .vtag-ph{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--faint);background:var(--panel-2);border:1px solid var(--line);padding:3px 8px;border-radius:6px}
   .band{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin:10px 2px 0;font-size:12px;
     letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
   .band::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -1194,16 +1198,32 @@ const EXAMPLES = [
     nominated_by:"Nina Velez", ask_me:"Marcus Webb",
   },
 ];
+/* Placeholder tiles for the later phases — visual fillers until real
+   deliverables/processes are documented. They carry only a phase + a label,
+   render muted and non-clickable, and stay out of the refine dropdowns. */
+const PH_SPEC = {
+  "Schematic Design":["floor plan set","building section"],
+  "Planning Approvals & Entitlements":["entitlement package","community benefits summary"],
+  "Design Development":["wall section","material palette"],
+  "Construction Documentation":["detail sheet","door & window schedule"],
+  "Building Permit / Bidding":["permit set","bid tabulation"],
+  "Construction Administration":["submittal log","site observation report"],
+  "FF&E":["furniture plan","finish schedule"],
+};
+Object.entries(PH_SPEC).forEach(([phase,labels])=>labels.forEach((lab,i)=>{
+  EXAMPLES.push({ id:"ph-"+phase.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+i, placeholder:true,
+    title:lab.charAt(0).toUpperCase()+lab.slice(1), facets:{phase:phase} });
+}));
+
 const EX_BY_ID = Object.fromEntries(EXAMPLES.map(e=>[e.id,e]));
 
 /* ---- facets ---- */
 const PHASE_ORDER = ["Concept Development","Schematic Design","Planning Approvals & Entitlements","Design Development","Construction Documentation","Building Permit / Bidding","Construction Administration","FF&E"];
 const FACET_DEFS = [
   {key:"phase",            label:"Phase",         values:PHASE_ORDER},
+  {key:"project",          label:"Project"},
   {key:"deliverable_type", label:"Deliverable"},
   {key:"process_type",     label:"Process"},
-  {key:"concept_tags",     label:"Concept focus"},
-  {key:"project",          label:"Project"},
 ];
 const SUB_PHASES_BY_PHASE = {
   "Concept Development":[
@@ -1430,24 +1450,31 @@ function renderGrid(){
   const list=filterExamples().sort((a,b)=>PHASE_ORDER.indexOf(a.facets.phase)-PHASE_ORDER.indexOf(b.facets.phase));
   libGrid.innerHTML="";
   libEmpty.hidden=list.length>0;
-  libCount.textContent=list.length?`${list.length} example${list.length===1?"":"s"}${q?` matching “${q}”`:""}`:"";
+  libCount.textContent=list.length?`${list.length} tile${list.length===1?"":"s"}${q?` matching “${q}”`:""}`:"";
   if(!list.length){
     libEmpty.innerHTML=`Nothing matches those filters.<br><button class="clear" type="button" id="libClear">clear search &amp; filters</button>`;
     const c=document.getElementById("libClear"); if(c) c.onclick=clearAllFilters;
     return;
   }
-  let lastBand=null;
   list.forEach(e=>{
-    const concept=e.facets.phase==="Concept Development";
-    const band=concept?"Concept Development — start here":"Other phases";
-    if(band!==lastBand){ const d=document.createElement("div"); d.className="band"; d.textContent=band; libGrid.appendChild(d); lastBand=band; }
+    const f=e.facets||{};
+    if(e.placeholder){
+      const card=document.createElement("div");
+      card.className="card vcard placeholder";
+      card.innerHTML=`<span class="thumb">${thumbHTML(e)}</span>`+
+        `<span class="vbody"><span class="vtag-ph">Placeholder</span>`+
+        `<h3>${esc(e.title)}</h3>`+
+        `<span class="vchips">${[f.phase].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join("")}</span></span>`;
+      libGrid.appendChild(card);
+      return;
+    }
     const card=document.createElement("button");
-    card.type="button"; card.className="card vcard"+(concept?" concept":"");
-    card.style.setProperty("--cat-color",concept?"var(--accent)":"var(--accent-2)");
+    card.type="button"; card.className="card vcard";
+    card.style.setProperty("--cat-color","var(--accent-2)");
     card.onclick=()=>goUnderstand(e.id);
-    const chips=[e.facets.deliverable_type,e.facets.phase].filter(Boolean);
-    card.innerHTML=`<span class="thumb">${concept?'<span class="badge">Concept</span>':''}${thumbHTML(e)}</span>`+
-      `<span class="vbody"><span class="vproj">${esc(e.facets.project||"")}</span>`+
+    const chips=[f.deliverable_type,f.phase].filter(Boolean);
+    card.innerHTML=`<span class="thumb">${thumbHTML(e)}</span>`+
+      `<span class="vbody"><span class="vproj">${esc(f.project||"")}</span>`+
       `<h3>${hl(e.title,q)}</h3>`+
       `<span class="vchips">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</span></span>`;
     libGrid.appendChild(card);
