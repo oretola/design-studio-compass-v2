@@ -269,6 +269,37 @@
     letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
   .band::after{content:"";flex:1;height:1px;background:var(--line)}
 
+  /* Concept Development sub-phase orientation rail */
+  .subrail{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:14px;padding:16px 18px;margin:2px 2px 16px}
+  .sr-top{margin-bottom:14px}
+  .sr-kick{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .sr-rail{display:grid;grid-template-columns:repeat(4,1fr)}
+  .sr-step{appearance:none;background:none;border:0;cursor:pointer;font:inherit;display:flex;
+    flex-direction:column;align-items:center;gap:8px;padding:0;position:relative}
+  .sr-step .node{width:30px;height:30px;border-radius:50%;background:var(--bg);border:1px solid var(--line);
+    color:var(--muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:1;transition:.14s ease}
+  .sr-step::before,.sr-step::after{content:"";position:absolute;top:15px;height:2px;background:var(--line)}
+  .sr-step::before{left:0;right:50%}.sr-step::after{left:50%;right:0}
+  .sr-step:first-child::before{display:none}.sr-step:last-child::after{display:none}
+  .sr-step .slabel{font-size:12px;color:var(--muted);text-align:center;line-height:1.2;
+    display:flex;flex-direction:column;align-items:center;gap:3px}
+  .sr-step .sr-ct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .sr-step:hover .node{border-color:#3a4555;color:var(--ink)}
+  .sr-step[aria-selected="true"] .node{background:var(--accent);border-color:var(--accent);color:#0e1116}
+  .sr-step[aria-selected="true"] .slabel{color:var(--ink)}
+  .sr-orient{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+  .sr-hint{font-size:13.5px;color:var(--muted);line-height:1.55;max-width:66ch}
+  .sr-pname{font-size:16px;font-weight:700;color:var(--accent);letter-spacing:-.01em}
+  .sr-for{font-size:14.5px;color:var(--ink);line-height:1.5;margin:6px 0 11px;max-width:66ch}
+  .sr-acts{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 12px;max-width:72ch}
+  .sr-acts .dim{color:var(--faint)}
+  .sr-finds{display:flex;flex-wrap:wrap;gap:6px}
+  .sr-finds span{font-size:12px;color:var(--accent);background:rgba(232,163,61,.12);
+    border:1px solid rgba(232,163,61,.3);padding:3px 9px;border-radius:6px}
+  @media (prefers-reduced-motion: reduce){ .sr-step .node{transition:none} }
+
   /* Full detail view (shareable) */
   .detail{position:fixed;inset:0;background:var(--bg);z-index:70;overflow-y:auto}
   .detail .dbar{position:sticky;top:0;z-index:2;background:linear-gradient(var(--bg) 82%,transparent);padding:18px 0 10px}
@@ -313,6 +344,74 @@
     .detail aside.side{position:static}
   }
   @media (max-width:560px){ .frow{grid-template-columns:1fr} }
+
+  /* ===================== THREE-PILLAR NAV ===================== */
+  .pillars-wrap{margin-top:24px}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .pillar{appearance:none;cursor:pointer;font:inherit;text-align:left;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:5px;transition:.14s ease}
+  .pillar:hover{border-color:#3a4555}
+  .pillar .ptop{display:flex;align-items:center;gap:9px;color:var(--faint)}
+  .pillar .pnum{width:22px;height:22px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);
+    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .pillar .plab{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .pillar .psub{font-size:12.5px;color:var(--muted)}
+  .pillar[aria-selected="true"]{background:rgba(232,163,61,.13);border-color:var(--accent)}
+  .pillar[aria-selected="true"] .plab,.pillar[aria-selected="true"] .pnum,.pillar[aria-selected="true"] .ptop{color:var(--accent)}
+  .loopnote{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--faint);margin:12px 2px 0}
+  @media (max-width:600px){
+    .pillars{grid-template-columns:1fr}
+    .pillar{flex-direction:row;align-items:center;gap:11px}
+    .pillar .psub{margin-left:auto}
+  }
+
+  /* ===================== FIND LAYOUT ===================== */
+  .find-search{margin-top:20px}
+  .find-search .search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--faint)}
+  .find-search #q{
+    width:100%;padding:15px 16px 15px 46px;font-size:16px;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;outline:none}
+  .find-search #q::placeholder{color:var(--faint)}
+  .find-search #q:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,163,61,.15)}
+  .find-phase{margin-top:18px}
+  .find-phase .flabel{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+    font-weight:700;display:block;margin:0 2px 9px}
+  .phasechips{display:flex;flex-wrap:wrap;gap:8px}
+  .pchip{appearance:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;color:var(--muted);
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;
+    display:inline-flex;align-items:center;gap:8px;transition:.12s ease}
+  .pchip:hover{color:var(--ink);border-color:#3a4555}
+  .pchip .pct{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .pchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#0e1116}
+  .pchip[aria-pressed="true"] .pct{color:#0e1116;opacity:.65}
+  .pchip[data-zero="1"]{opacity:.4}
+  .find-phase + .subrail{margin-top:16px}
+  .find-phase + .lib-top{margin-top:18px}
+
+  /* ===================== UNDERSTAND / MAKE VIEWS ===================== */
+  .exback{margin:18px 0 4px}
+  .exhero{width:100%;aspect-ratio:21/9;max-height:340px;border-radius:var(--radius);overflow:hidden;
+    background:var(--panel-2);margin-top:6px}
+  .exhero img,.exhero svg{width:100%;height:100%;object-fit:cover;display:block}
+  .exproj{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);font-weight:700;margin-top:16px}
+  .extitle{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.02em;line-height:1.14;margin:8px 0 0;outline:none}
+  .exlayout{display:grid;grid-template-columns:1fr 300px;gap:42px;margin:24px 0 56px;align-items:start}
+  .exlayout .narr p{font-size:16px;line-height:1.7;color:var(--ink);max-width:68ch;margin:0 0 15px}
+  .exside{position:sticky;top:18px;display:flex;flex-direction:column;gap:20px}
+  .exgetbtn{width:100%;justify-content:center;display:inline-flex;align-items:center;gap:6px}
+  .related-grid{margin-bottom:60px}
+  .make-intro{font-size:15px;color:var(--muted);line-height:1.6;max-width:68ch;margin:12px 0 24px}
+  .make-intro b{color:var(--ink);font-weight:600}
+  .make-body{display:flex;flex-direction:column;gap:24px;max-width:560px}
+  .make-loop{margin:30px 0 60px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
+  .exempty{margin:40px 2px 80px;padding:44px 28px;border:1px dashed var(--line);border-radius:var(--radius);
+    text-align:center;color:var(--faint);font-size:15px}
+  .linklike{appearance:none;background:none;border:0;cursor:pointer;font:inherit;color:var(--accent);
+    font-weight:700;text-decoration:underline;padding:0}
+  @media (max-width:820px){
+    .exlayout{grid-template-columns:1fr;gap:24px}
+    .exside{position:static}
+  }
 </style>
 </head>
 <body>
@@ -331,46 +430,54 @@
       </div>
     </div>
     <p class="lede">
-      Our way of developing an informed concept — the principles we hold, the precedents we
-      learn from, the templates we reuse, the checklist we run, and the questions we keep asking —
-      surfaced at the moment you're actually doing the work.
+      Find how we've approached a piece of work, understand the thinking and the people behind it,
+      then get the templates to make your own — at the moment you're actually doing the work.
     </p>
   </div>
 </header>
 
-<div class="modebar">
+<div class="pillars-wrap">
   <div class="wrap">
-    <div class="seg" role="tablist" aria-label="Choose a view">
-      <button id="modeCompass" class="seg-btn" role="tab" aria-selected="true" type="button">Method Compass</button>
-      <button id="modeLibrary" class="seg-btn" role="tab" aria-selected="false" type="button">Example Library</button>
+    <div class="pillars" role="tablist" aria-label="Find, understand, make">
+      <button id="pillFind" class="pillar" role="tab" aria-selected="true" type="button">
+        <span class="ptop"><span class="pnum">1</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+        <span class="plab">Find</span><span class="psub">Recall or discover</span>
+      </button>
+      <button id="pillUnderstand" class="pillar" role="tab" aria-selected="false" type="button">
+        <span class="ptop"><span class="pnum">2</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.8 10.6c.5.4.8 1 .8 1.6v.3h6v-.3c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/></svg></span>
+        <span class="plab">Understand</span><span class="psub">The why, how &amp; who</span>
+      </button>
+      <button id="pillMake" class="pillar" role="tab" aria-selected="false" type="button">
+        <span class="ptop"><span class="pnum">3</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20l4.5-1L18 9.5 14.5 6 5 15.5 4 20z"/><path d="M13 7l4 4"/></svg></span>
+        <span class="plab">Make</span><span class="psub">Adapt the precedent</span>
+      </button>
     </div>
-  </div>
-</div>
-
-<div class="controls">
-  <div class="wrap">
-    <div class="search">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="q" type="search" autocomplete="off" placeholder="Search the compass — e.g. “massing”, “community visuals”, “who is not in the room?”" aria-label="Search" />
+    <div class="loopnote">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v6h-6"/></svg>
+      The loop — what gets made becomes the next person's Find.
     </div>
-    <div class="filters" id="filters" role="group" aria-label="Filter by type"></div>
   </div>
 </div>
 
 <main>
-  <!-- COMPASS VIEW -->
-  <div id="compassView" class="wrap">
-    <div class="count" id="count" role="status" aria-live="polite"></div>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" hidden>
-      No matches. Try a broader term, or <b>clear filters</b> to see everything.
+  <!-- FIND -->
+  <div id="findView" class="wrap">
+    <div class="find-search">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="q" type="search" autocomplete="off" placeholder="Search examples — project, the story, the steps…" aria-label="Search examples" />
+      </div>
     </div>
-  </div>
-
-  <!-- EXAMPLE LIBRARY VIEW -->
-  <div id="libView" class="wrap" hidden>
+    <div class="find-phase">
+      <span class="flabel">Filter by phase</span>
+      <div class="phasechips" id="phaseChips" role="group" aria-label="Filter by phase"></div>
+    </div>
+    <div id="subRail" class="subrail" hidden></div>
     <div class="lib-top">
-      <div class="fbar" id="fbar" role="group" aria-label="Filter examples"></div>
+      <div class="fbar" id="fbar" role="group" aria-label="Refine"></div>
       <button id="nominateBtn" class="btn-primary" type="button">+ Nominate an example</button>
     </div>
     <div class="lib-status">
@@ -379,6 +486,22 @@
     </div>
     <div class="grid grid--visual" id="libGrid"></div>
     <div class="empty" id="libEmpty" hidden></div>
+  </div>
+
+  <!-- UNDERSTAND -->
+  <div id="understandView" class="wrap" hidden></div>
+
+  <!-- MAKE -->
+  <div id="makeView" class="wrap" hidden></div>
+
+  <!-- PARKED: Method Compass (kept in code, out of the main nav for now) -->
+  <div id="compassView" class="wrap" hidden>
+    <div class="filters" id="filters" role="group" aria-label="Filter by type"></div>
+    <div class="count" id="count" role="status" aria-live="polite"></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      No matches. Try a broader term, or <b>clear filters</b> to see everything.
+    </div>
   </div>
 </main>
 
@@ -392,9 +515,6 @@
 <!-- Detail drawer (Compass) -->
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" tabindex="-1"></aside>
-
-<!-- Full detail view (Example Library) -->
-<div class="detail" id="detail" role="region" aria-label="Example detail" hidden></div>
 
 <!-- Nominate an example -->
 <div class="modal" id="nominate" role="dialog" aria-modal="true" aria-labelledby="nomTitleH" tabindex="-1">
@@ -439,9 +559,13 @@
         <select id="nomPhase">
           <option value="">Choose…</option>
           <option>Concept Development</option>
-          <option>Feasibility</option>
           <option>Schematic Design</option>
+          <option>Planning Approvals &amp; Entitlements</option>
           <option>Design Development</option>
+          <option>Construction Documentation</option>
+          <option>Building Permit / Bidding</option>
+          <option>Construction Administration</option>
+          <option>FF&amp;E</option>
         </select>
       </div>
     </div>
@@ -920,6 +1044,7 @@ const EXAMPLES = [
     title:"Carving Openness from a Former Jail",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Center-for-Equity.jpg",
     facets:{project:"Center for Equity · Atlanta, GA", phase:"Concept Development",
+      sub_phase:"Ideation, visioning & analysis",
       deliverable_type:"massing diagram", process_type:"site analysis",
       concept_tags:["community/cultural research","feasibility/finance"]},
     narrative:"A jail is built to compress and control. The concept question was whether the existing structure could be made to do the opposite — and how to show that to a community that only knew the building as a place of harm.\n\nWe worked subtractively: instead of adding, we studied what to remove. Three massing studies each cut the slab differently — a central light well, a street-facing breezeway, a stepped roof terrace — to test how much openness the structure could trade its mass for, and what each cut cost in usable floor area.",
@@ -942,6 +1067,7 @@ const EXAMPLES = [
     title:"Adjacency Map for Survivor Safety",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_RJ-HQ.jpg",
     facets:{project:"Restorative Justice HQ · New York, NY", phase:"Concept Development",
+      sub_phase:"Integration & concept design",
       deliverable_type:"adjacency map", process_type:"design charrette",
       concept_tags:["engagement method","community/cultural research"]},
     narrative:"For a space serving survivors of violence, adjacency is safety. Who can see whom, which rooms share a wall, where you can leave without passing the person you're avoiding — these decide whether a space feels safe before any finish is chosen.\n\nWe built the adjacency map with survivors in a charrette, using movable tiles for each program. The rule we surfaced: every room a survivor uses needs a second way out that isn't past the waiting area. That single finding reshaped the plan.",
@@ -964,6 +1090,7 @@ const EXAMPLES = [
     title:"What the Block Already Told Us",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_LOVE-Building.jpg",
     facets:{project:"The LOVE Building · Detroit, MI", phase:"Concept Development",
+      sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"community engagement report", process_type:"immersive site visit",
       concept_tags:["community/cultural research","engagement method"]},
     narrative:"Before any form, the team spent three days on the block — not surveying, just present. The engagement report captured what the neighborhood already did well: where people gathered, which doorways were trusted, what the existing organizations had earned.\n\nIts job was to keep the concept humble. The headline finding — that the corner was already a de facto meeting spot — became the anchor for the building's entrance, instead of inventing a new 'front' that ignored the one the block had chosen.",
@@ -986,6 +1113,7 @@ const EXAMPLES = [
     title:"Renderings the Community Recognized",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Near-Westside-Peacemaking-Project.jpg",
     facets:{project:"Near Westside Peacemaking Center · Syracuse, NY", phase:"Concept Development",
+      sub_phase:"Final concept design — Iteration & finalization",
       deliverable_type:"rendering", process_type:"design charrette",
       concept_tags:["community/cultural research"]},
     narrative:"Peacemaking traditions are specific. A generic 'community room' rendering would have rung false. The team rendered the peacemaking circle using the actual materials, light, and seating geometry the community named — warm wood, daylight from above, a true circle with no head of the table.\n\nThe renderings worked because they were recognizably theirs. At review, an elder pointed at the screen and said 'that's where we'd sit' — the moment a concept stops being the architect's and becomes the community's.",
@@ -1008,6 +1136,7 @@ const EXAMPLES = [
     title:"Three Massings for a Youth Sanctuary",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_A-New-Way-of-Life.jpg",
     facets:{project:"Safe Healing Center · Los Angeles, CA", phase:"Concept Development",
+      sub_phase:"Ideation, visioning & analysis",
       deliverable_type:"massing diagram", process_type:"design charrette",
       concept_tags:["community/cultural research","feasibility/finance"]},
     narrative:"Housing for young people leaving crisis has to feel like sanctuary, not surveillance. The three massings each answered 'how do you keep youth safe without making them feel watched?' differently — a protected courtyard, a stepped terrace of semi-private decks, and a dispersed cottage cluster.\n\nThe charrette with youth advocates killed the option staff first preferred (the easiest to supervise) because it read as institutional from the inside. The breadcrumb: 'safe' and 'feels safe' are different briefs, and only the second is the design's job.",
@@ -1030,6 +1159,7 @@ const EXAMPLES = [
     title:"Keeping Two Populations Apart, Under One Roof",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Community-Works.jpg",
     facets:{project:"Community Works · San Francisco, CA", phase:"Concept Development",
+      sub_phase:"Integration & concept design",
       deliverable_type:"adjacency map", process_type:"design charrette",
       concept_tags:["engagement method"]},
     narrative:"One roof, two groups who shouldn't share a waiting room: youth programs and survivor services. The adjacency map had to let them coexist without ever colliding — separate entrances, separate circulation, shared back-of-house.\n\nThe concept move was a single staff-only spine down the middle that workers cross but visitors never do. The map made that legible to a client who had assumed 'one building' meant 'one front door.'",
@@ -1051,7 +1181,8 @@ const EXAMPLES = [
     id:"crenshaw-zoning",
     title:"Zoning Envelope vs. Affordable Units",
     thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Crenshaw.jpg",
-    facets:{project:"4345 Crenshaw · Los Angeles, CA", phase:"Feasibility",
+    facets:{project:"4345 Crenshaw · Los Angeles, CA", phase:"Concept Development",
+      sub_phase:"Integration & concept design",
       deliverable_type:"zoning analysis", process_type:"coding & analysis"},
     narrative:"Feasibility is where good intentions meet the zoning code. The analysis tested how many affordable units the site could hold under the allowable envelope before light and open-space rules pushed back.\n\nThe useful breadcrumb is the trade-off curve: past a certain count, every added unit started stealing daylight from the units below. We brought that curve to the client so 'maximize units' became an informed choice with a visible cost, not a default.",
     steps:[
@@ -1093,7 +1224,7 @@ const EXAMPLES = [
 const EX_BY_ID = Object.fromEntries(EXAMPLES.map(e=>[e.id,e]));
 
 /* ---- facets ---- */
-const PHASE_ORDER = ["Concept Development","Feasibility","Schematic Design","Design Development"];
+const PHASE_ORDER = ["Concept Development","Schematic Design","Planning Approvals & Entitlements","Design Development","Construction Documentation","Building Permit / Bidding","Construction Administration","FF&E"];
 const FACET_DEFS = [
   {key:"phase",            label:"Phase",         values:PHASE_ORDER},
   {key:"deliverable_type", label:"Deliverable"},
@@ -1101,19 +1232,41 @@ const FACET_DEFS = [
   {key:"concept_tags",     label:"Concept focus"},
   {key:"project",          label:"Project"},
 ];
+const SUB_PHASES = [
+  {short:"Predesign", label:"Predesign — Due diligence & data collection",
+   forr:"Understanding the ground before you design — site, code, community, and program.",
+   acts:"Zoning & code research · precedent research · community asset mapping · engagement prep · program & goals",
+   finds:["zoning analysis","precedent study","asset map","engagement plan","program brief"]},
+  {short:"Ideation", label:"Ideation, visioning & analysis",
+   forr:"Exploring what the site and community could become.",
+   acts:"Site-planning & landscape strategies · preliminary zoning · sustainability · creative engagement · program refinement",
+   finds:["site plan","massing diagram","landscape strategy","engagement output"]},
+  {short:"Integration", label:"Integration & concept design",
+   forr:"Pulling the strands into a viable concept — technical, financial, and organizational.",
+   acts:"Technical & site strategies · preliminary financial assessment · capacity alignment · engagement story reporting",
+   finds:["concept design","adjacency map","feasibility / finance"]},
+  {short:"Final concept", label:"Final concept design — Iteration & finalization",
+   forr:"Refining toward a decision with county, city, and community feedback.",
+   acts:"Iterate & refine options on feedback · produce the final Concept Development Package",
+   finds:["option set","rendering","Concept Development Package"]},
+];
+
 const fsel = {}; FACET_DEFS.forEach(f=>fsel[f.key]=new Set());
 
 function exVals(e,key){ const v=e.facets?e.facets[key]:undefined; if(v==null) return []; return Array.isArray(v)?v:[v]; }
 function facetOptions(key){
   const def=FACET_DEFS.find(f=>f.key===key), seen=new Set();
   EXAMPLES.forEach(e=>exVals(e,key).forEach(v=>seen.add(v)));
-  let vals=[...seen];
-  if(def.values) vals.sort((a,b)=>def.values.indexOf(a)-def.values.indexOf(b)); else vals.sort();
-  return vals;
+  if(def.values){ // show the full defined spine (e.g. every phase), even stages with no examples yet
+    const extra=[...seen].filter(v=>def.values.indexOf(v)<0).sort();
+    return def.values.concat(extra);
+  }
+  return [...seen].sort();
 }
 function exHay(e){
   return [e.title, e.facets&&e.facets.project||"", e.narrative||"", (e.steps||[]).join(" "),
-    exVals(e,"deliverable_type").join(" "), exVals(e,"concept_tags").join(" ")].join(" ").toLowerCase();
+    exVals(e,"deliverable_type").join(" "), exVals(e,"concept_tags").join(" "),
+    exVals(e,"sub_phase").join(" ")].join(" ").toLowerCase();
 }
 function matchesExceptSearch(e,skipKey){
   for(const f of FACET_DEFS){
@@ -1125,11 +1278,14 @@ function matchesExceptSearch(e,skipKey){
 }
 function filterExamples(){
   const q=qEl.value.trim().toLowerCase();
-  return EXAMPLES.filter(e=> matchesExceptSearch(e,null) && (!q || exHay(e).includes(q)));
+  return EXAMPLES.filter(e=> matchesExceptSearch(e,null)
+    && (!subSel || exVals(e,"sub_phase").includes(subSel))
+    && (!q || exHay(e).includes(q)));
 }
 function optionCount(key,val){
   const q=qEl.value.trim().toLowerCase();
-  return EXAMPLES.filter(e=> matchesExceptSearch(e,key) && exVals(e,key).includes(val) && (!q||exHay(e).includes(q))).length;
+  return EXAMPLES.filter(e=> matchesExceptSearch(e,key) && exVals(e,key).includes(val)
+    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && (!q||exHay(e).includes(q))).length;
 }
 
 /* ---- generated SVG thumbnails (self-contained, no external assets) ---- */
@@ -1156,8 +1312,8 @@ function thumbHTML(e){
   return genThumbSVG(e);
 }
 
-/* ---- library render ---- */
-const libView=document.getElementById("libView");
+/* ---- Find render ---- */
+const findView=document.getElementById("findView");
 const compassView=document.getElementById("compassView");
 const fbar=document.getElementById("fbar");
 const activeChips=document.getElementById("activeChips");
@@ -1165,10 +1321,36 @@ const libGrid=document.getElementById("libGrid");
 const libEmpty=document.getElementById("libEmpty");
 const libCount=document.getElementById("libCount");
 let openFacet=null;
+const subRail=document.getElementById("subRail");
+let subSel=null;
+
+/* phase is filtered via chips (not the dropdown bar) */
+const BAR_FACETS=FACET_DEFS.filter(f=>f.key!=="phase");
+const phaseChipsEl=document.getElementById("phaseChips");
+function phaseCount(p){
+  const q=qEl.value.trim().toLowerCase();
+  return EXAMPLES.filter(e=> exVals(e,"phase").includes(p) && matchesExceptSearch(e,"phase")
+    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && (!q||exHay(e).includes(q))).length;
+}
+function buildPhaseChips(){
+  phaseChipsEl.innerHTML=PHASE_ORDER.map(p=>
+    `<button class="pchip" type="button" aria-pressed="false" data-p="${esc(p)}"><span class="pl">${esc(p)}</span><span class="pct"></span></button>`).join("");
+  phaseChipsEl.querySelectorAll(".pchip").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.p; fsel.phase.has(p)?fsel.phase.delete(p):fsel.phase.add(p); renderLibrary();
+  });
+}
+function renderPhaseChips(){
+  phaseChipsEl.querySelectorAll(".pchip").forEach(b=>{
+    const p=b.dataset.p, on=fsel.phase.has(p), ct=phaseCount(p);
+    b.setAttribute("aria-pressed", String(on));
+    b.setAttribute("data-zero", (ct===0&&!on)?"1":"0");
+    b.querySelector(".pct").textContent=ct;
+  });
+}
 
 /* --- dropdown filter bar (built once) --- */
 function buildBar(){
-  fbar.innerHTML = FACET_DEFS.map(def=>
+  fbar.innerHTML = BAR_FACETS.map(def=>
     `<div class="fgroup" data-f="${def.key}">
       <button class="fbtn" type="button" aria-haspopup="true" aria-expanded="false" data-f="${def.key}">
         <span>${esc(def.label)}</span><span class="ct">0</span><span class="chev">▾</span>
@@ -1179,7 +1361,7 @@ function buildBar(){
 }
 function grpEl(key){ return fbar.querySelector('.fgroup[data-f="'+key+'"]'); }
 function updateBarCounts(){
-  FACET_DEFS.forEach(def=>{
+  BAR_FACETS.forEach(def=>{
     const g=grpEl(def.key); if(!g) return;
     const n=fsel[def.key].size;
     g.querySelector(".fbtn").classList.toggle("has",n>0);
@@ -1198,7 +1380,7 @@ function renderMenu(key){
     e.stopPropagation();
     const v=b.dataset.v;
     fsel[key].has(v)?fsel[key].delete(v):fsel[key].add(v);
-    renderGrid(); renderChips(); updateBarCounts(); renderMenu(key);
+    renderLibrary();
   }));
 }
 function toggleMenu(key){
@@ -1214,17 +1396,19 @@ function closeMenus(){
 /* --- active-filter chips --- */
 function renderChips(){
   const parts=[];
-  FACET_DEFS.forEach(def=> fsel[def.key].forEach(v=>
+  if(subSel){ const d=SUB_PHASES.find(s=>s.label===subSel);
+    parts.push(`<button class="achip" type="button" data-sub="1" aria-label="Remove stage filter">${esc(d.short)} <span class="x" aria-hidden="true">✕</span></button>`); }
+  BAR_FACETS.forEach(def=> fsel[def.key].forEach(v=>
     parts.push(`<button class="achip" type="button" data-f="${esc(def.key)}" data-v="${esc(v)}" aria-label="Remove filter ${esc(v)}">${esc(v)} <span class="x" aria-hidden="true">✕</span></button>`)));
   if(parts.length) parts.push(`<button class="achip clear" id="chipClear" type="button">Clear all</button>`);
   activeChips.innerHTML=parts.join("");
+  const sb=activeChips.querySelector('.achip[data-sub]'); if(sb) sb.onclick=()=>{ subSel=null; renderLibrary(); };
   activeChips.querySelectorAll(".achip[data-f]").forEach(b=>b.onclick=()=>{
-    fsel[b.dataset.f].delete(b.dataset.v);
-    renderGrid(); renderChips(); updateBarCounts(); if(openFacet) renderMenu(openFacet);
+    fsel[b.dataset.f].delete(b.dataset.v); renderLibrary();
   });
   const cc=document.getElementById("chipClear"); if(cc) cc.onclick=clearAllFilters;
 }
-function clearAllFilters(){ qEl.value=""; FACET_DEFS.forEach(f=>fsel[f.key].clear()); closeMenus(); renderLibrary(); }
+function clearAllFilters(){ qEl.value=""; subSel=null; FACET_DEFS.forEach(f=>fsel[f.key].clear()); closeMenus(); renderLibrary(); }
 
 /* --- visual grid --- */
 function renderGrid(){
@@ -1246,7 +1430,7 @@ function renderGrid(){
     const card=document.createElement("button");
     card.type="button"; card.className="card vcard"+(concept?" concept":"");
     card.style.setProperty("--cat-color",concept?"var(--accent)":"var(--accent-2)");
-    card.onclick=()=>openExample(e.id);
+    card.onclick=()=>goUnderstand(e.id);
     const chips=[e.facets.deliverable_type,e.facets.phase].filter(Boolean);
     card.innerHTML=`<span class="thumb">${concept?'<span class="badge">Concept</span>':''}${thumbHTML(e)}</span>`+
       `<span class="vbody"><span class="vproj">${esc(e.facets.project||"")}</span>`+
@@ -1256,63 +1440,159 @@ function renderGrid(){
   });
 }
 
-function renderLibrary(){
-  if(!fbar.dataset.built){ buildBar(); fbar.dataset.built="1"; }
-  updateBarCounts(); renderChips(); renderGrid(); if(openFacet) renderMenu(openFacet);
+/* --- Concept Development sub-phase orientation rail --- */
+function subVisible(){ return fsel.phase.size===0 || fsel.phase.has("Concept Development"); }
+function reconcileSubSel(){ if(subSel && !subVisible()) subSel=null; }
+function subCount(label){
+  const q=qEl.value.trim().toLowerCase();
+  return EXAMPLES.filter(e=> exVals(e,"sub_phase").includes(label) && matchesExceptSearch(e,null) && (!q||exHay(e).includes(q))).length;
+}
+function renderSubRail(){
+  if(!subVisible()){ subRail.hidden=true; subRail.innerHTML=""; return; }
+  subRail.hidden=false;
+  const nodes=SUB_PHASES.map((s,i)=>{
+    const on=subSel===s.label, ct=subCount(s.label);
+    return `<button class="sr-step" type="button" role="tab" aria-selected="${on}" data-i="${i}">`+
+      `<span class="node">${i+1}</span>`+
+      `<span class="slabel">${esc(s.short)}<span class="sr-ct">${ct}</span></span></button>`;
+  }).join("");
+  let orient;
+  if(subSel){
+    const d=SUB_PHASES.find(s=>s.label===subSel);
+    orient=`<div class="sr-pname">${esc(d.label)}</div>`+
+      `<div class="sr-for">${esc(d.forr)}</div>`+
+      `<div class="sr-acts"><span class="dim">Typical activities — </span>${esc(d.acts)}</div>`+
+      `<div class="sr-finds">${d.finds.map(f=>`<span>${esc(f)}</span>`).join("")}</div>`;
+  } else {
+    orient=`<div class="sr-hint">Pick the stage you're in to see what it's for and what you'll find there — you can enter at any stage, and the work loops back as often as it moves forward.</div>`;
+  }
+  subRail.innerHTML=`<div class="sr-top"><span class="sr-kick">Concept Development · where are you in the work?</span></div>`+
+    `<div class="sr-rail" role="tablist">${nodes}</div>`+
+    `<div class="sr-orient">${orient}</div>`;
+  subRail.querySelectorAll(".sr-step").forEach(b=>b.onclick=()=>{
+    const lab=SUB_PHASES[+b.dataset.i].label;
+    subSel=(subSel===lab)?null:lab;
+    renderLibrary();
+  });
 }
 
-/* ---- full detail view (shareable via #/example/:id) ---- */
-const detail=document.getElementById("detail");
-let detailReturn=null;
+function renderLibrary(){
+  if(!fbar.dataset.built){ buildBar(); fbar.dataset.built="1"; }
+  reconcileSubSel();
+  renderPhaseChips(); updateBarCounts(); renderSubRail(); renderChips(); renderGrid(); if(openFacet) renderMenu(openFacet);
+}
+
+/* ---- Understand & Make: the example views (the loop, shareable via hash) ---- */
+const understandView=document.getElementById("understandView");
+const makeView=document.getElementById("makeView");
+let currentEx=null;
 function sideLinks(title,arr){
   return `<div class="sidebox"><h4>${esc(title)}</h4><div class="res">${
     arr.map(r=>`<a href="${r.href}"><span class="ic">${r.ic}</span><span><span class="rt">${esc(r.t)}</span>${r.k?`<br><span class="rk">${esc(r.k)}</span>`:""}</span><span class="dl">Open →</span></a>`).join("")}</div></div>`;
 }
-function showDetail(id){
-  const e=EX_BY_ID[id]; if(!e) return;
-  if(!detail.hidden && detail.dataset.id===id) return;
-  if(detail.hidden) detailReturn=document.activeElement;
-  detail.dataset.id=id;
-  detail.style.setProperty("--cat-color","var(--accent-2)");
+function exMetaChips(e){
   const f=e.facets||{};
-  const chips=[f.phase,f.deliverable_type,f.process_type,...exVals(e,"concept_tags")].filter(Boolean);
-  detail.innerHTML=`<div class="wrap">
-    <div class="dbar"><button class="back" id="detailBack" type="button">← Back to library</button></div>
-    <div class="dhero">${thumbHTML(e)}</div>
-    <div class="dproj">${esc(f.project||"")}</div>
-    <h1 class="dtitle" id="detailTitle" tabindex="-1">${esc(e.title)}</h1>
-    <div class="dmeta" style="margin-top:14px">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</div>
-    <div class="layout">
-      <div>
-        <section class="blk narrative"><h4>The why — what was done &amp; the thinking</h4>${
+  return [f.phase, f.sub_phase, f.deliverable_type, f.process_type, ...exVals(e,"concept_tags")].filter(Boolean);
+}
+function relatedExamples(e){
+  return EXAMPLES.filter(o=>o.id!==e.id).map(o=>{
+    let score=0; const f=o.facets||{}, ef=e.facets||{};
+    if(f.deliverable_type && f.deliverable_type===ef.deliverable_type) score+=2;
+    if(f.sub_phase && f.sub_phase===ef.sub_phase) score+=1;
+    exVals(o,"concept_tags").forEach(t=>{ if(exVals(e,"concept_tags").includes(t)) score+=1; });
+    return {o,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.o);
+}
+function relCard(o){
+  const f=o.facets||{};
+  return `<button class="card vcard" type="button" data-go="${o.id}" style="--cat-color:var(--accent-2)">`+
+    `<span class="thumb">${thumbHTML(o)}</span>`+
+    `<span class="vbody"><span class="vproj">${esc(f.project||"")}</span><h3>${esc(o.title)}</h3>`+
+    `<span class="vchips">${[f.deliverable_type].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join("")}</span></span></button>`;
+}
+function renderUnderstand(){
+  const e = currentEx && EX_BY_ID[currentEx];
+  if(!e){
+    understandView.innerHTML=`<div class="exempty">Pick something in <button class="linklike" type="button" id="uToFind">Find</button> to see the thinking and how it was made.</div>`;
+    const b=understandView.querySelector("#uToFind"); if(b) b.onclick=goFind;
+    return;
+  }
+  const f=e.facets||{}, rel=relatedExamples(e);
+  understandView.innerHTML=`
+    <div class="exback"><button class="back" id="uBack" type="button">← Back to Find</button></div>
+    <div class="exhero">${thumbHTML(e)}</div>
+    <div class="exproj">${esc(f.project||"")}</div>
+    <h1 class="extitle" id="uTitle" tabindex="-1">${esc(e.title)}</h1>
+    <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<span>${esc(c)}</span>`).join("")}</div>
+    <div class="exlayout">
+      <div class="narr">
+        <section class="blk"><h4>The why — what was done &amp; the thinking</h4>${
           (e.narrative||"").split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>
         ${(e.steps&&e.steps.length)?`<section class="blk"><h4>How it was made</h4><ol class="steps">${
           e.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></section>`:""}
       </div>
-      <aside class="side">
-        ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
-        ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
+      <aside class="exside">
         ${(e.nominated_by||e.ask_me)?`<div class="sidebox"><h4>The breadcrumb</h4>${
           e.nominated_by?`<div class="who-line">Nominated by <b>${esc(e.nominated_by)}</b></div>`:""}${
           e.ask_me?`<div class="who-line">Worth asking: <b>${esc(e.ask_me)}</b></div>`:""}</div>`:""}
+        <button class="btn-primary exgetbtn" id="uMake" type="button">Get the templates →</button>
       </aside>
     </div>
-  </div>`;
-  detail.hidden=false; document.body.classList.add("locked"); detail.scrollTop=0;
-  document.getElementById("detailBack").onclick=closeDetail;
-  const t=document.getElementById("detailTitle"); if(t) t.focus();
+    ${rel.length?`<div class="band">How we've approached this elsewhere</div>
+      <div class="grid grid--visual related-grid">${rel.map(relCard).join("")}</div>`:""}`;
+  understandView.querySelector("#uBack").onclick=goFind;
+  understandView.querySelector("#uMake").onclick=()=>goMake(e.id);
+  understandView.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>goUnderstand(b.dataset.go));
+  const t=understandView.querySelector("#uTitle"); if(t) t.focus();
 }
-function hideDetail(){ if(!detail.hidden){ detail.hidden=true; document.body.classList.remove("locked"); } }
-function openExample(id){ location.hash="#/example/"+encodeURIComponent(id); }
-function closeDetail(){
-  hideDetail();
-  if(/^#\/example\//.test(location.hash)) location.hash="";
-  if(detailReturn && detailReturn.focus) detailReturn.focus();
+function renderMake(){
+  const e = currentEx && EX_BY_ID[currentEx];
+  if(!e){
+    makeView.innerHTML=`<div class="exempty">Open an example in <button class="linklike" type="button" id="mToFind">Find</button> first — Make gives you its templates and source files.</div>`;
+    const b=makeView.querySelector("#mToFind"); if(b) b.onclick=goFind;
+    return;
+  }
+  const f=e.facets||{};
+  makeView.innerHTML=`
+    <div class="exback"><button class="back" id="mBack" type="button">← Back to understanding</button></div>
+    <div class="exproj">${esc(f.project||"")}</div>
+    <h1 class="extitle" id="mTitle" tabindex="-1">Adapt the precedent</h1>
+    <p class="make-intro">From <b>${esc(e.title)}</b> — here's what was used and how it was made. Yours will differ; bend it to your project and community.</p>
+    <div class="make-body">
+      ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
+      ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
+    </div>
+    <div class="make-loop">↻ Made something from this? <button class="linklike" type="button" id="mNominate">Nominate it</button> — and it becomes the next person's Find.</div>`;
+  makeView.querySelector("#mBack").onclick=()=>goUnderstand(e.id);
+  const nb=makeView.querySelector("#mNominate"); if(nb) nb.onclick=openNominate;
+  const t=makeView.querySelector("#mTitle"); if(t) t.focus();
 }
+
+/* ---- pillar view switching (hash-routed for shareable links) ---- */
+function setPillars(v){
+  [["pillFind","find"],["pillUnderstand","understand"],["pillMake","make"]].forEach(([id,name])=>
+    document.getElementById(id).setAttribute("aria-selected", String(v===name)));
+}
+function applyView(v){
+  findView.hidden = v!=="find";
+  understandView.hidden = v!=="understand";
+  makeView.hidden = v!=="make";
+  setPillars(v);
+  if(v==="find") renderLibrary();
+  else if(v==="understand") renderUnderstand();
+  else renderMake();
+  window.scrollTo(0,0);
+}
+function goFind(){ if(location.hash) location.hash=""; else applyView("find"); }
+function goUnderstand(id){ if(id) currentEx=id; location.hash = currentEx?("#/understand/"+encodeURIComponent(currentEx)):"#/understand"; }
+function goMake(id){ if(id) currentEx=id; location.hash = currentEx?("#/make/"+encodeURIComponent(currentEx)):"#/make"; }
 function route(){
-  const m=location.hash.match(/^#\/example\/(.+)$/);
-  if(m && EX_BY_ID[decodeURIComponent(m[1])]){ if(mode!=="library") setMode("library"); showDetail(decodeURIComponent(m[1])); }
-  else hideDetail();
+  const h=location.hash; let m;
+  if((m=h.match(/^#\/understand\/(.+)$/)) && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("understand"); }
+  else if(h==="#/understand"){ applyView("understand"); }
+  else if((m=h.match(/^#\/make\/(.+)$/)) && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("make"); }
+  else if(h==="#/make"){ applyView("make"); }
+  else applyView("find");
 }
 window.addEventListener("hashchange",route);
 
@@ -1320,7 +1600,7 @@ window.addEventListener("hashchange",route);
 const nominate=document.getElementById("nominate");
 let nomReturn=null;
 function openNominate(){ nomReturn=document.activeElement; nominate.classList.add("show"); document.body.classList.add("locked"); document.getElementById("nomTitle").focus(); }
-function closeNominate(){ nominate.classList.remove("show"); if(!detail.hidden){} else document.body.classList.remove("locked"); if(nomReturn&&nomReturn.focus) nomReturn.focus(); }
+function closeNominate(){ nominate.classList.remove("show"); document.body.classList.remove("locked"); if(nomReturn&&nomReturn.focus) nomReturn.focus(); }
 function gv(id){ return document.getElementById(id).value.trim(); }
 function submitNomination(){
   const required=["nomTitle","nomThumb","nomDeliv","nomNarr"];
@@ -1366,36 +1646,24 @@ document.getElementById("nomCancel").onclick=closeNominate;
 document.getElementById("nomSubmit").onclick=submitNomination;
 nominate.onclick=e=>{ if(e.target===nominate) closeNominate(); };
 
-/* ---- mode switching ---- */
-let mode="compass";
-function setMode(m){
-  mode=m;
-  document.getElementById("modeCompass").setAttribute("aria-selected", String(m==="compass"));
-  document.getElementById("modeLibrary").setAttribute("aria-selected", String(m==="library"));
-  compassView.hidden = m!=="compass";
-  libView.hidden = m!=="library";
-  filtersEl.style.display = m==="compass" ? "" : "none";
-  qEl.placeholder = m==="library"
-    ? "Search examples — title, the story, the steps…"
-    : "Search the compass — e.g. “massing”, “community visuals”, “who is not in the room?”";
-  if(m==="library") renderLibrary(); else render();
-}
-document.getElementById("modeCompass").onclick=()=>{ if(/^#\/example\//.test(location.hash)) location.hash=""; setMode("compass"); };
-document.getElementById("modeLibrary").onclick=()=>setMode("library");
+/* ---- pillar nav ---- */
+document.getElementById("pillFind").onclick=goFind;
+document.getElementById("pillUnderstand").onclick=()=>goUnderstand();
+document.getElementById("pillMake").onclick=()=>goMake();
 
-/* ---- shared search + escape, init ---- */
-qEl.addEventListener("input", ()=> mode==="library" ? renderLibrary() : render());
+/* ---- search + escape + init ---- */
+qEl.addEventListener("input", renderLibrary);
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    if(nominate.classList.contains("show")){ closeNominate(); return; }
-    if(!detail.hidden){ closeDetail(); return; }
-    if(openFacet){ closeMenus(); return; }
-  }
+  if(e.key!=="Escape") return;
+  if(nominate.classList.contains("show")){ closeNominate(); return; }
+  if(openFacet){ closeMenus(); return; }
+  if(!understandView.hidden || !makeView.hidden){ goFind(); }
 });
 // click outside an open filter dropdown closes it
 document.addEventListener("click",e=>{ if(openFacet && !e.target.closest(".fgroup")) closeMenus(); });
-render();
-route();
+buildPhaseChips();
+render();   // populate the parked Method Compass (hidden) so it's ready if re-enabled
+route();    // initial view from the URL hash (defaults to Find)
 </script>
 </body>
 </html>
