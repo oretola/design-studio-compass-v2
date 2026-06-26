@@ -208,7 +208,9 @@
   .seg-btn[aria-selected="false"]:hover{color:var(--ink)}
 
   /* Library top bar */
-  .lib-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin:2px 2px 14px}
+  .lib-top{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap;margin:20px 2px 14px;
+    padding-top:18px;border-top:1px solid var(--line)}
+  .refine-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
   .btn-primary{appearance:none;cursor:pointer;font:inherit;font-size:14px;font-weight:700;color:#0e1116;
     background:var(--accent);border:0;border-radius:10px;padding:11px 16px;flex:0 0 auto}
   .btn-primary:hover{filter:brightness(1.07)}
@@ -254,11 +256,18 @@
 
   /* Visual cards */
   .grid--visual{grid-template-columns:repeat(auto-fill,minmax(258px,1fr))}
+  .phase-section{margin:0 0 8px}
+  .gridhead{position:sticky;top:0;z-index:5;margin:0 0 12px;padding:12px 2px 10px;background:var(--bg);
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;
+    display:flex;align-items:center;gap:10px}
+  .gridhead::after{content:"";flex:1;height:1px;background:var(--line)}
   .vcard{padding:0;overflow:hidden;gap:0}
   .vcard .thumb{aspect-ratio:16/10;width:100%;display:block;position:relative;overflow:hidden;background:var(--panel-2)}
   .vcard .thumb img,.vcard .thumb svg{width:100%;height:100%;object-fit:cover;display:block}
-  .vcard .badge{position:absolute;top:9px;left:9px;font-size:10px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:#0e1116;background:var(--accent);padding:3px 8px;border-radius:6px}
+  .vcard .badge{position:absolute;top:9px;left:9px;font-size:11px;font-weight:600;letter-spacing:.02em;
+    color:var(--accent);background:rgba(14,17,22,.82);border:1px solid rgba(232,163,61,.4);
+    padding:4px 9px;border-radius:7px;white-space:nowrap;max-width:calc(100% - 18px);overflow:hidden;text-overflow:ellipsis}
+  .vcard .badge.ph{color:var(--faint);border-color:var(--line)}
   .vcard .vbody{padding:14px 15px 16px;display:flex;flex-direction:column;gap:8px}
   .vcard .vproj{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
   .vcard h3{margin:0;font-size:15.5px;line-height:1.28}
@@ -390,7 +399,6 @@
   .pchip[aria-pressed="true"] .pct{color:#0e1116;opacity:.65}
   .pchip[data-zero="1"]{opacity:.4}
   .find-phase + .subrail{margin-top:16px}
-  .subrail + .lib-top{margin-top:16px}
 
   /* ===================== UNDERSTAND / MAKE VIEWS ===================== */
   .exback{margin:18px 0 4px}
@@ -455,21 +463,19 @@
     </div>
     <div id="subRail" class="subrail" hidden></div>
     <div class="lib-top">
-      <div class="fbar" id="fbar" role="group" aria-label="Refine"></div>
+      <span class="refine-label">Refine within results</span>
+      <div class="fbar" id="fbar" role="group" aria-label="Refine within results"></div>
     </div>
     <div class="lib-status">
       <div class="count" id="libCount" role="status" aria-live="polite"></div>
       <div class="chips-active" id="activeChips"></div>
     </div>
-    <div class="grid grid--visual" id="libGrid"></div>
+    <div id="libGrid"></div>
     <div class="empty" id="libEmpty" hidden></div>
   </div>
 
-  <!-- UNDERSTAND -->
+  <!-- UNDERSTAND (the detail page — why, how, templates, who, all on one page) -->
   <div id="understandView" class="wrap" hidden></div>
-
-  <!-- MAKE -->
-  <div id="makeView" class="wrap" hidden></div>
 
   <!-- PARKED: Method Compass (kept in code, out of the main nav for now) -->
   <div id="compassView" class="wrap" hidden>
@@ -1456,28 +1462,37 @@ function renderGrid(){
     const c=document.getElementById("libClear"); if(c) c.onclick=clearAllFilters;
     return;
   }
+  let curPhase=null, sectionGrid=null;
   list.forEach(e=>{
     const f=e.facets||{};
+    if(f.phase!==curPhase){
+      curPhase=f.phase;
+      const section=document.createElement("section"); section.className="phase-section";
+      const head=document.createElement("h3"); head.className="gridhead"; head.textContent=curPhase;
+      const sg=document.createElement("div"); sg.className="grid grid--visual";
+      section.appendChild(head); section.appendChild(sg);
+      libGrid.appendChild(section); sectionGrid=sg;
+    }
     if(e.placeholder){
       const card=document.createElement("div");
       card.className="card vcard placeholder";
-      card.innerHTML=`<span class="thumb">${thumbHTML(e)}</span>`+
-        `<span class="vbody"><span class="vtag-ph">Placeholder</span>`+
-        `<h3>${esc(e.title)}</h3>`+
-        `<span class="vchips">${[f.phase].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join("")}</span></span>`;
-      libGrid.appendChild(card);
+      card.innerHTML=`<span class="thumb"><span class="badge ph">${esc(e.title)}</span>${thumbHTML(e)}</span>`+
+        `<span class="vbody"><span class="vtag-ph">Placeholder · not yet documented</span></span>`;
+      sectionGrid.appendChild(card);
       return;
     }
     const card=document.createElement("button");
     card.type="button"; card.className="card vcard";
     card.style.setProperty("--cat-color","var(--accent-2)");
     card.onclick=()=>goUnderstand(e.id);
-    const chips=[f.deliverable_type,f.phase].filter(Boolean);
-    card.innerHTML=`<span class="thumb">${thumbHTML(e)}</span>`+
+    const deliv=f.deliverable_type||"";
+    const badge=deliv?`<span class="badge">${esc(deliv.charAt(0).toUpperCase()+deliv.slice(1))}</span>`:"";
+    const chips=[f.process_type].filter(Boolean);
+    card.innerHTML=`<span class="thumb">${badge}${thumbHTML(e)}</span>`+
       `<span class="vbody"><span class="vproj">${esc(f.project||"")}</span>`+
       `<h3>${hl(e.title,q)}</h3>`+
       `<span class="vchips">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</span></span>`;
-    libGrid.appendChild(card);
+    sectionGrid.appendChild(card);
   });
 }
 
@@ -1534,7 +1549,6 @@ function renderLibrary(){
 
 /* ---- Understand & Make: the example views (the loop, shareable via hash) ---- */
 const understandView=document.getElementById("understandView");
-const makeView=document.getElementById("makeView");
 let currentEx=null;
 function sideLinks(title,arr){
   return `<div class="sidebox"><h4>${esc(title)}</h4><div class="res">${
@@ -1582,59 +1596,33 @@ function renderUnderstand(){
           e.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></section>`:""}
       </div>
       <aside class="exside">
+        ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
+        ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
         ${(e.nominated_by||e.ask_me)?`<div class="sidebox"><h4>The breadcrumb</h4>${
           e.nominated_by?`<div class="who-line">Nominated by <b>${esc(e.nominated_by)}</b></div>`:""}${
           e.ask_me?`<div class="who-line">Worth asking: <b>${esc(e.ask_me)}</b></div>`:""}</div>`:""}
-        <button class="btn-primary exgetbtn" id="uMake" type="button">Get the templates →</button>
       </aside>
     </div>
     ${rel.length?`<div class="band">How we've approached this elsewhere</div>
       <div class="grid grid--visual related-grid">${rel.map(relCard).join("")}</div>`:""}`;
   understandView.querySelector("#uBack").onclick=goFind;
-  understandView.querySelector("#uMake").onclick=()=>goMake(e.id);
   understandView.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>goUnderstand(b.dataset.go));
   const t=understandView.querySelector("#uTitle"); if(t) t.focus();
 }
-function renderMake(){
-  const e = currentEx && EX_BY_ID[currentEx];
-  if(!e){
-    makeView.innerHTML=`<div class="exempty">Open an example in <button class="linklike" type="button" id="mToFind">Find</button> first — Make gives you its templates and source files.</div>`;
-    const b=makeView.querySelector("#mToFind"); if(b) b.onclick=goFind;
-    return;
-  }
-  const f=e.facets||{};
-  makeView.innerHTML=`
-    <div class="exback"><button class="back" id="mBack" type="button">← Back to understanding</button></div>
-    <div class="exproj">${esc(f.project||"")}</div>
-    <h1 class="extitle" id="mTitle" tabindex="-1">Adapt the precedent</h1>
-    <p class="make-intro">From <b>${esc(e.title)}</b> — here's what was used and how it was made. Yours will differ; bend it to your project and community.</p>
-    <div class="make-body">
-      ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
-      ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
-    </div>`;
-  makeView.querySelector("#mBack").onclick=()=>goUnderstand(e.id);
-  const t=makeView.querySelector("#mTitle"); if(t) t.focus();
-}
-
 /* ---- view switching (hash-routed for shareable links) ---- */
 function applyView(v){
-  findView.hidden = v!=="find";
-  understandView.hidden = v!=="understand";
-  makeView.hidden = v!=="make";
-  if(v==="find") renderLibrary();
-  else if(v==="understand") renderUnderstand();
-  else renderMake();
+  const understand = v==="understand";
+  findView.hidden = understand;
+  understandView.hidden = !understand;
+  if(understand) renderUnderstand(); else renderLibrary();
   window.scrollTo(0,0);
 }
 function goFind(){ if(location.hash) location.hash=""; else applyView("find"); }
 function goUnderstand(id){ if(id) currentEx=id; location.hash = currentEx?("#/understand/"+encodeURIComponent(currentEx)):"#/understand"; }
-function goMake(id){ if(id) currentEx=id; location.hash = currentEx?("#/make/"+encodeURIComponent(currentEx)):"#/make"; }
 function route(){
-  const h=location.hash; let m;
-  if((m=h.match(/^#\/understand\/(.+)$/)) && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("understand"); }
-  else if(h==="#/understand"){ applyView("understand"); }
-  else if((m=h.match(/^#\/make\/(.+)$/)) && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("make"); }
-  else if(h==="#/make"){ applyView("make"); }
+  const m=location.hash.match(/^#\/understand\/(.+)$/);
+  if(m && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("understand"); }
+  else if(location.hash==="#/understand"){ applyView("understand"); }
   else applyView("find");
 }
 window.addEventListener("hashchange",route);
@@ -1694,7 +1682,7 @@ document.addEventListener("keydown",e=>{
   if(e.key!=="Escape") return;
   if(nominate.classList.contains("show")){ closeNominate(); return; }
   if(openFacet){ closeMenus(); return; }
-  if(!understandView.hidden || !makeView.hidden){ goFind(); }
+  if(!understandView.hidden){ goFind(); }
 });
 // click outside an open filter dropdown closes it
 document.addEventListener("click",e=>{ if(openFacet && !e.target.closest(".fgroup")) closeMenus(); });
