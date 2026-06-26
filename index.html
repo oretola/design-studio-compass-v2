@@ -386,7 +386,7 @@
   .pchip[aria-pressed="true"] .pct{color:#0e1116;opacity:.65}
   .pchip[data-zero="1"]{opacity:.4}
   .find-phase + .subrail{margin-top:16px}
-  .find-phase + .lib-top{margin-top:18px}
+  .subrail + .lib-top{margin-top:16px}
 
   /* ===================== UNDERSTAND / MAKE VIEWS ===================== */
   .exback{margin:18px 0 4px}
@@ -436,32 +436,6 @@
   </div>
 </header>
 
-<div class="pillars-wrap">
-  <div class="wrap">
-    <div class="pillars" role="tablist" aria-label="Find, understand, make">
-      <button id="pillFind" class="pillar" role="tab" aria-selected="true" type="button">
-        <span class="ptop"><span class="pnum">1</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
-        <span class="plab">Find</span><span class="psub">Recall or discover</span>
-      </button>
-      <button id="pillUnderstand" class="pillar" role="tab" aria-selected="false" type="button">
-        <span class="ptop"><span class="pnum">2</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.8 10.6c.5.4.8 1 .8 1.6v.3h6v-.3c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/></svg></span>
-        <span class="plab">Understand</span><span class="psub">The why, how &amp; who</span>
-      </button>
-      <button id="pillMake" class="pillar" role="tab" aria-selected="false" type="button">
-        <span class="ptop"><span class="pnum">3</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20l4.5-1L18 9.5 14.5 6 5 15.5 4 20z"/><path d="M13 7l4 4"/></svg></span>
-        <span class="plab">Make</span><span class="psub">Adapt the precedent</span>
-      </button>
-    </div>
-    <div class="loopnote">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v6h-6"/></svg>
-      The loop — what gets made becomes the next person's Find.
-    </div>
-  </div>
-</div>
-
 <main>
   <!-- FIND -->
   <div id="findView" class="wrap">
@@ -478,7 +452,6 @@
     <div id="subRail" class="subrail" hidden></div>
     <div class="lib-top">
       <div class="fbar" id="fbar" role="group" aria-label="Refine"></div>
-      <button id="nominateBtn" class="btn-primary" type="button">+ Nominate an example</button>
     </div>
     <div class="lib-status">
       <div class="count" id="libCount" role="status" aria-live="polite"></div>
@@ -1232,24 +1205,64 @@ const FACET_DEFS = [
   {key:"concept_tags",     label:"Concept focus"},
   {key:"project",          label:"Project"},
 ];
-const SUB_PHASES = [
-  {short:"Predesign", label:"Predesign — Due diligence & data collection",
-   forr:"Understanding the ground before you design — site, code, community, and program.",
-   acts:"Zoning & code research · precedent research · community asset mapping · engagement prep · program & goals",
-   finds:["zoning analysis","precedent study","asset map","engagement plan","program brief"]},
-  {short:"Ideation", label:"Ideation, visioning & analysis",
-   forr:"Exploring what the site and community could become.",
-   acts:"Site-planning & landscape strategies · preliminary zoning · sustainability · creative engagement · program refinement",
-   finds:["site plan","massing diagram","landscape strategy","engagement output"]},
-  {short:"Integration", label:"Integration & concept design",
-   forr:"Pulling the strands into a viable concept — technical, financial, and organizational.",
-   acts:"Technical & site strategies · preliminary financial assessment · capacity alignment · engagement story reporting",
-   finds:["concept design","adjacency map","feasibility / finance"]},
-  {short:"Final concept", label:"Final concept design — Iteration & finalization",
-   forr:"Refining toward a decision with county, city, and community feedback.",
-   acts:"Iterate & refine options on feedback · produce the final Concept Development Package",
-   finds:["option set","rendering","Concept Development Package"]},
-];
+const SUB_PHASES_BY_PHASE = {
+  "Concept Development":[
+    {short:"Predesign", label:"Predesign — Due diligence & data collection",
+     forr:"Understanding the ground before you design — site, code, community, and program.",
+     acts:"Zoning & code research · precedent research · community asset mapping · engagement prep · program & goals",
+     finds:["zoning analysis","precedent study","asset map","engagement plan","program brief"]},
+    {short:"Ideation", label:"Ideation, visioning & analysis",
+     forr:"Exploring what the site and community could become.",
+     acts:"Site-planning & landscape strategies · preliminary zoning · sustainability · creative engagement · program refinement",
+     finds:["site plan","massing diagram","landscape strategy","engagement output"]},
+    {short:"Integration", label:"Integration & concept design",
+     forr:"Pulling the strands into a viable concept — technical, financial, and organizational.",
+     acts:"Technical & site strategies · preliminary financial assessment · capacity alignment · engagement story reporting",
+     finds:["concept design","adjacency map","feasibility / finance"]},
+    {short:"Final concept", label:"Final concept design — Iteration & finalization",
+     forr:"Refining toward a decision with county, city, and community feedback.",
+     acts:"Iterate & refine options on feedback · produce the final Concept Development Package",
+     finds:["option set","rendering","Concept Development Package"]},
+  ],
+  /* Placeholders — sub-phases for the later phases, to be defined with the team. */
+  "Schematic Design":[
+    {short:"Plan development", label:"Plan development"},
+    {short:"Systems coordination", label:"Systems coordination"},
+    {short:"Schematic review", label:"Schematic review"},
+  ],
+  "Planning Approvals & Entitlements":[
+    {short:"Submittal prep", label:"Submittal prep"},
+    {short:"Agency review", label:"Agency review"},
+    {short:"Public hearings", label:"Public hearings"},
+  ],
+  "Design Development":[
+    {short:"Detailed design", label:"Detailed design"},
+    {short:"Engineering coordination", label:"Engineering coordination"},
+    {short:"Outline specs", label:"Outline specs"},
+  ],
+  "Construction Documentation":[
+    {short:"Drawing sets", label:"Drawing sets"},
+    {short:"Specifications", label:"Specifications"},
+    {short:"QA & coordination", label:"QA & coordination"},
+  ],
+  "Building Permit / Bidding":[
+    {short:"Permit submittal", label:"Permit submittal"},
+    {short:"Bid package", label:"Bid package"},
+    {short:"Contractor selection", label:"Contractor selection"},
+  ],
+  "Construction Administration":[
+    {short:"Submittals & RFIs", label:"Submittals & RFIs"},
+    {short:"Site observation", label:"Site observation"},
+    {short:"Punch list & closeout", label:"Punch list & closeout"},
+  ],
+  "FF&E":[
+    {short:"Selection", label:"Selection"},
+    {short:"Procurement", label:"Procurement"},
+    {short:"Install & styling", label:"Install & styling"},
+  ],
+};
+const SUB_PHASE_BY_LABEL={};
+Object.values(SUB_PHASES_BY_PHASE).forEach(arr=>arr.forEach(s=>{SUB_PHASE_BY_LABEL[s.label]=s;}));
 
 const fsel = {}; FACET_DEFS.forEach(f=>fsel[f.key]=new Set());
 
@@ -1336,7 +1349,8 @@ function buildPhaseChips(){
   phaseChipsEl.innerHTML=PHASE_ORDER.map(p=>
     `<button class="pchip" type="button" aria-pressed="false" data-p="${esc(p)}"><span class="pl">${esc(p)}</span><span class="pct"></span></button>`).join("");
   phaseChipsEl.querySelectorAll(".pchip").forEach(b=>b.onclick=()=>{
-    const p=b.dataset.p; fsel.phase.has(p)?fsel.phase.delete(p):fsel.phase.add(p); renderLibrary();
+    const p=b.dataset.p, was=fsel.phase.has(p);
+    fsel.phase.clear(); if(!was) fsel.phase.add(p); subSel=null; renderLibrary();
   });
 }
 function renderPhaseChips(){
@@ -1396,8 +1410,8 @@ function closeMenus(){
 /* --- active-filter chips --- */
 function renderChips(){
   const parts=[];
-  if(subSel){ const d=SUB_PHASES.find(s=>s.label===subSel);
-    parts.push(`<button class="achip" type="button" data-sub="1" aria-label="Remove stage filter">${esc(d.short)} <span class="x" aria-hidden="true">✕</span></button>`); }
+  if(subSel){ const d=SUB_PHASE_BY_LABEL[subSel];
+    parts.push(`<button class="achip" type="button" data-sub="1" aria-label="Remove stage filter">${esc(d?d.short:subSel)} <span class="x" aria-hidden="true">✕</span></button>`); }
   BAR_FACETS.forEach(def=> fsel[def.key].forEach(v=>
     parts.push(`<button class="achip" type="button" data-f="${esc(def.key)}" data-v="${esc(v)}" aria-label="Remove filter ${esc(v)}">${esc(v)} <span class="x" aria-hidden="true">✕</span></button>`)));
   if(parts.length) parts.push(`<button class="achip clear" id="chipClear" type="button">Clear all</button>`);
@@ -1440,37 +1454,46 @@ function renderGrid(){
   });
 }
 
-/* --- Concept Development sub-phase orientation rail --- */
-function subVisible(){ return fsel.phase.size===0 || fsel.phase.has("Concept Development"); }
-function reconcileSubSel(){ if(subSel && !subVisible()) subSel=null; }
+/* --- per-phase sub-phase orientation rail (driven by the selected phase) --- */
+function selectedPhase(){ return fsel.phase.size===1 ? [...fsel.phase][0] : null; }
+function currentSubPhases(){ const p=selectedPhase(); return p ? (SUB_PHASES_BY_PHASE[p]||[]) : []; }
+function subVisible(){ return currentSubPhases().length>0; }
+function reconcileSubSel(){ const subs=currentSubPhases(); if(subSel && !subs.some(s=>s.label===subSel)) subSel=null; }
 function subCount(label){
   const q=qEl.value.trim().toLowerCase();
   return EXAMPLES.filter(e=> exVals(e,"sub_phase").includes(label) && matchesExceptSearch(e,null) && (!q||exHay(e).includes(q))).length;
 }
 function renderSubRail(){
-  if(!subVisible()){ subRail.hidden=true; subRail.innerHTML=""; return; }
+  const subs=currentSubPhases();
+  if(!subs.length){ subRail.hidden=true; subRail.innerHTML=""; return; }
   subRail.hidden=false;
-  const nodes=SUB_PHASES.map((s,i)=>{
+  const phase=selectedPhase();
+  const nodes=subs.map((s,i)=>{
     const on=subSel===s.label, ct=subCount(s.label);
     return `<button class="sr-step" type="button" role="tab" aria-selected="${on}" data-i="${i}">`+
       `<span class="node">${i+1}</span>`+
-      `<span class="slabel">${esc(s.short)}<span class="sr-ct">${ct}</span></span></button>`;
+      `<span class="slabel">${esc(s.short)}<span class="sr-ct">${ct||""}</span></span></button>`;
   }).join("");
   let orient;
   if(subSel){
-    const d=SUB_PHASES.find(s=>s.label===subSel);
-    orient=`<div class="sr-pname">${esc(d.label)}</div>`+
-      `<div class="sr-for">${esc(d.forr)}</div>`+
-      `<div class="sr-acts"><span class="dim">Typical activities — </span>${esc(d.acts)}</div>`+
-      `<div class="sr-finds">${d.finds.map(f=>`<span>${esc(f)}</span>`).join("")}</div>`;
+    const d=subs.find(s=>s.label===subSel);
+    if(d && d.forr){
+      orient=`<div class="sr-pname">${esc(d.label)}</div>`+
+        `<div class="sr-for">${esc(d.forr)}</div>`+
+        `<div class="sr-acts"><span class="dim">Typical activities — </span>${esc(d.acts)}</div>`+
+        `<div class="sr-finds">${(d.finds||[]).map(f=>`<span>${esc(f)}</span>`).join("")}</div>`;
+    } else {
+      orient=`<div class="sr-pname">${esc(d?d.label:subSel)}</div>`+
+        `<div class="sr-hint">Placeholder stage — the thinking and deliverables for this stage haven't been defined yet.</div>`;
+    }
   } else {
-    orient=`<div class="sr-hint">Pick the stage you're in to see what it's for and what you'll find there — you can enter at any stage, and the work loops back as often as it moves forward.</div>`;
+    orient=`<div class="sr-hint">Where in ${esc(phase)} are you? Pick a stage to see what it's for and what you'll find there.</div>`;
   }
-  subRail.innerHTML=`<div class="sr-top"><span class="sr-kick">Concept Development · where are you in the work?</span></div>`+
+  subRail.innerHTML=`<div class="sr-top"><span class="sr-kick">${esc(phase)} · where are you in the work?</span></div>`+
     `<div class="sr-rail" role="tablist">${nodes}</div>`+
     `<div class="sr-orient">${orient}</div>`;
   subRail.querySelectorAll(".sr-step").forEach(b=>b.onclick=()=>{
-    const lab=SUB_PHASES[+b.dataset.i].label;
+    const lab=subs[+b.dataset.i].label;
     subSel=(subSel===lab)?null:lab;
     renderLibrary();
   });
@@ -1561,23 +1584,16 @@ function renderMake(){
     <div class="make-body">
       ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
       ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
-    </div>
-    <div class="make-loop">↻ Made something from this? <button class="linklike" type="button" id="mNominate">Nominate it</button> — and it becomes the next person's Find.</div>`;
+    </div>`;
   makeView.querySelector("#mBack").onclick=()=>goUnderstand(e.id);
-  const nb=makeView.querySelector("#mNominate"); if(nb) nb.onclick=openNominate;
   const t=makeView.querySelector("#mTitle"); if(t) t.focus();
 }
 
-/* ---- pillar view switching (hash-routed for shareable links) ---- */
-function setPillars(v){
-  [["pillFind","find"],["pillUnderstand","understand"],["pillMake","make"]].forEach(([id,name])=>
-    document.getElementById(id).setAttribute("aria-selected", String(v===name)));
-}
+/* ---- view switching (hash-routed for shareable links) ---- */
 function applyView(v){
   findView.hidden = v!=="find";
   understandView.hidden = v!=="understand";
   makeView.hidden = v!=="make";
-  setPillars(v);
   if(v==="find") renderLibrary();
   else if(v==="understand") renderUnderstand();
   else renderMake();
@@ -1641,15 +1657,9 @@ WORTH ASKING: ${gv("nomAsk")}
   window.location.href=mailto("Example nomination: "+gv("nomTitle"), body);
   closeNominate();
 }
-document.getElementById("nominateBtn").onclick=openNominate;
 document.getElementById("nomCancel").onclick=closeNominate;
 document.getElementById("nomSubmit").onclick=submitNomination;
 nominate.onclick=e=>{ if(e.target===nominate) closeNominate(); };
-
-/* ---- pillar nav ---- */
-document.getElementById("pillFind").onclick=goFind;
-document.getElementById("pillUnderstand").onclick=()=>goUnderstand();
-document.getElementById("pillMake").onclick=()=>goMake();
 
 /* ---- search + escape + init ---- */
 qEl.addEventListener("input", renderLibrary);
