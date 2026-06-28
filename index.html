@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Design Studio Compass · DJDS</title>
 <meta name="description" content="DJDS's informed-concept method (principles, precedents, templates, checklist, questions) plus a curated, visual library of best-example design work — at the moment you need them." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&display=swap">
+<script>
+  /* set theme before first paint to avoid a flash */
+  (function(){try{var k='dsc-theme',s=localStorage.getItem(k);
+    var sysLight=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;
+    document.documentElement.setAttribute('data-theme', s||(sysLight?'light':'dark'));
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
 <style>
   :root{
     --bg:#0e1116;
@@ -19,6 +29,18 @@
     --radius:14px;
     --maxw:1080px;
     font-synthesis-weight:none;
+  }
+  /* Light theme — darker accents chosen for ≥4.5:1 text contrast on the light bg */
+  html[data-theme="light"]{
+    --bg:#f4f5f1;
+    --panel:#ffffff;
+    --panel-2:#eceee8;
+    --line:#d6dbd0;
+    --ink:#1b2228;
+    --muted:#4f5a63;
+    --faint:#5d6973;
+    --accent:#bd7a16;
+    --accent-2:#2f7d75;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -37,11 +59,25 @@
 
   /* Header */
   header{padding:46px 0 18px}
-  .brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-  .mark{flex:0 0 auto}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:18px;cursor:pointer;border-radius:10px}
+  .brand:focus-visible{outline:2px solid var(--accent-2);outline-offset:4px}
+  .mark{flex:0 0 auto;transform-origin:50% 50%}
+  .mark.spin{animation:spin-north .85s cubic-bezier(.22,.8,.18,1)}
+  @keyframes spin-north{0%{transform:rotate(0)}72%{transform:rotate(374deg)}100%{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.mark.spin{animation:none}}
   .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:600}
   h1{font-size:clamp(28px,4.5vw,44px);line-height:1.08;margin:.18em 0 0;letter-spacing:-.02em}
+  /* Display font (Unbounded) on the marquee + structural titles */
+  h1,.extitle,.detail .dtitle,.gridhead,.vcard h3{font-family:"Unbounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  h1{font-weight:800}
+  /* Theme toggle */
+  .theme-toggle{position:fixed;top:14px;right:16px;z-index:60;width:40px;height:40px;border-radius:11px;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:17px;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .theme-toggle:hover{border-color:var(--accent-2)}
+  .theme-toggle:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
   .lede{color:var(--muted);max-width:62ch;margin:14px 0 0;font-size:clamp(15px,2vw,17px)}
+  .lede b{color:var(--accent-2);font-weight:700}
 
   /* Search + controls */
   .controls{position:sticky;top:0;z-index:20;padding:18px 0 14px;margin-top:26px;
@@ -163,6 +199,7 @@
   section.blk > h4{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--cat-color,var(--accent));margin:0 0 12px;font-weight:700}
   section.blk > h4::after{content:"";flex:1;height:1px;background:var(--line)}
+  section.blk > h4 .loopstep{color:var(--accent-2);font-weight:800}
   section.blk p{margin:0;color:var(--muted);font-size:15px;line-height:1.6;max-width:66ch}
   ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
   ol.steps li{counter-increment:s;position:relative;padding:0 0 16px 40px;color:var(--muted);font-size:14.5px}
@@ -255,7 +292,20 @@
   .achip.clear:hover{text-decoration:underline}
 
   /* Visual cards */
-  .grid--visual{grid-template-columns:repeat(auto-fill,minmax(258px,1fr))}
+  .grid--visual{grid-template-columns:repeat(auto-fill,minmax(280px,340px));gap:18px;justify-content:start}
+  /* Dribbble-style: clean image-forward card, hover lift + image zoom, attributed author */
+  .vcard::before{display:none}
+  .vcard{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .vcard:hover{transform:translateY(-3px);border-color:var(--accent-2);box-shadow:0 12px 30px rgba(15,23,32,.20)}
+  .vcard .thumb img,.vcard .thumb svg{transition:transform .4s ease}
+  .vcard:hover .thumb img,.vcard:hover .thumb svg{transform:scale(1.045)}
+  .vcard .vfoot{margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .vauthor{display:flex;align-items:center;gap:7px;min-width:0;font-size:12.5px;color:var(--muted);font-weight:600}
+  .vauthor .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vauthor .avatar{flex:0 0 auto;width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#10141a}
+  .vauthor--empty{color:var(--faint)}
+  .vauthor--empty .avatar{background:transparent;border:1px dashed var(--line);color:var(--faint);font-weight:600}
+  .vcard .vfoot .vchips{margin:0;flex:0 0 auto}
   .phase-section{margin:0 0 8px}
   .gridhead{position:sticky;top:0;z-index:5;margin:0 0 12px;padding:12px 2px 10px;background:var(--bg);
     font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;
@@ -329,6 +379,7 @@
   .sidebox h4{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:0 0 10px;font-weight:700}
   .who-line{font-size:13.5px;color:var(--muted);margin-bottom:5px}
   .who-line b{color:var(--ink)}
+  .who-sub{font-size:11.5px;color:var(--faint);margin-top:4px}
 
   /* Nominate modal */
   .modal{position:fixed;inset:0;z-index:80;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;background:rgba(5,8,12,.62)}
@@ -429,7 +480,8 @@
 <body>
 <header>
   <div class="wrap">
-    <div class="brand">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme">☀️</button>
+    <div class="brand" id="brandHome" role="button" tabindex="0" aria-label="Back to the Compass home">
       <svg class="mark" width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
         <circle cx="19" cy="19" r="17" stroke="#e8a33d" stroke-width="2"/>
         <path d="M19 7 L23 19 L19 31 L15 19 Z" fill="#5db0a8"/>
@@ -442,8 +494,8 @@
       </div>
     </div>
     <p class="lede">
-      Find how we've approached a piece of work, understand the thinking and the people behind it,
-      then get the templates to make your own — at the moment you're actually doing the work.
+      <b>Find</b> what you need → <b>Understand</b> how it was made → <b>Make</b> it yourself.
+      A living reference for how the studio develops an informed concept — right when you're doing the work.
     </p>
   </div>
 </header>
@@ -590,6 +642,7 @@
   </div>
 </div>
 
+<script src="content.js"></script>
 <script>
 /* ----------------------------------------------------------------------------
    PLACEHOLDER CONTENT — invented for the demo. Not real DJDS projects or clients.
@@ -1021,189 +1074,7 @@ document.getElementById("footContribute").href =
    EXAMPLE LIBRARY — curated "breadcrumb" tier. Real DJDS project names (public),
    invented process content for the demo. Separate collection from the compass.
 ============================================================================ */
-const EXAMPLES = [
-  {
-    id:"center-equity-massing",
-    title:"Carving Openness from a Former Jail",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Center-for-Equity.jpg",
-    facets:{project:"Center for Equity · Atlanta, GA", phase:"Concept Development",
-      sub_phase:"Ideation, visioning & analysis",
-      deliverable_type:"massing diagram", process_type:"site analysis",
-      concept_tags:["community/cultural research","feasibility/finance"]},
-    narrative:"A jail is built to compress and control. The concept question was whether the existing structure could be made to do the opposite — and how to show that to a community that only knew the building as a place of harm.\n\nWe worked subtractively: instead of adding, we studied what to remove. Three massing studies each cut the slab differently — a central light well, a street-facing breezeway, a stepped roof terrace — to test how much openness the structure could trade its mass for, and what each cut cost in usable floor area.",
-    steps:[
-      "Document the existing structure honestly — including the parts that read as carceral.",
-      "Separate removable mass from the structural cores that must stay.",
-      "Cut three openness strategies, each prioritizing a different gain (light, street life, gathering).",
-      "Quantify the floor-area cost of each cut against the program.",
-      "Render 'before vs. after' so the community sees harm becoming openness.",
-    ],
-    resources:[
-      {label:"Subtractive massing study — template", link:"#"},
-      {label:"Adaptive-reuse floor-area tracker", link:"#"},
-    ],
-    source_links:[{label:"Center for Equity — massing studies", drive_url:"#"}],
-    nominated_by:"Theo Banks", ask_me:"Priya Nair",
-  },
-  {
-    id:"rj-hq-adjacency",
-    title:"Adjacency Map for Survivor Safety",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_RJ-HQ.jpg",
-    facets:{project:"Restorative Justice HQ · New York, NY", phase:"Concept Development",
-      sub_phase:"Integration & concept design",
-      deliverable_type:"adjacency map", process_type:"design charrette",
-      concept_tags:["engagement method","community/cultural research"]},
-    narrative:"For a space serving survivors of violence, adjacency is safety. Who can see whom, which rooms share a wall, where you can leave without passing the person you're avoiding — these decide whether a space feels safe before any finish is chosen.\n\nWe built the adjacency map with survivors in a charrette, using movable tiles for each program. The rule we surfaced: every room a survivor uses needs a second way out that isn't past the waiting area. That single finding reshaped the plan.",
-    steps:[
-      "Put every program space on a movable tile.",
-      "With survivors, place tiles by who needs to be near — and far from — whom.",
-      "Trace each person's path and check for forced encounters.",
-      "Mark required separations and second exits as hard constraints.",
-      "Photograph the final layout as the adjacency brief.",
-    ],
-    resources:[
-      {label:"Adjacency tile kit — template", link:"#"},
-      {label:"Survivor-safety charrette guide", link:"#"},
-    ],
-    source_links:[{label:"RJ HQ — adjacency map & charrette photos", drive_url:"#"}],
-    nominated_by:"Aisha Rahman", ask_me:"Aisha Rahman",
-  },
-  {
-    id:"love-building-engagement",
-    title:"What the Block Already Told Us",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_LOVE-Building.jpg",
-    facets:{project:"The LOVE Building · Detroit, MI", phase:"Concept Development",
-      sub_phase:"Predesign — Due diligence & data collection",
-      deliverable_type:"community engagement report", process_type:"immersive site visit",
-      concept_tags:["community/cultural research","engagement method"]},
-    narrative:"Before any form, the team spent three days on the block — not surveying, just present. The engagement report captured what the neighborhood already did well: where people gathered, which doorways were trusted, what the existing organizations had earned.\n\nIts job was to keep the concept humble. The headline finding — that the corner was already a de facto meeting spot — became the anchor for the building's entrance, instead of inventing a new 'front' that ignored the one the block had chosen.",
-    steps:[
-      "Spend unstructured time on site before collecting any data.",
-      "Map existing patterns of gathering, trust, and avoidance.",
-      "Interview the organizations already rooted there.",
-      "Synthesize into a short 'what's already working' report.",
-      "Carry one anchoring finding straight into the concept.",
-    ],
-    resources:[
-      {label:"Immersive site-visit field guide", link:"#"},
-      {label:"Engagement report — template", link:"#"},
-    ],
-    source_links:[{label:"LOVE Building — engagement report", drive_url:"#"}],
-    nominated_by:"Marcus Webb", ask_me:"Marcus Webb",
-  },
-  {
-    id:"peacemaking-renderings",
-    title:"Renderings the Community Recognized",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Near-Westside-Peacemaking-Project.jpg",
-    facets:{project:"Near Westside Peacemaking Center · Syracuse, NY", phase:"Concept Development",
-      sub_phase:"Final concept design — Iteration & finalization",
-      deliverable_type:"rendering", process_type:"design charrette",
-      concept_tags:["community/cultural research"]},
-    narrative:"Peacemaking traditions are specific. A generic 'community room' rendering would have rung false. The team rendered the peacemaking circle using the actual materials, light, and seating geometry the community named — warm wood, daylight from above, a true circle with no head of the table.\n\nThe renderings worked because they were recognizably theirs. At review, an elder pointed at the screen and said 'that's where we'd sit' — the moment a concept stops being the architect's and becomes the community's.",
-    steps:[
-      "Ask the community to describe the space in their own sensory terms.",
-      "Pull the real materials and references they named, not a stock palette.",
-      "Render the key ritual space at eye level, not as a hero shot.",
-      "Keep the fidelity warm and in-progress, not photoreal.",
-      "Present and listen for recognition, not approval.",
-    ],
-    resources:[
-      {label:"Sketch-fidelity render settings", link:"#"},
-      {label:"Material-reference gathering worksheet", link:"#"},
-    ],
-    source_links:[{label:"Peacemaking Center — concept renderings", drive_url:"#"}],
-    nominated_by:"Nina Velez", ask_me:"Lena Ortiz",
-  },
-  {
-    id:"safe-healing-massing",
-    title:"Three Massings for a Youth Sanctuary",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_A-New-Way-of-Life.jpg",
-    facets:{project:"Safe Healing Center · Los Angeles, CA", phase:"Concept Development",
-      sub_phase:"Ideation, visioning & analysis",
-      deliverable_type:"massing diagram", process_type:"design charrette",
-      concept_tags:["community/cultural research","feasibility/finance"]},
-    narrative:"Housing for young people leaving crisis has to feel like sanctuary, not surveillance. The three massings each answered 'how do you keep youth safe without making them feel watched?' differently — a protected courtyard, a stepped terrace of semi-private decks, and a dispersed cottage cluster.\n\nThe charrette with youth advocates killed the option staff first preferred (the easiest to supervise) because it read as institutional from the inside. The breadcrumb: 'safe' and 'feels safe' are different briefs, and only the second is the design's job.",
-    steps:[
-      "Frame the question as safety vs. the feeling of safety.",
-      "Build three massings that resolve it differently.",
-      "Test each with youth advocates from the inside view.",
-      "Surface where supervision logic fights sanctuary.",
-      "Keep the option that feels safe, then solve supervision within it.",
-    ],
-    resources:[
-      {label:"Massing Strategy Deck — template", link:"#"},
-      {label:"Youth-advocate review protocol", link:"#"},
-    ],
-    source_links:[{label:"Safe Healing Center — massing options", drive_url:"#"}],
-    nominated_by:"Sam Okafor", ask_me:"Sam Okafor",
-  },
-  {
-    id:"community-works-adjacency",
-    title:"Keeping Two Populations Apart, Under One Roof",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Community-Works.jpg",
-    facets:{project:"Community Works · San Francisco, CA", phase:"Concept Development",
-      sub_phase:"Integration & concept design",
-      deliverable_type:"adjacency map", process_type:"design charrette",
-      concept_tags:["engagement method"]},
-    narrative:"One roof, two groups who shouldn't share a waiting room: youth programs and survivor services. The adjacency map had to let them coexist without ever colliding — separate entrances, separate circulation, shared back-of-house.\n\nThe concept move was a single staff-only spine down the middle that workers cross but visitors never do. The map made that legible to a client who had assumed 'one building' meant 'one front door.'",
-    steps:[
-      "Define the two visitor groups and what must never overlap.",
-      "Separate entrances and circulation on the adjacency map.",
-      "Find the shared back-of-house that makes one building efficient.",
-      "Draw the staff-only spine that connects without exposing.",
-      "Validate with both program teams before plan development.",
-    ],
-    resources:[
-      {label:"Adjacency tile kit — template", link:"#"},
-      {label:"Dual-population circulation checklist", link:"#"},
-    ],
-    source_links:[{label:"Community Works — adjacency studies", drive_url:"#"}],
-    nominated_by:"Aisha Rahman", ask_me:"Deanna Cole",
-  },
-  {
-    id:"crenshaw-zoning",
-    title:"Zoning Envelope vs. Affordable Units",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Crenshaw.jpg",
-    facets:{project:"4345 Crenshaw · Los Angeles, CA", phase:"Concept Development",
-      sub_phase:"Integration & concept design",
-      deliverable_type:"zoning analysis", process_type:"coding & analysis"},
-    narrative:"Feasibility is where good intentions meet the zoning code. The analysis tested how many affordable units the site could hold under the allowable envelope before light and open-space rules pushed back.\n\nThe useful breadcrumb is the trade-off curve: past a certain count, every added unit started stealing daylight from the units below. We brought that curve to the client so 'maximize units' became an informed choice with a visible cost, not a default.",
-    steps:[
-      "Model the allowable zoning envelope precisely.",
-      "Stack the maximum unit count, then test light and open space.",
-      "Plot units vs. daylight as a trade-off curve.",
-      "Find the inflection point where quality drops.",
-      "Bring the curve, not just a number, to the client.",
-    ],
-    resources:[
-      {label:"Zoning envelope model — template", link:"#"},
-      {label:"Units vs. daylight trade-off tool", link:"#"},
-    ],
-    source_links:[{label:"4345 Crenshaw — zoning analysis", drive_url:"#"}],
-    nominated_by:"Theo Banks", ask_me:"Priya Nair",
-  },
-  {
-    id:"gulf-coast-rendering",
-    title:"Pressure-Testing a Shared Workshop Floor",
-    thumbnail:"https://designingjustice.org/wp-content/uploads/Main-Page_Thumbnail_Port-of-Africatown.jpg",
-    facets:{project:"Gulf Coast Innovation Center · Mobile, AL", phase:"Schematic Design",
-      deliverable_type:"rendering", process_type:"site analysis"},
-    narrative:"By schematic design the big moves are set; the rendering's job is to pressure-test them at human scale. This view of the shared workshop floor checked whether the daylight, the sightlines to the mentor desks, and the noise zoning held up once you imagined people actually working there.\n\nIt caught a problem: the loudest fabrication bay sat next to the quietest co-working tables. The rendering made an abstract acoustic note suddenly obvious, and the floor was rezoned before documentation began.",
-    steps:[
-      "Render the key shared space at eye level once big moves are set.",
-      "Populate it with realistic activity, not empty architecture.",
-      "Check daylight, sightlines, and noise adjacencies against intent.",
-      "Flag the conflicts the plan view hid.",
-      "Revise zoning before construction documents start.",
-    ],
-    resources:[
-      {label:"Schematic rendering checklist", link:"#"},
-      {label:"Acoustic zoning quick-guide", link:"#"},
-    ],
-    source_links:[{label:"Gulf Coast Innovation Center — schematic renderings", drive_url:"#"}],
-    nominated_by:"Nina Velez", ask_me:"Marcus Webb",
-  },
-];
+/* EXAMPLES live in content.js (loaded before this script). */
 /* Placeholder tiles for the later phases — visual fillers until real
    deliverables/processes are documented. They carry only a phase + a label,
    render muted and non-clickable, and stay out of the refine dropdowns. */
@@ -1330,6 +1201,8 @@ function optionCount(key,val){
 /* ---- generated SVG thumbnails (self-contained, no external assets) ---- */
 const THUMB_COLORS=["#5db0a8","#e8a33d","#a78bfa","#6ea8fe","#f0746e","#7fb069"];
 function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function initials(name){return (name||"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase()||"?";}
+function avatarColor(name){return THUMB_COLORS[hashStr(name||"x")%THUMB_COLORS.length];}
 function genThumbSVG(e){
   const c=THUMB_COLORS[hashStr((e.facets&&e.facets.project)||e.title)%THUMB_COLORS.length];
   const t=e.facets&&e.facets.deliverable_type;
@@ -1340,6 +1213,7 @@ function genThumbSVG(e){
     case "rendering": g=`<rect x="0" y="124" width="320" height="76" fill="${c}" opacity=".18"/><circle cx="246" cy="66" r="26" fill="${c}" opacity=".85"/><path d="M0 132 L120 78 L214 132 Z" fill="${c}" opacity=".5"/>`;break;
     case "zoning analysis": g=`<rect x="48" y="50" width="92" height="100" fill="${c}" opacity=".7"/><rect x="140" y="50" width="72" height="58" fill="#e8a33d" opacity=".55"/><rect x="140" y="108" width="72" height="42" fill="#6ea8fe" opacity=".5"/><rect x="212" y="50" width="60" height="100" fill="#a78bfa" opacity=".5"/>`;break;
     case "community engagement report": g=`<g fill="${c}"><rect x="68" y="66" width="124" height="34" rx="11" opacity=".82"/><rect x="118" y="112" width="124" height="34" rx="11" opacity=".5"/></g>`;break;
+    case "Concept Development Package": g=`<g><rect x="56" y="128" width="208" height="34" fill="${c}" opacity=".85"/><rect x="56" y="90" width="208" height="34" fill="#e8a33d" opacity=".6"/><rect x="56" y="52" width="208" height="34" fill="#6ea8fe" opacity=".5"/></g>`;break;
     default: g=`<circle cx="160" cy="100" r="48" fill="${c}" opacity=".6"/>`;
   }
   return `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(t||'example')} thumbnail"><rect width="320" height="200" fill="#11161d"/>${g}</svg>`;
@@ -1488,10 +1362,14 @@ function renderGrid(){
     const deliv=f.deliverable_type||"";
     const badge=deliv?`<span class="badge">${esc(deliv.charAt(0).toUpperCase()+deliv.slice(1))}</span>`:"";
     const chips=[f.process_type].filter(Boolean);
+    const projName=(f.project||"").split("·")[0].trim();
+    const author=e.ask_me
+      ? `<span class="vauthor"><span class="avatar" style="background:${avatarColor(e.ask_me)}">${esc(initials(e.ask_me))}</span><span class="nm">${esc(e.ask_me)}</span></span>`
+      : `<span class="vauthor vauthor--empty"><span class="avatar">+</span><span class="nm">Add who to ask</span></span>`;
     card.innerHTML=`<span class="thumb">${badge}${thumbHTML(e)}</span>`+
-      `<span class="vbody"><span class="vproj">${esc(f.project||"")}</span>`+
+      `<span class="vbody"><span class="vproj">${esc(projName)}</span>`+
       `<h3>${hl(e.title,q)}</h3>`+
-      `<span class="vchips">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</span></span>`;
+      `<span class="vfoot">${author}<span class="vchips">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</span></span></span>`;
     sectionGrid.appendChild(card);
   });
 }
@@ -1590,17 +1468,15 @@ function renderUnderstand(){
     <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<span>${esc(c)}</span>`).join("")}</div>
     <div class="exlayout">
       <div class="narr">
-        <section class="blk"><h4>The why — what was done &amp; the thinking</h4>${
+        <section class="blk"><h4><span class="loopstep">Understand</span> What this is &amp; why</h4>${
           (e.narrative||"").split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>
-        ${(e.steps&&e.steps.length)?`<section class="blk"><h4>How it was made</h4><ol class="steps">${
+        ${(e.steps&&e.steps.length)?`<section class="blk"><h4><span class="loopstep">Make</span> How to make it</h4><ol class="steps">${
           e.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></section>`:""}
       </div>
       <aside class="exside">
         ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
         ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
-        ${(e.nominated_by||e.ask_me)?`<div class="sidebox"><h4>The breadcrumb</h4>${
-          e.nominated_by?`<div class="who-line">Nominated by <b>${esc(e.nominated_by)}</b></div>`:""}${
-          e.ask_me?`<div class="who-line">Worth asking: <b>${esc(e.ask_me)}</b></div>`:""}</div>`:""}
+        ${e.ask_me?`<div class="sidebox"><h4>Who to ask</h4><div class="who-line"><b>${esc(e.ask_me)}</b></div><div class="who-sub">Worked on this — or can help you make one</div></div>`:""}
       </aside>
     </div>
     ${rel.length?`<div class="band">How we've approached this elsewhere</div>
@@ -1618,6 +1494,30 @@ function applyView(v){
   window.scrollTo(0,0);
 }
 function goFind(){ if(location.hash) location.hash=""; else applyView("find"); }
+/* Header compass: click/Enter returns home and spins the needle back to north */
+(function(){
+  const brandHome=document.getElementById("brandHome");
+  if(!brandHome) return;
+  const go=()=>{
+    const m=brandHome.querySelector(".mark");
+    if(m){ m.classList.remove("spin"); void m.offsetWidth; m.classList.add("spin");
+      m.addEventListener("animationend",()=>m.classList.remove("spin"),{once:true}); }
+    goFind();
+  };
+  brandHome.addEventListener("click",go);
+  brandHome.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+})();
+/* Dark / light theme toggle (initial theme already set in <head>) */
+(function(){
+  var root=document.documentElement, KEY="dsc-theme", btn=document.getElementById("themeToggle");
+  function sync(){var t=root.getAttribute("data-theme"); if(btn){ btn.textContent=t==="light"?"🌙":"☀️";
+    btn.setAttribute("aria-label", t==="light"?"Switch to dark mode":"Switch to light mode"); }}
+  sync();
+  if(btn) btn.addEventListener("click",function(){
+    var next=root.getAttribute("data-theme")==="light"?"dark":"light";
+    root.setAttribute("data-theme",next); try{localStorage.setItem(KEY,next);}catch(e){} sync();
+  });
+})();
 function goUnderstand(id){ if(id) currentEx=id; location.hash = currentEx?("#/understand/"+encodeURIComponent(currentEx)):"#/understand"; }
 function route(){
   const m=location.hash.match(/^#\/understand\/(.+)$/);
