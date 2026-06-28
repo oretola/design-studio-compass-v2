@@ -124,12 +124,10 @@
   .mark-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .topbar .search{flex:1 1 auto;min-width:0}
   /* compass-language intro on Find */
-  .find-intro{display:flex;flex-direction:column;gap:8px;margin:26px 0 4px}
-  .find-intro .blurb{font-size:clamp(15px,1.8vw,18px);line-height:1.5;color:var(--muted);max-width:66ch;font-weight:500;margin:0}
-  .find-intro .blurb b{color:var(--ink);font-weight:700}
-  .find-intro .flow{display:inline-flex;gap:9px;align-items:center;flex-wrap:wrap}
-  .find-intro .flow span{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--ink)}
-  .find-intro .flow .arr{font-family:var(--font-mono);color:var(--accent)}
+  /* big hero — Find page only (the detail/expanded view shows just the slim top bar) */
+  .find-hero{margin:36px 0 0}
+  .find-hero .eyebrow{display:block;margin-bottom:14px}
+  .find-hero-rule{margin:40px 0 0}
   /* breadcrumb on the detail view — tracks back to the main filters */
   .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:22px 0 2px;font-family:var(--font-mono);
     font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
@@ -587,11 +585,15 @@
 <main>
   <!-- FIND -->
   <div id="findView" class="wrap">
-    <div class="find-intro">
-      <p class="blurb"><b>A living map of how the studio develops an informed concept.</b>
-        <span class="flow"><span>Find</span><span class="arr">→</span><span>Understand</span><span class="arr">→</span><span>Make</span></span>
-        — open it right when you're doing the work.</p>
+    <div class="find-hero">
+      <span class="eyebrow">DJDS · Designing Justice + Designing Spaces</span>
+      <h1>Design Studio Compass</h1>
+      <p class="lede">
+        <span class="flow"><span>Find</span><span class="arr">→</span><span>Understand</span><span class="arr">→</span><span>Make</span></span><br>
+        A living map of how the studio develops an informed concept — open it right when you're doing the work.
+      </p>
     </div>
+    <hr class="rule find-hero-rule">
     <div class="find-phase">
       <span class="flabel">Filter by phase</span>
       <div class="phasechips" id="phaseChips" role="group" aria-label="Filter by phase"></div>
