@@ -244,6 +244,8 @@
     text-transform:uppercase;color:var(--cat-color,var(--accent));margin:0 0 12px;font-weight:700}
   section.blk > h4::after{content:"";flex:1;height:1px;background:var(--line)}
   section.blk > h4 .loopstep{color:var(--accent-2);font-weight:800}
+  section.blk > h4 .blksub{text-transform:none;color:var(--muted);font-weight:500;letter-spacing:.01em}
+  section.blk > h4 .blksub::before{content:"·";color:var(--faint);margin:0 9px 0 1px;font-weight:700}
   section.blk p{margin:0;color:var(--muted);font-size:15px;line-height:1.6;max-width:66ch}
   ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
   ol.steps li{counter-increment:s;position:relative;padding:0 0 16px 40px;color:var(--muted);font-size:14.5px}
@@ -1191,14 +1193,15 @@ Object.entries(PH_SPEC).forEach(([phase,labels])=>labels.forEach((lab,i)=>{
 }));
 
 const EX_BY_ID = Object.fromEntries(EXAMPLES.map(e=>[e.id,e]));
+/* unified "type" facet = the tile's primary nature (deliverable OR process) */
+EXAMPLES.forEach(e=>{ if(e.facets){ const t=e.facets.deliverable_type||e.facets.process_type; if(t) e.facets.type=t; } });
 
 /* ---- facets ---- */
 const PHASE_ORDER = ["Concept Development","Schematic Design","Planning Approvals & Entitlements","Design Development","Construction Documentation","Building Permit / Bidding","Construction Administration","FF&E"];
 const FACET_DEFS = [
-  {key:"phase",            label:"Phase",         values:PHASE_ORDER},
-  {key:"project",          label:"Project"},
-  {key:"deliverable_type", label:"Deliverable"},
-  {key:"process_type",     label:"Process"},
+  {key:"phase",   label:"Phase",   values:PHASE_ORDER},
+  {key:"project", label:"Project"},
+  {key:"type",    label:"Type"},
 ];
 const SUB_PHASES_BY_PHASE = {
   "Concept Development":[
@@ -1486,18 +1489,7 @@ function renderGrid(){
     /* one "type" badge per tile = its primary nature (deliverable OR process);
        the other, if any, becomes the small chip */
     const primary=deliv||f.process_type||"";
-    if(curPhase==="Concept Development" && !featuredDone){
-      featuredDone=true;
-      const art=document.createElement("button"); art.type="button"; art.className="feature";
-      art.style.setProperty("--c",phaseVar(f.phase)); art.onclick=()=>goUnderstand(e.id);
-      art.innerHTML=`<span class="thumb">${primary?`<span class="fbadge">${esc(cap(primary))}</span>`:""}${thumbHTML(e)}</span>`+
-        `<span class="fbody">${projName?`<span class="fproj">${esc(projName)}</span>`:""}`+
-        `<h3>${hl(e.title,q)}</h3>`+
-        `<p class="fwhy">${esc(firstSentence(e.narrative))}</p>`+
-        `<span class="ffoot">${authorHTML(e)}</span></span>`;
-      body.appendChild(art);
-      return;
-    }
+    /* uniform grid: every documented tile is the same card; emphasis comes from order, not size */
     if(!cardGrid){ cardGrid=document.createElement("div"); cardGrid.className="grid grid--visual"; body.appendChild(cardGrid); }
     const card=document.createElement("button"); card.type="button"; card.className="card vcard";
     card.style.setProperty("--c",phaseVar(f.phase)); card.onclick=()=>goUnderstand(e.id);
@@ -1608,9 +1600,9 @@ function renderUnderstand(){
     <h1 class="extitle" id="uTitle" tabindex="-1">${esc(e.title)}</h1>
     <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<span>${esc(c)}</span>`).join("")}</div>
     <div class="exbody">
-      <section class="blk"><h4><span class="loopstep">Description</span> What this is &amp; why</h4>${
+      <section class="blk"><h4><span class="loopstep">Description</span><span class="blksub">What this is &amp; why</span></h4>${
         (e.narrative||"").split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>
-      ${(e.steps&&e.steps.length)?`<section class="blk"><h4><span class="loopstep">Plan &amp; process</span> How it's made — and what to ask</h4><ol class="steps">${
+      ${(e.steps&&e.steps.length)?`<section class="blk"><h4><span class="loopstep">Plan &amp; process</span><span class="blksub">How it's made — and what to ask</span></h4><ol class="steps">${
         e.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></section>`:""}
       ${(e.resources&&e.resources.length)?sideLinks("Make & build — templates",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
       ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}

@@ -69,6 +69,11 @@ const EXAMPLES = [
     ],
     resources:[
       {label:"How a 3-option massing set is built — worked example (LABWC, pp. 12–22)", link:"file:///C:/Users/tthompson/Desktop/DSC%20Test%20Drive/Project%20Assets/Los%20Angeles%20Black%20Worker%20Center/01%20Concept%20Development/2%20Ideation,%20visioning%20%26%20analysis/260415_LABWC_%20Feasibility%20Study%20Options.pdf"},
+      {label:"SketchUp template", link:"#"},
+      {label:"Illustrator template", link:"#"},
+      {label:"Color palette", link:"#"},
+      {label:"Graphic resources", link:"#"},
+      {label:"Massing diagram slides template", link:"#"},
     ],
     source_links:[{label:"Preliminary Feasibility Studies — the 3 massing options (PDF)", drive_url:"file:///C:/Users/tthompson/Desktop/DSC%20Test%20Drive/Project%20Assets/Los%20Angeles%20Black%20Worker%20Center/01%20Concept%20Development/2%20Ideation,%20visioning%20%26%20analysis/260415_LABWC_%20Feasibility%20Study%20Options.pdf"}],
     // gallery: clickable image sequence on the detail page (caption per step)
