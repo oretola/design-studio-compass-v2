@@ -49,13 +49,13 @@
   }
   /* Light theme — warm white / cream; accents deepened for AA contrast */
   html[data-theme="light"]{
-    --bg:#F5EFE3;
-    --panel:#FFFCF5;
-    --panel-2:#EDE5D5;
-    --line:#E0D6C2;
-    --ink:#221B12;
-    --muted:#6B6051;
-    --faint:#968A78;
+    --bg:#EDE4CF;          /* warmer ecru / tan */
+    --panel:#F8F1DF;       /* warm cream surface */
+    --panel-2:#E3D8BD;
+    --line:#D4C7A6;
+    --ink:#241C10;
+    --muted:#6B5F44;
+    --faint:#94886A;
     --accent:#2E7D75;
     --accent-2:#2E7D75;
     --p1:#D9791F; --p2:#C2591F; --p3:#B0871C; --p4:#6E8A3A;
@@ -91,11 +91,9 @@
   /* display font on the marquee + structural titles */
   h1,.extitle,.detail .dtitle,.gridhead,.vcard h3{font-family:var(--font-display)}
   .lede{color:var(--muted);max-width:56ch;margin:22px 0 0;font-size:var(--t-lede);font-weight:500;line-height:1.5}
-  .lede .flow{display:inline-flex;gap:13px;align-items:flex-start;flex-wrap:wrap}
-  .lede .flow .step{display:inline-flex;flex-direction:column;gap:2px}
-  .lede .flow .step b{font-family:var(--font-display);font-weight:700;font-size:clamp(15px,1.8vw,18px);color:var(--ink);line-height:1.05}
-  .lede .flow .step i{font-family:var(--font-mono);font-style:normal;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
-  .lede .flow .arr{font-family:var(--font-mono);color:var(--faint);font-weight:700;align-self:flex-start;margin-top:3px}
+  .lede .flow{display:inline-flex;gap:11px;align-items:center;flex-wrap:wrap}
+  .lede .flow span{font-family:var(--font-display);font-weight:700;font-size:clamp(15px,1.8vw,18px);color:var(--ink)}
+  .lede .flow .arr{font-family:var(--font-mono);color:var(--accent);font-weight:700}
   /* guide-aligned hairline: lives inside .wrap so it spans the content column, never the viewport */
   .rule{height:1px;background:var(--line);border:0;margin:0}
   .hero-rule{margin-top:42px}
@@ -338,10 +336,10 @@
   .achip.clear:hover{text-decoration:underline}
 
   /* Visual cards */
-  .grid--visual{grid-template-columns:repeat(auto-fill,minmax(280px,340px));gap:18px;justify-content:start}
+  .grid--visual{grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px}
   /* Dribbble-style: clean image-forward card, hover lift + image zoom, attributed author */
   .vcard::before{display:none}
-  .vcard{transition:border-color .14s ease}
+  .vcard{transition:none}
   .vcard:hover{border-color:var(--accent)}
   .vcard .vfoot{margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .vauthor{display:flex;align-items:center;gap:7px;min-width:0;font-size:12.5px;color:var(--muted);font-weight:600}
@@ -363,7 +361,7 @@
   /* Featured card — only the lead Concept Development entry */
   .feature{appearance:none;text-align:left;font:inherit;color:inherit;cursor:pointer;display:grid;
     grid-template-columns:1.15fr .85fr;border:1px solid var(--line);border-radius:var(--radius-lg);
-    overflow:hidden;background:var(--panel);transition:transform .15s ease,border-color .15s ease}
+    overflow:hidden;background:var(--panel);transition:none}
   .feature:hover{border-color:var(--accent)}
   .feature .thumb{position:relative;min-height:300px;background:#15110C;overflow:hidden}
   .feature .thumb svg,.feature .thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -539,6 +537,22 @@
   .exhero{width:100%;aspect-ratio:21/9;max-height:340px;border-radius:var(--radius);overflow:hidden;
     background:var(--panel-2);margin-top:6px}
   .exhero img,.exhero svg{width:100%;height:100%;object-fit:cover;display:block}
+  /* click-through image gallery (detail page) */
+  .gallery{margin-top:6px}
+  .gmain{position:relative;width:100%;aspect-ratio:16/10;max-height:460px;border-radius:var(--radius);overflow:hidden;background:#15110C}
+  .gmain .gimg{width:100%;height:100%;object-fit:cover;display:block}
+  .gnav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.25);background:rgba(20,16,12,.55);color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1}
+  .gnav:hover{background:rgba(20,16,12,.82)}
+  .gnav.prev{left:12px} .gnav.next{right:12px}
+  .gcount{position:absolute;top:12px;right:12px;font-family:var(--font-mono);font-size:11px;color:#fff;background:rgba(20,16,12,.6);padding:4px 9px;border-radius:5px}
+  .gcap{position:absolute;left:12px;bottom:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:rgba(20,16,12,.72);padding:6px 11px;border-radius:5px;max-width:82%}
+  .gthumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .gthumb{width:88px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--line);cursor:pointer;padding:0;background:none;flex:0 0 auto}
+  .gthumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .gthumb[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .gallery:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .exproj{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-top:16px}
   .extitle{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.02em;line-height:1.14;margin:8px 0 0;outline:none}
   /* one aligned column so Understand / Make / Templates / Asset / Who line up top to bottom */
@@ -588,7 +602,7 @@
       <span class="eyebrow">DJDS · Designing Justice + Designing Spaces</span>
       <h1>Design Studio Compass</h1>
       <p class="lede">
-        <span class="flow"><span class="step"><b>Find</b><i>search</i></span><span class="arr">→</span><span class="step"><b>Understand</b><i>discover</i></span><span class="arr">→</span><span class="step"><b>Make</b><i>create</i></span></span><br>
+        <span class="flow"><span>Search</span><span class="arr">→</span><span>Discover</span><span class="arr">→</span><span>Create</span></span><br>
         A living map of how the studio develops an informed concept — open it right when you're doing the work.
       </p>
     </div>
@@ -1293,6 +1307,21 @@ function firstSentence(t){t=(t||"").trim();const m=t.match(/^.*?[.!?](?=\s|$)/);
 function authorHTML(e){return e.ask_me
   ? `<span class="who"><span class="avatar">${esc(initials(e.ask_me))}</span><span class="nm">${esc(e.ask_me)}</span></span>`
   : `<span class="who who--empty"><span class="avatar">+</span><span class="nm">Add who to ask</span></span>`;}
+/* detail-page hero: a click-through gallery when an entry has multiple images, else single image / SVG */
+function galleryHTML(e){
+  const imgs=(e.gallery&&e.gallery.length>1)?e.gallery:null;
+  if(!imgs) return `<div class="exhero">${thumbHTML(e)}</div>`;
+  return `<div class="gallery" tabindex="0" aria-label="Image gallery — use arrow keys">
+    <div class="gmain">
+      <img class="gimg" src="${esc(imgs[0].src)}" alt="">
+      <button class="gnav prev" type="button" aria-label="Previous image">‹</button>
+      <button class="gnav next" type="button" aria-label="Next image">›</button>
+      <span class="gcount"><b>1</b>/${imgs.length}</span>
+      <span class="gcap"${imgs[0].caption?"":" hidden"}>${esc(imgs[0].caption||"")}</span>
+    </div>
+    <div class="gthumbs">${imgs.map((im,i)=>`<button class="gthumb" type="button" data-gi="${i}" aria-current="${i===0}"><img src="${esc(im.src)}" alt=""></button>`).join("")}</div>
+  </div>`;
+}
 function genThumbSVG(e){
   const pi=PHASE_ORDER.indexOf(e.facets&&e.facets.phase);
   const c=(pi>=0?getComputedStyle(document.documentElement).getPropertyValue("--p"+(pi+1)).trim():"")||"#E0852E";
@@ -1454,27 +1483,29 @@ function renderGrid(){
     }
     const deliv=f.deliverable_type||"";
     const projName=(f.project||"").split("·")[0].trim();
+    /* one "type" badge per tile = its primary nature (deliverable OR process);
+       the other, if any, becomes the small chip */
+    const primary=deliv||f.process_type||"";
     if(curPhase==="Concept Development" && !featuredDone){
       featuredDone=true;
       const art=document.createElement("button"); art.type="button"; art.className="feature";
       art.style.setProperty("--c",phaseVar(f.phase)); art.onclick=()=>goUnderstand(e.id);
-      art.innerHTML=`<span class="thumb">${deliv?`<span class="fbadge">${esc(cap(deliv))}</span>`:""}${thumbHTML(e)}</span>`+
+      art.innerHTML=`<span class="thumb">${primary?`<span class="fbadge">${esc(cap(primary))}</span>`:""}${thumbHTML(e)}</span>`+
         `<span class="fbody">${projName?`<span class="fproj">${esc(projName)}</span>`:""}`+
         `<h3>${hl(e.title,q)}</h3>`+
         `<p class="fwhy">${esc(firstSentence(e.narrative))}</p>`+
-        `<span class="ffoot">${authorHTML(e)}${f.process_type?`<span class="chip">${esc(f.process_type)}</span>`:""}</span></span>`;
+        `<span class="ffoot">${authorHTML(e)}</span></span>`;
       body.appendChild(art);
       return;
     }
     if(!cardGrid){ cardGrid=document.createElement("div"); cardGrid.className="grid grid--visual"; body.appendChild(cardGrid); }
     const card=document.createElement("button"); card.type="button"; card.className="card vcard";
     card.style.setProperty("--c",phaseVar(f.phase)); card.onclick=()=>goUnderstand(e.id);
-    const badge=deliv?`<span class="badge">${esc(cap(deliv))}</span>`:"";
-    const chips=[f.process_type].filter(Boolean);
+    const badge=primary?`<span class="badge">${esc(cap(primary))}</span>`:"";
     card.innerHTML=`<span class="thumb">${badge}${thumbHTML(e)}</span>`+
       `<span class="vbody">${projName?`<span class="vproj">${esc(projName)}</span>`:""}`+
       `<h3>${hl(e.title,q)}</h3>`+
-      `<span class="vfoot">${authorHTML(e)}<span class="vchips">${chips.map(c=>`<span>${esc(c)}</span>`).join("")}</span></span></span>`;
+      `<span class="vfoot">${authorHTML(e)}</span></span>`;
     cardGrid.appendChild(card);
   });
 }
@@ -1539,23 +1570,24 @@ function sideLinks(title,arr){
 }
 function exMetaChips(e){
   const f=e.facets||{};
-  return [f.phase, f.sub_phase, f.deliverable_type, f.process_type, ...exVals(e,"concept_tags")].filter(Boolean);
+  return [(f.deliverable_type||f.process_type)].filter(Boolean);
 }
 function relatedExamples(e){
   return EXAMPLES.filter(o=>o.id!==e.id).map(o=>{
     let score=0; const f=o.facets||{}, ef=e.facets||{};
     if(f.deliverable_type && f.deliverable_type===ef.deliverable_type) score+=2;
+    if(f.process_type && f.process_type===ef.process_type) score+=2;
     if(f.sub_phase && f.sub_phase===ef.sub_phase) score+=1;
+    if(f.phase && f.phase===ef.phase) score+=1;
     exVals(o,"concept_tags").forEach(t=>{ if(exVals(e,"concept_tags").includes(t)) score+=1; });
     return {o,score};
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.o);
 }
 function relCard(o){
-  const f=o.facets||{};
-  return `<button class="card vcard" type="button" data-go="${o.id}" style="--cat-color:var(--accent-2)">`+
-    `<span class="thumb">${thumbHTML(o)}</span>`+
-    `<span class="vbody"><span class="vproj">${esc(f.project||"")}</span><h3>${esc(o.title)}</h3>`+
-    `<span class="vchips">${[f.deliverable_type].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join("")}</span></span></button>`;
+  const f=o.facets||{}, primary=f.deliverable_type||f.process_type||"", proj=(f.project||"").split("·")[0].trim();
+  return `<button class="card vcard" type="button" data-go="${o.id}">`+
+    `<span class="thumb">${primary?`<span class="badge">${esc(cap(primary))}</span>`:""}${thumbHTML(o)}</span>`+
+    `<span class="vbody">${proj?`<span class="vproj">${esc(proj)}</span>`:""}<h3>${esc(o.title)}</h3></span></button>`;
 }
 function renderUnderstand(){
   const e = currentEx && EX_BY_ID[currentEx];
@@ -1571,24 +1603,38 @@ function renderUnderstand(){
       ${f.phase?`<span class="sep">/</span><button type="button" data-phase="${esc(f.phase)}">${esc(f.phase)}</button>`:""}
       ${f.sub_phase?`<span class="sep">/</span><span class="here">${esc(f.sub_phase)}</span>`:""}
     </nav>
-    <div class="exhero">${thumbHTML(e)}</div>
+    ${galleryHTML(e)}
     ${projName?`<div class="exproj">${esc(projName)}</div>`:""}
     <h1 class="extitle" id="uTitle" tabindex="-1">${esc(e.title)}</h1>
     <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<span>${esc(c)}</span>`).join("")}</div>
     <div class="exbody">
-      <section class="blk"><h4><span class="loopstep">Understand</span> What this is &amp; why</h4>${
+      <section class="blk"><h4><span class="loopstep">Description</span> What this is &amp; why</h4>${
         (e.narrative||"").split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>
-      ${(e.steps&&e.steps.length)?`<section class="blk"><h4><span class="loopstep">Make</span> How to make it</h4><ol class="steps">${
+      ${(e.steps&&e.steps.length)?`<section class="blk"><h4><span class="loopstep">Plan &amp; process</span> How it's made — and what to ask</h4><ol class="steps">${
         e.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></section>`:""}
-      ${(e.resources&&e.resources.length)?sideLinks("Templates & references",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
+      ${(e.resources&&e.resources.length)?sideLinks("Make & build — templates",e.resources.map(l=>({t:l.label,href:l.link,ic:"📎",k:""}))):""}
       ${(e.source_links&&e.source_links.length)?sideLinks("The asset on Drive",e.source_links.map(l=>({t:l.label,href:l.drive_url,ic:"🗂️",k:"Drive file"}))):""}
       ${e.ask_me?`<section class="blk"><h4>Who to ask</h4><div class="who-line"><b>${esc(e.ask_me)}</b></div><div class="who-sub">Worked on this — or can help you make one</div></section>`:""}
     </div>
-    ${rel.length?`<div class="band">How we've approached this elsewhere</div>
+    ${rel.length?`<div class="band">Similar examples &amp; processes</div>
       <div class="grid grid--visual related-grid">${rel.map(relCard).join("")}</div>`:""}`;
   understandView.querySelector("[data-home]").onclick=goFind;
   const pc=understandView.querySelector("[data-phase]"); if(pc) pc.onclick=()=>goFindPhase(pc.dataset.phase);
   understandView.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>goUnderstand(b.dataset.go));
+  (function(){
+    const g=understandView.querySelector(".gallery"); if(!g||!e.gallery) return;
+    const imgs=e.gallery, main=g.querySelector(".gimg"), cap=g.querySelector(".gcap"),
+      cnt=g.querySelector(".gcount b"), thumbs=[...g.querySelectorAll(".gthumb")];
+    let i=0;
+    function show(n){ i=(n+imgs.length)%imgs.length; main.src=imgs[i].src;
+      if(cap){ cap.textContent=imgs[i].caption||""; cap.hidden=!imgs[i].caption; }
+      if(cnt) cnt.textContent=i+1;
+      thumbs.forEach((t,k)=>t.setAttribute("aria-current", String(k===i))); }
+    const p=g.querySelector(".prev"), nx=g.querySelector(".next");
+    if(p) p.onclick=()=>show(i-1); if(nx) nx.onclick=()=>show(i+1);
+    thumbs.forEach(t=>t.onclick=()=>show(+t.dataset.gi));
+    g.addEventListener("keydown",ev=>{ if(ev.key==="ArrowLeft"){show(i-1);ev.preventDefault();} else if(ev.key==="ArrowRight"){show(i+1);ev.preventDefault();} });
+  })();
   const t=understandView.querySelector("#uTitle"); if(t) t.focus();
 }
 /* ---- view switching (hash-routed for shareable links) ---- */
