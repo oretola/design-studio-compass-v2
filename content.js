@@ -58,6 +58,7 @@ const EXAMPLES = [
       sub_phase:"Ideation, visioning & analysis",
       deliverable_type:"massing diagram",
       concept_tags:["engagement method","community/cultural research"]},
+    keywords:["massing","massing study","massing options","volume","form","bulk","stacking","program","sky village","core legacy","welcome quilt","design driver"],
     narrative:"These are the three massing options we developed for the Black Worker Center — Sky Village, Core Legacy, and Welcome Quilt. They're early development diagrams, not finished buildings, and that's the point: the deliverable's job was to show our thinking, so the community could see how their own words turned into built form.\n\nEach option carries the same set of design-intent labels, and every label traces back to something we heard in engagement — \"Civic Space Activated by Local Economic Ecosystems\" came from the call for daily-needs retail; \"Staying Power\" came from belonging and resisting displacement. The massing tells a story because its inputs are visible on it: the program synthesis, the site adjacencies, and the engagement themes all explain why the mass sits where it does. That's the skill this entry is about — making a massing diagram that explains its own reasoning, plainly enough that a neighbor and a funder both follow it.",
     steps:[
       "Start from what you heard — distill the engagement into a short set of named themes. Ask: what does the community actually want this place to do?",
@@ -68,7 +69,6 @@ const EXAMPLES = [
       "Say the story out loud: could a neighbor and a funder both explain why the mass is shaped this way? If not, simplify until they can.",
     ],
     resources:[
-      {label:"How a 3-option massing set is built — worked example (LABWC, pp. 12–22)", link:"file:///C:/Users/tthompson/Desktop/DSC%20Test%20Drive/Project%20Assets/Los%20Angeles%20Black%20Worker%20Center/01%20Concept%20Development/2%20Ideation,%20visioning%20%26%20analysis/260415_LABWC_%20Feasibility%20Study%20Options.pdf"},
       {label:"SketchUp template", link:"#"},
       {label:"Illustrator template", link:"#"},
       {label:"Color palette", link:"#"},
@@ -95,6 +95,7 @@ const EXAMPLES = [
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"coding & analysis",
       concept_tags:["feasibility/finance"]},
+    keywords:["zoning","code","setback","FAR","easement","utilities","survey","as-built","right of way","entitlement","parking","geotech","civil","soils","constraints","overlay","title report"],
     narrative:"Before you design, understand what the site already is on paper. Technical site analysis reads the built and regulatory reality — zoning and overlays, surveys, civil and geotech reports, as-builts, easements, rights-of-way, and existing utilities.\n\nIt matters because these constraints quietly set the envelope of what's possible and affordable. Surfacing them early turns \"surprises\" into design drivers and keeps the concept honest about what the site, the code, and the infrastructure will actually allow.",
     steps:[
       "Pull the zoning — use, height, FAR, setbacks, parking, overlays. Ask: what does the code let us build before we ask for anything?",
@@ -111,6 +112,7 @@ const EXAMPLES = [
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"site analysis",
       concept_tags:["community/cultural research"]},
+    keywords:["sun study","solar","shadow study","sunlight","daylight","wind","airflow","microclimate","climate","rain","stormwater","drainage","flood","ecology","habitat","vegetation","shade","orientation","sustainability","passive design"],
     narrative:"Understand the land as a living system, apart from anything built. Environmental site analysis studies sun, wind, rain and water, air, vegetation, habitat, and the seasonal patterns of the place.\n\nIt matters because a concept that works with the climate and ecology is cheaper to run, healthier to occupy, and more rooted in its place. Reading these natural drivers early lets form, orientation, and landscape respond to them instead of fighting them.",
     steps:[
       "Chart sun paths and shadows across the seasons. Where does light want to be, and what overheats?",
@@ -127,6 +129,7 @@ const EXAMPLES = [
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"immersive site visit",
       concept_tags:["engagement method"]},
+    keywords:["sensory mapping","senses","embodied","experience","walk the site","sound","noise","smell","light","comfort","atmosphere","wayfinding","phenomenology","observation"],
     narrative:"Understand the site through the body — by being there and paying attention. Somatic site analysis is the felt experience: what you see, hear, smell, and feel as you move through the place at different times of day.\n\nIt matters because drawings and data miss how a site actually lands on a person. Sensory and experiential mapping captures the qualities — comfort, exposure, noise, rhythm — that decide whether a space will feel right, and gives the concept a human measure.",
     steps:[
       "Spend unstructured time on site, more than once, at different times of day. What changes from morning to night?",
@@ -143,6 +146,7 @@ const EXAMPLES = [
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"community engagement",
       concept_tags:["community/cultural research","engagement method"]},
+    keywords:["community engagement","listening session","asset mapping","history","historical","rituals","traditions","stakeholders","oral history","ethnography","participatory","neighborhood","equity"],
     narrative:"Understand the site through its people and its past. This analysis learns the community, client, and staff — their rituals, traditions, histories, and the assets already present — through deep research, listening sessions, and simply being present with people.\n\nIt matters because a site is never a blank slate; it carries meaning, memory, and existing strengths. Surfacing them keeps the concept accountable to the community and builds on what's already working instead of overwriting it.",
     steps:[
       "Research the history: who has been here, what happened, what's remembered — and by whom?",

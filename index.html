@@ -7,7 +7,7 @@
 <meta name="description" content="DJDS's informed-concept method (principles, precedents, templates, checklist, questions) plus a curated, visual library of best-example design work — at the moment you need them." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800;900&family=Titillium+Web:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <script>
   /* set theme before first paint to avoid a flash */
   (function(){try{var k='dsc-theme',s=localStorage.getItem(k);
@@ -38,7 +38,7 @@
     --accent-field:#46A89B; --on-field:#08201D; --field-soft:#1C3A36;
     /* type roles */
     --font-display:"Unbounded",system-ui,sans-serif;
-    --font-body:"Hanken Grotesk",system-ui,sans-serif;
+    --font-body:"Titillium Web",system-ui,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,monospace;
     --t-hero:clamp(42px,7.5vw,90px);
     --t-region:clamp(24px,3.6vw,40px);
@@ -69,6 +69,9 @@
     font-family:var(--font-body);
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    font-kerning:normal;
+    font-feature-settings:"kern" 1,"liga" 1;
   }
   body.locked{overflow:hidden}
   /* the alignment container: every section uses .wrap so content snaps to the
@@ -239,6 +242,11 @@
   .dmade .val{font-size:17px;font-weight:600;margin-top:4px}
   .dmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
   .dmeta span{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--faint);background:var(--panel-2);border:1px solid var(--line);padding:4px 9px;border-radius:5px}
+  .dmeta .dtag{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--faint);background:var(--panel-2);
+    border:1px solid var(--line);padding:4px 9px;border-radius:5px;cursor:pointer;transition:none}
+  .dmeta .dtag:hover{border-color:var(--accent);color:var(--accent)}
+  .dmeta .dtag::after{content:" →";opacity:.5}
+  .fnone{padding:11px 13px;color:var(--faint);font-size:12.5px}
   section.blk{margin-top:30px}
   section.blk > h4{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--cat-color,var(--accent));margin:0 0 12px;font-weight:700}
@@ -411,8 +419,8 @@
   .vcard.placeholder .thumb{filter:grayscale(.55)}
   .vtag-ph{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
     color:var(--faint);background:var(--panel-2);border:1px solid var(--line);padding:3px 8px;border-radius:6px}
-  .band{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin:10px 2px 0;font-size:12px;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .band{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:34px 0 16px;font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);font-weight:800}
   .band::after{content:"";flex:1;height:1px;background:var(--line)}
 
   /* Concept Development sub-phase orientation rail */
@@ -1276,8 +1284,30 @@ function facetOptions(key){
 }
 function exHay(e){
   return [e.title, e.facets&&e.facets.project||"", e.narrative||"", (e.steps||[]).join(" "),
-    exVals(e,"deliverable_type").join(" "), exVals(e,"concept_tags").join(" "),
-    exVals(e,"sub_phase").join(" ")].join(" ").toLowerCase();
+    exVals(e,"deliverable_type").join(" "), exVals(e,"process_type").join(" "), exVals(e,"concept_tags").join(" "),
+    exVals(e,"sub_phase").join(" "), (e.keywords||[]).join(" ")].join(" ").toLowerCase();
+}
+/* fuzzy + synonym search: exact phrase wins; otherwise every query word must
+   match a haystack word by substring or small edit distance (typo tolerance).
+   Synonyms/related terms live in each entry's keywords[] (e.g. "sun study"). */
+function lev(a,b){
+  const m=a.length,n=b.length; if(!m)return n; if(!n)return m;
+  let prev=Array.from({length:n+1},(_,i)=>i), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){ cur[0]=i;
+    for(let j=1;j<=n;j++){ const c=a[i-1]===b[j-1]?0:1; cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+c); }
+    const t=prev; prev=cur; cur=t;
+  }
+  return prev[n];
+}
+function words(s){ return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(Boolean); }
+function qMatch(e,q){
+  if(!q) return true;
+  const hay=exHay(e);
+  if(hay.includes(q)) return true;
+  const hw=words(hay), terms=words(q);
+  return terms.every(t=> t.length<2 || hw.some(h=>
+    h===t || (t.length>=3 && h.startsWith(t)) || (h.length>=3 && t.startsWith(h))
+    || (t.length>=4 && lev(h,t)<=(t.length>=8?2:1))));
 }
 function matchesExceptSearch(e,skipKey){
   for(const f of FACET_DEFS){
@@ -1291,12 +1321,12 @@ function filterExamples(){
   const q=qEl.value.trim().toLowerCase();
   return EXAMPLES.filter(e=> matchesExceptSearch(e,null)
     && (!subSel || exVals(e,"sub_phase").includes(subSel))
-    && (!q || exHay(e).includes(q)));
+    && qMatch(e,q));
 }
 function optionCount(key,val){
   const q=qEl.value.trim().toLowerCase();
   return EXAMPLES.filter(e=> matchesExceptSearch(e,key) && exVals(e,key).includes(val)
-    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && (!q||exHay(e).includes(q))).length;
+    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && qMatch(e,q)).length;
 }
 
 /* ---- generated SVG thumbnails (self-contained, no external assets) ---- */
@@ -1366,7 +1396,7 @@ const phaseChipsEl=document.getElementById("phaseChips");
 function phaseCount(p){
   const q=qEl.value.trim().toLowerCase();
   return EXAMPLES.filter(e=> exVals(e,"phase").includes(p) && matchesExceptSearch(e,"phase")
-    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && (!q||exHay(e).includes(q))).length;
+    && (!subSel||exVals(e,"sub_phase").includes(subSel)) && qMatch(e,q)).length;
 }
 function buildPhaseChips(){
   phaseChipsEl.innerHTML=PHASE_ORDER.map(p=>
@@ -1408,11 +1438,13 @@ function updateBarCounts(){
 function renderMenu(key){
   const g=grpEl(key); if(!g) return;
   const menu=g.querySelector(".fmenu");
-  menu.innerHTML=facetOptions(key).map(v=>{
+  /* scoped: only show values that exist in the current results (or are already picked) */
+  const opts=facetOptions(key).filter(v=> fsel[key].has(v) || optionCount(key,v)>0);
+  menu.innerHTML = opts.length ? opts.map(v=>{
     const on=fsel[key].has(v), ct=optionCount(key,v);
-    return `<button class="fopt" type="button" aria-pressed="${on}" data-zero="${(ct===0&&!on)?1:0}" data-v="${esc(v)}">`+
+    return `<button class="fopt" type="button" aria-pressed="${on}" data-v="${esc(v)}">`+
       `<span class="box">${on?"✓":""}</span><span>${esc(v)}</span><span class="fct">${ct}</span></button>`;
-  }).join("");
+  }).join("") : `<div class="fnone">Nothing here in the current view</div>`;
   menu.querySelectorAll(".fopt").forEach(b=>b.addEventListener("click",e=>{
     e.stopPropagation();
     const v=b.dataset.v;
@@ -1509,7 +1541,7 @@ function subVisible(){ return currentSubPhases().length>0; }
 function reconcileSubSel(){ const subs=currentSubPhases(); if(subSel && !subs.some(s=>s.label===subSel)) subSel=null; }
 function subCount(label){
   const q=qEl.value.trim().toLowerCase();
-  return EXAMPLES.filter(e=> exVals(e,"sub_phase").includes(label) && matchesExceptSearch(e,null) && (!q||exHay(e).includes(q))).length;
+  return EXAMPLES.filter(e=> exVals(e,"sub_phase").includes(label) && matchesExceptSearch(e,null) && qMatch(e,q)).length;
 }
 function renderSubRail(){
   const subs=currentSubPhases();
@@ -1598,7 +1630,7 @@ function renderUnderstand(){
     ${galleryHTML(e)}
     ${projName?`<div class="exproj">${esc(projName)}</div>`:""}
     <h1 class="extitle" id="uTitle" tabindex="-1">${esc(e.title)}</h1>
-    <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<span>${esc(c)}</span>`).join("")}</div>
+    <div class="dmeta" style="margin-top:14px">${exMetaChips(e).map(c=>`<button type="button" class="dtag" data-type="${esc(c)}">${esc(c)}</button>`).join("")}</div>
     <div class="exbody">
       <section class="blk"><h4><span class="loopstep">Description</span><span class="blksub">What this is &amp; why</span></h4>${
         (e.narrative||"").split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>
@@ -1613,6 +1645,7 @@ function renderUnderstand(){
   understandView.querySelector("[data-home]").onclick=goFind;
   const pc=understandView.querySelector("[data-phase]"); if(pc) pc.onclick=()=>goFindPhase(pc.dataset.phase);
   understandView.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>goUnderstand(b.dataset.go));
+  understandView.querySelectorAll(".dtag").forEach(b=>b.onclick=()=>goFindType(b.dataset.type));
   (function(){
     const g=understandView.querySelector(".gallery"); if(!g||!e.gallery) return;
     const imgs=e.gallery, main=g.querySelector(".gimg"), cap=g.querySelector(".gcap"),
@@ -1640,6 +1673,8 @@ function applyView(v){
 function goFind(){ if(location.hash) location.hash=""; else applyView("find"); }
 /* breadcrumb / search jump back to Find, optionally pre-filtered by phase */
 function goFindPhase(p){ try{ fsel.phase.clear(); if(p) fsel.phase.add(p); subSel=null; }catch(e){} goFind(); }
+/* tag-to-pivot: click a type chip to browse everything of that type ("more like this") */
+function goFindType(t){ try{ FACET_DEFS.forEach(f=>fsel[f.key].clear()); subSel=null; qEl.value=""; if(t&&fsel.type) fsel.type.add(t); }catch(e){} goFind(); }
 /* Header compass: click/Enter returns home and spins the needle back to north */
 (function(){
   const brandHome=document.getElementById("brandHome");
