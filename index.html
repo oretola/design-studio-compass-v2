@@ -405,8 +405,9 @@
   .vcard{padding:0;overflow:hidden;gap:0}
   .vcard .thumb{aspect-ratio:16/10;width:100%;display:block;position:relative;overflow:hidden;background:var(--panel-2)}
   .vcard .thumb img,.vcard .thumb svg{width:100%;height:100%;object-fit:cover;display:block}
-  .vcard .badge{position:absolute;top:9px;left:9px;font-size:11px;font-weight:600;letter-spacing:.02em;
-    color:var(--accent);background:rgba(14,17,22,.82);border:1px solid rgba(232,163,61,.4);
+  /* fixed light colors so the label reads on the dark glass in BOTH themes */
+  .vcard .badge{position:absolute;top:9px;left:9px;font-size:11px;font-weight:700;letter-spacing:.02em;
+    color:#EAF6F3;background:rgba(14,17,22,.86);border:1px solid rgba(125,216,203,.55);
     padding:4px 9px;border-radius:7px;white-space:nowrap;max-width:calc(100% - 18px);overflow:hidden;text-overflow:ellipsis}
   .vcard .badge.ph{color:var(--faint);border-color:var(--line)}
   .vcard .vbody{padding:14px 15px 16px;display:flex;flex-direction:column;gap:8px}
@@ -612,7 +613,7 @@
       <span class="eyebrow">DJDS · Designing Justice + Designing Spaces</span>
       <h1>Design Studio Compass</h1>
       <p class="lede">
-        A living map of how the studio develops an informed concept — open it right when you're doing the work.
+        A living map to DJDS's Creative Design process.
       </p>
     </div>
     <hr class="rule find-hero-rule">
@@ -1596,15 +1597,21 @@ function exMetaChips(e){
   return [(f.deliverable_type||f.process_type)].filter(Boolean);
 }
 function relatedExamples(e){
-  return EXAMPLES.filter(o=>o.id!==e.id).map(o=>{
-    let score=0; const f=o.facets||{}, ef=e.facets||{};
-    if(f.deliverable_type && f.deliverable_type===ef.deliverable_type) score+=2;
-    if(f.process_type && f.process_type===ef.process_type) score+=2;
+  /* a hand-curated list always wins (the author knows what's truly similar) */
+  if(Array.isArray(e.related)&&e.related.length){
+    return e.related.map(id=>EX_BY_ID[id]).filter(o=>o&&!o.placeholder&&o.id!==e.id).slice(0,4);
+  }
+  /* else score by what the tile IS (type), not just where it sits — phase is dropped
+     because everything shares it, and a real match must clear a threshold */
+  const ef=e.facets||{};
+  return EXAMPLES.filter(o=>o.id!==e.id && !o.placeholder).map(o=>{
+    let score=0; const f=o.facets||{};
+    if(f.deliverable_type && f.deliverable_type===ef.deliverable_type) score+=4;
+    if(f.process_type && f.process_type===ef.process_type) score+=4;
     if(f.sub_phase && f.sub_phase===ef.sub_phase) score+=1;
-    if(f.phase && f.phase===ef.phase) score+=1;
     exVals(o,"concept_tags").forEach(t=>{ if(exVals(e,"concept_tags").includes(t)) score+=1; });
     return {o,score};
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.o);
+  }).filter(x=>x.score>=2).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.o);
 }
 function relCard(o){
   const f=o.facets||{}, primary=f.deliverable_type||f.process_type||"", proj=(f.project||"").split("·")[0].trim();
