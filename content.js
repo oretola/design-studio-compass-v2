@@ -20,6 +20,7 @@
 //
 //   {
 //     id:"short-unique-slug",                       // no spaces
+//     date:"2026-06-29",                            // YYYY-MM-DD — newest sort to the top of each phase
 //     title:"The specific deliverable, plainly named",
 //     // thumbnail:"https://...jpg",                // optional cover image
 //     facets:{
@@ -52,6 +53,7 @@
 const EXAMPLES = [
   {
     id:"labwc-massing-story",
+    date:"2026-06-27",
     title:"Massing diagrams that tell a story",
     thumbnail:"images/labwc-massing.jpg",
     facets:{project:"Los Angeles Black Worker Center · 5401 S Crenshaw Blvd, Los Angeles, CA", phase:"Concept Development",
@@ -91,6 +93,7 @@ const EXAMPLES = [
      recipe; real project examples can be attached later. No image required. ---- */
   {
     id:"technical-site-analysis",
+    date:"2026-06-28",
     title:"Technical site analysis",
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"coding & analysis",
@@ -108,6 +111,7 @@ const EXAMPLES = [
   },
   {
     id:"environmental-site-analysis",
+    date:"2026-06-28",
     title:"Environmental site analysis",
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"site analysis",
@@ -125,6 +129,7 @@ const EXAMPLES = [
   },
   {
     id:"somatic-site-analysis",
+    date:"2026-06-28",
     title:"Somatic site analysis",
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"immersive site visit",
@@ -142,6 +147,7 @@ const EXAMPLES = [
   },
   {
     id:"cultural-community-site-analysis",
+    date:"2026-06-28",
     title:"Cultural, community & historical analysis",
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       deliverable_type:"site analysis", process_type:"community engagement",
@@ -159,6 +165,7 @@ const EXAMPLES = [
   },
   {
     id:"collage-rendering",
+    date:"2026-06-28",
     title:"Collage rendering",
     facets:{phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
       deliverable_type:"collage rendering", concept_tags:["community/cultural research"]},
@@ -173,6 +180,7 @@ const EXAMPLES = [
   },
   {
     id:"morpholio-hand-sketch",
+    date:"2026-06-28",
     title:"Morpholio hand sketch",
     facets:{phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
       process_type:"hand sketching", concept_tags:["engagement method"]},
@@ -187,6 +195,7 @@ const EXAMPLES = [
   },
   {
     id:"quick-dirty-model",
+    date:"2026-06-28",
     title:"Quick & dirty model making",
     facets:{phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
       process_type:"model making", concept_tags:["feasibility/finance"]},
@@ -201,6 +210,7 @@ const EXAMPLES = [
   },
   {
     id:"program-block-site-model",
+    date:"2026-06-29",
     title:"Site designing with a physical program block model",
     thumbnail:"images/program-block.jpg",
     facets:{phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
@@ -232,6 +242,7 @@ const EXAMPLES = [
   },
   {
     id:"coding-and-analyzing",
+    date:"2026-06-28",
     title:"Coding & analyzing",
     facets:{phase:"Concept Development", sub_phase:"Predesign — Due diligence & data collection",
       process_type:"coding & analysis", concept_tags:["feasibility/finance"]},
@@ -245,21 +256,41 @@ const EXAMPLES = [
     resources:[], source_links:[], ask_me:"",
   },
   {
-    id:"design-charrette",
-    title:"Design charrette",
-    facets:{phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
-      process_type:"design charrette", concept_tags:["engagement method","community/cultural research"]},
-    narrative:"A focused, time-boxed working session — with the team, client, or community — to generate and pressure-test ideas together.\n\nThe value is shared authorship and fast convergence: people who help shape the concept own it, and hard trade-offs get made in the room.",
+    id:"kickoff-charrette",
+    date:"2026-06-29",
+    title:"Designing the Design Charrette",
+    thumbnail:"images/charrette-siteplan-markup.jpg",
+    facets:{project:"Log Cabin", phase:"Concept Development", sub_phase:"Ideation, visioning & analysis",
+      process_type:"design charrette", concept_tags:["engagement method","feasibility/finance"]},
+    keywords:["charrette","design charrette","kickoff charrette","concept charrette","working session","war room","pin-up","trace paper","site plan","post-its","sticky notes","brainstorm","ideation","design direction","design drivers","collaborative design","in-person session"],
+    narrative:"A single in-person kickoff charrette where the team — starting from pretty limited site and program info — generated a design direction and a clear list of what to produce for the design package due the following week. A comprehensive deliverable was due in a short window, and this was our only time together as a team on it, so we couldn't just explore: we had to walk out with answers about what the design would be and how we'd communicate it. We were designing the design and designing the pitch at the same time, and we covered as much ground as we could because we knew we only got one shot in the room together.\n\nThree things made it work: we were in person, we blocked real time (a room for 2–3 hours, so everyone was set to stay in the project headspace), and — the actual unlock — we had something tangible to design on. The format reflects how the studio works: keep the design drivers, context, and info viewable to everyone as you go; move quickly so you don't get stuck overthinking or over-presenting; put pen to paper and iterate as much as possible. That matters because without a shared, visible, drawable surface, the team drifts into talking abstractly — people get afraid to commit ideas, so they either hide in one small detail or float big ideas that can't be tested on paper. A tangible surface everyone can reach is the antidote to both.",
     steps:[
-      "Frame one clear question and the constraints up front.",
-      "Prepare movable, low-stakes materials so anyone can contribute.",
-      "Facilitate so every voice is in — not just the loudest.",
-      "Capture decisions and dissent live; synthesize into a few directions.",
+      "Block real time, in person — one room, 2–3 hours, the whole team present. Ask: is everyone set to stay in this project's headspace for the full stretch?",
+      "Prep the room before anyone sits down — so the drivers are not just visible but reachable by everyone. Have it all up: a large scaled site plan or model (print it ahead — we once lost ~30 minutes making one mid-session), trace paper, post-its, markers, printed site photos, the site analysis, the program brief, and engagement / project summaries. Don't rely on small 11×17 maps taped to the wall as your only surface — fine for context, but you can't get messy on them. Ask: can every person both see the drivers and reach a large drawable surface, with no single hot corner?",
+      "Open with discovery — whoever owned the pre-charrette research walks the team through it (often several people, each presenting their part: site images and maps, existing conditions, program, engagement). Everyone marks up as they go; spend real time here (~30+ min) settling into the constraints. Ask: what here could become a design driver, not just a constraint?",
+      "Get to the drawable surface. Pull trace paper over the site plan and start sketching options together — this is when designing actually starts. Keep momentum: if the talk goes abstract, that's the signal to get something tangible in front of people. Watch for anyone hiding behind one small detail or behind big untestable ideas — the shared surface is what draws them out. Ask: are we putting pen to paper, or still talking in the abstract?",
+      "Design the direction and the pitch together. As moves land, capture not just the idea but how you'd show it next week. Ask: what do we need to produce to communicate this, and who makes it?",
+      "Leave with a direction and a production list — a committed design direction plus a concrete list of what to make and who owns it. Ask: could everyone in the room say what we're doing and what they're making next?",
     ],
-    resources:[], source_links:[], ask_me:"",
+    resources:[
+      {label:"The room kit — scaled site plan/model · trace paper · post-its · markers · printed site photos · site analysis · program brief · engagement & project summaries", link:"#"},
+    ],
+    source_links:[{label:"Design direction + production plan that fed the design package (Drive folder)", drive_url:"#"}],
+    gallery:[
+      {src:"images/charrette-drivers-wall.jpg", caption:"Context and emerging themes made visible to the whole room"},
+      {src:"images/charrette-siteplan-markup.jpg", caption:"The unlock — a large site plan on the table, marked up so everyone can design on it"},
+      {src:"images/charrette-program-wall.jpg", caption:"Program and ideas committed to the wall where everyone can see them"},
+      {src:"images/charrette-worksession-1.jpg", caption:"The whole team around one table — drivers and materials reachable by everyone"},
+      {src:"images/charrette-worksession-2.jpg", caption:"Working the program together, pen to paper, no single hot corner"},
+      {src:"images/charrette-model-making.jpg", caption:"Pushing into tangible, physical iteration as a group"},
+      {src:"images/charrette-model-detail.jpg", caption:"The physical model as a thinking tool"},
+    ],
+    related:["program-block-site-model","quick-dirty-model","internal-design-review"],
+    ask_me:"Garrett Jacobs",
   },
   {
     id:"internal-design-review",
+    date:"2026-06-28",
     title:"Internal design review",
     facets:{phase:"Concept Development", sub_phase:"Integration & concept design",
       process_type:"internal review", concept_tags:["engagement method"]},

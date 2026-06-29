@@ -358,6 +358,8 @@
   .vauthor--empty{color:var(--faint)}
   .vauthor--empty .avatar{background:transparent;border:1px dashed var(--line);color:var(--faint);font-weight:600}
   .vcard .vfoot .vchips{margin:0;flex:0 0 auto}
+  .vcard .vfoot .vdate{flex:0 0 auto;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;
+    color:var(--faint);font-weight:500;white-space:nowrap}
   /* ===== Regions (phase sections): big name, hairline divider, color = phase ===== */
   .region{padding-top:22px;border-top:1px solid var(--line);margin-top:30px}
   .region:first-child{margin-top:34px}
@@ -1337,6 +1339,9 @@ function avatarColor(name){return THUMB_COLORS[hashStr(name||"x")%THUMB_COLORS.l
 function phaseVar(phase){const i=PHASE_ORDER.indexOf(phase);return i>=0?`var(--p${i+1})`:`var(--accent)`;}
 function cap(s){s=s||"";return s.charAt(0).toUpperCase()+s.slice(1);}
 function firstSentence(t){t=(t||"").trim();const m=t.match(/^.*?[.!?](?=\s|$)/);return m?m[0]:t.slice(0,150);}
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(d){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||"");return m?`${MON[(+m[2])-1]} ${+m[3]}, ${m[1]}`:"";}
+function dateHTML(e){const d=fmtDate(e.date);return d?`<time class="vdate" datetime="${esc(e.date)}">${d}</time>`:"";}
 function authorHTML(e){return e.ask_me
   ? `<span class="who"><span class="avatar">${esc(initials(e.ask_me))}</span><span class="nm">${esc(e.ask_me)}</span></span>`
   : `<span class="who who--empty"><span class="avatar">+</span><span class="nm">Add who to ask</span></span>`;}
@@ -1482,7 +1487,15 @@ function clearAllFilters(){ qEl.value=""; subSel=null; FACET_DEFS.forEach(f=>fse
 /* --- visual grid --- */
 function renderGrid(){
   const q=qEl.value.trim();
-  const list=filterExamples().sort((a,b)=>PHASE_ORDER.indexOf(a.facets.phase)-PHASE_ORDER.indexOf(b.facets.phase));
+  const ORD=new Map(EXAMPLES.map((e,i)=>[e.id,i]));
+  const list=filterExamples().sort((a,b)=>{
+    const p=PHASE_ORDER.indexOf(a.facets.phase)-PHASE_ORDER.indexOf(b.facets.phase);
+    if(p) return p;                                   // keep phases in spine order
+    if(!!a.placeholder!==!!b.placeholder) return a.placeholder?1:-1; // real cards before "nominate" plots
+    const da=a.date||"", db=b.date||"";
+    if(da!==db) return da<db?1:-1;                    // within a phase: newest date first
+    return ORD.get(b.id)-ORD.get(a.id);               // tie → most-recently-added first
+  });
   libGrid.innerHTML="";
   libEmpty.hidden=list.length>0;
   libCount.textContent=list.length?`${list.length} tile${list.length===1?"":"s"}${q?` matching “${q}”`:""}`:"";
@@ -1529,7 +1542,7 @@ function renderGrid(){
     card.innerHTML=`<span class="thumb">${badge}${thumbHTML(e)}</span>`+
       `<span class="vbody">${projName?`<span class="vproj">${esc(projName)}</span>`:""}`+
       `<h3>${hl(e.title,q)}</h3>`+
-      `<span class="vfoot">${authorHTML(e)}</span></span>`;
+      `<span class="vfoot">${authorHTML(e)}${dateHTML(e)}</span></span>`;
     cardGrid.appendChild(card);
   });
 }
