@@ -85,10 +85,14 @@
   .hbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px}
   .topline{display:inline-flex;align-items:center;gap:13px;cursor:pointer;border-radius:8px}
   .topline:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
-  .mark{flex:0 0 auto;transform-origin:50% 50%}
+  .mark{flex:0 0 auto;transform-origin:50% 50%;transition:transform .25s cubic-bezier(.22,.8,.18,1)}
   .mark.spin{animation:spin-north .85s cubic-bezier(.22,.8,.18,1)}
+  .mark-btn:hover .mark{transform:scale(1.07)}
   @keyframes spin-north{0%{transform:rotate(0)}72%{transform:rotate(374deg)}100%{transform:rotate(360deg)}}
-  @media (prefers-reduced-motion:reduce){.mark.spin{animation:none}}
+  .mk-dia{transform-box:fill-box;transform-origin:center}
+  .mk-dot{transform-box:fill-box;transform-origin:center;animation:mk-pulse 3.4s ease-in-out infinite}
+  @keyframes mk-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+  @media (prefers-reduced-motion:reduce){.mark.spin{animation:none}.mk-dot{animation:none}.mark-btn:hover .mark{transform:none}}
   .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
   h1{font-family:var(--font-display);font-weight:800;font-size:var(--t-hero);line-height:.92;letter-spacing:-.04em;margin:0;color:var(--ink)}
   /* display font on the marquee + structural titles */
@@ -101,7 +105,7 @@
   .rule{height:1px;background:var(--line);border:0;margin:0}
   .hero-rule{margin-top:42px}
   /* Theme toggle — sits on the right guide, top of the header */
-  .theme-toggle{flex:0 0 auto;width:40px;height:40px;border-radius:var(--radius);
+  .theme-toggle{flex:0 0 auto;width:46px;align-self:stretch;border-radius:var(--radius);
     border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px;line-height:1;
     cursor:pointer;display:flex;align-items:center;justify-content:center}
   .theme-toggle:hover{border-color:var(--accent)}
@@ -120,16 +124,20 @@
   #q::placeholder{color:var(--faint)}
   #q:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(70,168,155,.22)}
   /* ===== slim sticky top bar — search-first, like a search engine ===== */
-  .topbar{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+  .topbar{position:sticky;top:0;z-index:40;background:var(--bg)}
   .topbar-row{display:flex;align-items:center;gap:14px;padding:11px 0}
-  .mark-btn{appearance:none;background:none;border:0;padding:3px;cursor:pointer;border-radius:8px;flex:0 0 auto;display:flex}
+  .mark-btn{appearance:none;background:none;border:0;padding:3px;cursor:pointer;border-radius:8px;flex:0 0 auto;display:flex;align-items:center;gap:9px}
   .mark-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .mark,.brand-logo{height:34px;width:auto;flex:0 0 auto;display:block}
+  .brand-logo{transition:transform .25s cubic-bezier(.22,.8,.18,1)}
+  .mark-btn:hover .brand-logo{transform:scale(1.05)}
   .topbar .search{flex:1 1 auto;min-width:0}
   /* compass-language intro on Find */
   /* big hero — Find page only (the detail/expanded view shows just the slim top bar) */
-  .find-hero{margin:36px 0 0}
-  .find-hero .eyebrow{display:block;margin-bottom:14px}
-  .find-hero-rule{margin:40px 0 0}
+  /* one shared hero across all top-level pages, so titles sit in the same spot on every tab */
+  .page-hero{margin:24px 0 18px}
+  .page-hero h1{margin:0}
+  .find-hero-rule{margin:0}
   /* breadcrumb on the detail view — tracks back to the main filters */
   .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:22px 0 2px;font-family:var(--font-mono);
     font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
@@ -360,6 +368,55 @@
   .vcard .vfoot .vchips{margin:0;flex:0 0 auto}
   .vcard .vfoot .vdate{flex:0 0 auto;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;
     color:var(--faint);font-weight:500;white-space:nowrap}
+  /* ===== Standards & Resources ===== */
+  /* connected folder tabs: one continuous baseline; only the active tab is boxed and opens into the page */
+  .tabbar{display:flex;gap:5px;overflow-x:auto;margin-top:9px;scrollbar-width:none;
+    border-bottom:1px solid var(--line)}
+  .tabbar::-webkit-scrollbar{display:none}
+  .tab{appearance:none;cursor:pointer;font:inherit;font-family:var(--font-mono);font-size:11.5px;
+    letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--faint);background:var(--panel-2);
+    border:1px solid var(--line);border-bottom:none;border-radius:10px 10px 0 0;
+    padding:10px 16px 11px;white-space:nowrap;margin-bottom:-1px;position:relative;z-index:1}
+  .tab:hover{color:var(--muted);background:var(--panel)}
+  /* active: cream fill + bottom edge painted in page bg to break the baseline and connect to content */
+  .tab.active{color:var(--ink);background:var(--bg);border-bottom:1px solid var(--bg);z-index:3}
+  .std-hero{margin:26px 0 0}
+  .std-hero .lede{max-width:60ch}
+  .std-band-list{display:flex;flex-direction:column;gap:10px;padding:4px 0 2px}
+  .std-row{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px 20px;
+    padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+  .std-row-main{min-width:240px;flex:1 1 320px}
+  .std-row-main h4{margin:0 0 3px;font-family:var(--font-display);font-size:15px;color:var(--ink)}
+  .std-row-main p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+  .std-row .res{flex:0 0 auto;min-width:240px;margin:0}
+  .std-entries{display:flex;flex-direction:column;gap:14px}
+  .std-card{border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;background:var(--panel)}
+  .std-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
+  .std-head h3{margin:0;font-family:var(--font-display);font-size:18px;color:var(--ink);line-height:1.2}
+  .std-head .vdate{flex:0 0 auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--faint);font-weight:500;white-space:nowrap}
+  .std-sum{margin:0 0 12px;font-size:14.5px;color:var(--muted);line-height:1.5;max-width:68ch}
+  .std-card .steps{margin:0 0 12px}
+  .std-maint{margin-top:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:.03em;color:var(--faint)}
+  .std-maint b{color:var(--muted);font-weight:600}
+  /* Standards: category filter + collapsed clickable list */
+  .std-filter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+  .std-chip{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;white-space:nowrap}
+  .std-chip:hover{border-color:var(--accent);color:var(--ink)}
+  .std-chip.on{background:var(--accent);border-color:var(--accent);color:#10141a}
+  .std-list{display:flex;flex-direction:column;gap:10px}
+  .std-item{appearance:none;cursor:pointer;text-align:left;font:inherit;width:100%;display:flex;align-items:center;
+    justify-content:space-between;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .std-item:hover{border-color:var(--accent);background:var(--panel-2)}
+  .std-item-main{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .std-item-top{display:flex;align-items:center;gap:12px}
+  .std-cat{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
+  .std-item-top .vdate{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;color:var(--faint);font-weight:500}
+  .std-item-title{font-family:var(--font-display);font-size:17px;color:var(--ink);line-height:1.2}
+  .std-item-sum{font-size:13px;color:var(--muted);line-height:1.45;overflow:hidden;text-overflow:ellipsis;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+  .std-item-go{flex:0 0 auto;font-family:var(--font-mono);color:var(--faint);font-size:18px}
+  .std-item:hover .std-item-go{color:var(--accent)}
   /* ===== Regions (phase sections): big name, hairline divider, color = phase ===== */
   .region{padding-top:22px;border-top:1px solid var(--line);margin-top:30px}
   .region:first-child{margin-top:34px}
@@ -591,13 +648,15 @@
 <header class="topbar">
   <div class="wrap">
     <div class="topbar-row">
-      <button class="mark-btn" id="brandHome" type="button" aria-label="Back to the Compass home">
-        <svg class="mark" width="34" height="34" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-          <circle cx="19" cy="19" r="17" stroke="#46A89B" stroke-width="2"/>
-          <path d="M19 7 L23 19 L19 31 L15 19 Z" fill="#E0852E"/>
-          <path d="M19 7 L23 19 L19 19 Z" fill="#46A89B"/>
-          <circle cx="19" cy="19" r="2.2" fill="#1A1613" stroke="#F1E9DD" stroke-width="1.4"/>
+      <button class="mark-btn" id="brandHome" type="button" aria-label="DJDS — back to the Compass home">
+        <svg class="mark" width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M16 5 A16 16 0 0 0 16 35" stroke="#2E8B81" stroke-width="4.6" stroke-linecap="round"/>
+          <path d="M24 5 A16 16 0 0 1 24 35" stroke="#2E8B81" stroke-width="4.6" stroke-linecap="round"/>
+          <path class="mk-dia" d="M20 10 L25 20 L20 30 L15 20 Z" fill="#E0852E"/>
+          <circle class="mk-dot" cx="20" cy="20" r="2.6" fill="#1A1613" stroke="#F1E9DD" stroke-width="1.4"/>
         </svg>
+        <img class="brand-logo" src="images/djds-logo.svg" alt="DJDS"
+          onerror="this.onerror=null;this.src='images/djds-logo.png';this.addEventListener('error',()=>this.remove(),{once:true})">
       </button>
       <div class="search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -605,18 +664,19 @@
       </div>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme">☀️</button>
     </div>
+    <nav class="tabbar" role="tablist" aria-label="Sections">
+      <button class="tab" type="button" role="tab" data-view="find">Studio Compass</button>
+      <button class="tab" type="button" role="tab" data-view="standards">Standards &amp; Resources</button>
+      <button class="tab" type="button" role="tab" data-view="values">Values &amp; Ethos</button>
+    </nav>
   </div>
 </header>
 
 <main>
   <!-- FIND -->
   <div id="findView" class="wrap">
-    <div class="find-hero">
-      <span class="eyebrow">DJDS · Designing Justice + Designing Spaces</span>
+    <div class="page-hero">
       <h1>Design Studio Compass</h1>
-      <p class="lede">
-        A living map to DJDS's Creative Design process.
-      </p>
     </div>
     <hr class="rule find-hero-rule">
     <div class="find-phase">
@@ -638,6 +698,12 @@
 
   <!-- UNDERSTAND (the detail page — why, how, templates, who, all on one page) -->
   <div id="understandView" class="wrap" hidden></div>
+
+  <!-- STANDARDS & RESOURCES (the flat "scroll-and-grab" reference list) -->
+  <div id="standardsView" class="wrap" hidden></div>
+
+  <!-- VALUES & ETHOS (DJDS design values / principles — placeholder for now) -->
+  <div id="valuesView" class="wrap" hidden></div>
 
   <!-- PARKED: Method Compass (kept in code, out of the main nav for now) -->
   <div id="compassView" class="wrap" hidden>
@@ -1285,7 +1351,7 @@ function facetOptions(key){
   return [...seen].sort();
 }
 function exHay(e){
-  return [e.title, e.facets&&e.facets.project||"", e.narrative||"", (e.steps||[]).join(" "),
+  return [e.title, e.facets&&e.facets.project||"", e.narrative||"", e.summary||"", (e.steps||[]).join(" "),
     exVals(e,"deliverable_type").join(" "), exVals(e,"process_type").join(" "), exVals(e,"concept_tags").join(" "),
     exVals(e,"sub_phase").join(" "), (e.keywords||[]).join(" ")].join(" ").toLowerCase();
 }
@@ -1497,11 +1563,17 @@ function renderGrid(){
     return ORD.get(b.id)-ORD.get(a.id);               // tie → most-recently-added first
   });
   libGrid.innerHTML="";
-  libEmpty.hidden=list.length>0;
+  /* express lane: when searching, surface matching standards/resources at the very top */
+  const ql=q.toLowerCase();
+  const sMatch = (q && typeof STANDARDS!=="undefined") ? STANDARDS.filter(s=>qMatch(s,ql)) : [];
+  if(sMatch.length) libGrid.appendChild(standardsBand(sMatch,q));
+  libEmpty.hidden = list.length>0 || sMatch.length>0;
   libCount.textContent=list.length?`${list.length} tile${list.length===1?"":"s"}${q?` matching “${q}”`:""}`:"";
   if(!list.length){
+    if(!sMatch.length){
     libEmpty.innerHTML=`Nothing matches those filters.<br><button class="clear" type="button" id="libClear">clear search &amp; filters</button>`;
     const c=document.getElementById("libClear"); if(c) c.onclick=clearAllFilters;
+    }
     return;
   }
   const docByPhase={};
@@ -1545,6 +1617,81 @@ function renderGrid(){
       `<span class="vfoot">${authorHTML(e)}${dateHTML(e)}</span></span>`;
     cardGrid.appendChild(card);
   });
+}
+
+/* --- Studio Standards & Resources: the flat "scroll-and-grab" reference list --- */
+function stdLinks(arr){
+  return `<div class="res">`+(arr||[]).map(l=>
+    `<a href="${l.href}"><span class="ic">📎</span><span><span class="rt">${esc(l.label)}</span></span><span class="dl">Open →</span></a>`
+  ).join("")+`</div>`;
+}
+/* the express-lane band shown atop search results on Find */
+function standardsBand(items,q){
+  const sec=document.createElement("section"); sec.className="region stdband"; sec.style.setProperty("--c","var(--accent)");
+  sec.innerHTML=`<div class="rhead"><span class="rname"><span class="rdot"></span>Studio Standards &amp; Resources</span>`+
+    `<span class="rmeta">${items.length} matching · <button class="linklike" type="button" data-allstd>see all →</button></span></div>`+
+    `<div class="std-band-list">`+items.map(s=>
+      `<div class="std-row"><div class="std-row-main"><h4>${hl(s.title,q)}</h4>`+
+      (s.summary?`<p>${esc(s.summary)}</p>`:"")+`</div>`+stdLinks(s.links)+`</div>`
+    ).join("")+`</div>`;
+  const all=sec.querySelector("[data-allstd]"); if(all) all.onclick=goStandards;
+  return sec;
+}
+/* fixed category taxonomy (shown in full like the phase spine, even when empty) */
+const STD_CATEGORIES = ["CAD/BIM","3D Modeling","Visual Communication","Digital Fabrication","2D Graphics","Project Management"];
+let stdFilter=null;   // selected category chip (null = All)
+let currentStd=null;  // when set, the Standards view shows that item's detail page
+function stdById(id){ return (typeof STANDARDS!=="undefined"?STANDARDS:[]).find(s=>s.id===id)||null; }
+
+/* Standards list: collapsed, clickable, filterable. Detail (links/steps) is one click in. */
+function renderStandards(){
+  if(currentStd){ renderStandardDetail(currentStd); return; }
+  const q=qEl.value.trim(), ql=q.toLowerCase();
+  let items=(typeof STANDARDS!=="undefined"?STANDARDS:[]).filter(s=>qMatch(s,ql));
+  if(stdFilter) items=items.filter(s=>s.category===stdFilter);
+  const chip=(label,val)=>`<button class="std-chip${stdFilter===val?' on':''}" type="button" data-cat="${val==null?'':esc(val)}">${esc(label)}</button>`;
+  let html=`<div class="page-hero"><h1>Studio Standards &amp; Resources</h1></div>`+
+    `<div class="std-filter">`+chip("All",null)+STD_CATEGORIES.map(c=>chip(c,c)).join("")+`</div>`;
+  if(!items.length){
+    html+=`<div class="empty">Nothing here yet${q?` for “${esc(q)}”`:""}${stdFilter?` in ${esc(stdFilter)}`:""}.</div>`;
+  } else {
+    html+=`<div class="std-list">`+items.map(s=>
+      `<button class="std-item" type="button" data-id="${esc(s.id)}">`+
+        `<span class="std-item-main">`+
+          `<span class="std-item-top"><span class="std-cat">${esc(s.category||"")}</span>${s.date?`<time class="vdate">${fmtDate(s.date)}</time>`:""}</span>`+
+          `<span class="std-item-title">${hl(s.title,q)}</span>`+
+          (s.summary?`<span class="std-item-sum">${esc(s.summary)}</span>`:"")+
+        `</span><span class="std-item-go" aria-hidden="true">→</span>`+
+      `</button>`
+    ).join("")+`</div>`;
+  }
+  standardsView.innerHTML=html;
+  standardsView.querySelectorAll(".std-chip").forEach(b=>b.onclick=()=>{ stdFilter=b.dataset.cat||null; renderStandards(); });
+  standardsView.querySelectorAll(".std-item").forEach(b=>b.onclick=()=>{ location.hash="#/standards/"+encodeURIComponent(b.dataset.id); });
+}
+function renderStandardDetail(id){
+  const s=stdById(id);
+  if(!s){ currentStd=null; renderStandards(); return; }
+  standardsView.innerHTML=
+    `<nav class="crumbs" aria-label="Breadcrumb"><button type="button" data-back>Standards &amp; Resources</button>`+
+      `<span class="sep">/</span><span class="here">${esc(s.category||"")}</span></nav>`+
+    `<div class="page-hero"><h1>${esc(s.title)}</h1></div>`+
+    `<div class="dmeta" style="margin-top:8px">${s.date?`<span>Updated ${fmtDate(s.date)}</span>`:""}${s.maintainer?`<span>Maintained by ${esc(s.maintainer)}</span>`:""}</div>`+
+    `<hr class="rule" style="margin:18px 0 0">`+
+    `<div class="exbody">`+
+      (s.summary?`<section class="blk"><p>${esc(s.summary)}</p></section>`:"")+
+      ((s.steps&&s.steps.length)?`<section class="blk"><h4>How to</h4><ol class="steps">${s.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></section>`:"")+
+      ((s.links&&s.links.length)?`<section class="blk"><h4>Files &amp; guides</h4>${stdLinks(s.links)}</section>`:"")+
+    `</div>`;
+  const b=standardsView.querySelector("[data-back]"); if(b) b.onclick=goStandards;
+}
+
+/* --- Values & Ethos: placeholder until DJDS's design values/principles are authored --- */
+/* TODO(revisit): fill with DJDS design values, ethos, and high-level guiding principles.
+   Likely its own content array in content.js (e.g. VALUES = [...]) once the copy exists. */
+function renderValues(){
+  valuesView.innerHTML=`<div class="page-hero"><h1>Values &amp; Ethos</h1></div><hr class="rule find-hero-rule">`+
+    `<div class="empty">Coming soon — the design values, ethos, and high-level principles that guide DJDS's work.</div>`;
 }
 
 /* --- per-phase sub-phase orientation rail (driven by the selected phase) --- */
@@ -1683,13 +1830,24 @@ function renderUnderstand(){
 }
 /* ---- view switching (hash-routed for shareable links) ---- */
 function applyView(v){
-  const understand = v==="understand";
-  findView.hidden = understand;
-  understandView.hidden = !understand;
-  if(understand) renderUnderstand(); else renderLibrary();
+  findView.hidden = v!=="find";
+  understandView.hidden = v!=="understand";
+  standardsView.hidden = v!=="standards";
+  valuesView.hidden = v!=="values";
+  /* the detail page (understand) belongs to the Compass, so keep that tab lit there */
+  const tabFor = v==="understand" ? "find" : v;
+  document.querySelectorAll(".tabbar .tab").forEach(t=>{
+    const on=t.dataset.view===tabFor; t.classList.toggle("active",on); t.setAttribute("aria-selected",on);
+  });
+  if(v==="understand") renderUnderstand();
+  else if(v==="standards") renderStandards();
+  else if(v==="values") renderValues();
+  else renderLibrary();
   window.scrollTo(0,0);
 }
 function goFind(){ if(location.hash) location.hash=""; else applyView("find"); }
+function goStandards(){ location.hash = "#/standards"; }
+function goValues(){ location.hash = "#/values"; }
 /* breadcrumb / search jump back to Find, optionally pre-filtered by phase */
 function goFindPhase(p){ try{ fsel.phase.clear(); if(p) fsel.phase.add(p); subSel=null; }catch(e){} goFind(); }
 /* tag-to-pivot: click a type chip to browse everything of that type ("more like this") */
@@ -1706,6 +1864,9 @@ function goFindType(t){ try{ FACET_DEFS.forEach(f=>fsel[f.key].clear()); subSel=
   };
   brandHome.addEventListener("click",go);
   brandHome.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+  /* one-time spin on load to draw the eye to the mark */
+  const m=brandHome.querySelector(".mark");
+  if(m) requestAnimationFrame(()=>{ m.classList.add("spin"); m.addEventListener("animationend",()=>m.classList.remove("spin"),{once:true}); });
 })();
 /* Dark / light theme toggle (initial theme already set in <head>) */
 (function(){
@@ -1719,10 +1880,17 @@ function goFindType(t){ try{ FACET_DEFS.forEach(f=>fsel[f.key].clear()); subSel=
   });
 })();
 function goUnderstand(id){ if(id) currentEx=id; location.hash = currentEx?("#/understand/"+encodeURIComponent(currentEx)):"#/understand"; }
+(function(){ document.querySelectorAll(".tabbar .tab").forEach(t=>{
+  t.onclick=()=>{ const v=t.dataset.view; if(v==="find") goFind(); else if(v==="standards") goStandards(); else if(v==="values") goValues(); };
+}); })();
 function route(){
   const m=location.hash.match(/^#\/understand\/(.+)$/);
+  const sm=location.hash.match(/^#\/standards\/(.+)$/);
   if(m && EX_BY_ID[decodeURIComponent(m[1])]){ currentEx=decodeURIComponent(m[1]); applyView("understand"); }
   else if(location.hash==="#/understand"){ applyView("understand"); }
+  else if(sm){ currentStd=decodeURIComponent(sm[1]); applyView("standards"); }
+  else if(location.hash==="#/standards"){ currentStd=null; applyView("standards"); }
+  else if(location.hash==="#/values"){ applyView("values"); }
   else applyView("find");
 }
 window.addEventListener("hashchange",route);
@@ -1777,7 +1945,11 @@ document.getElementById("nomSubmit").onclick=submitNomination;
 nominate.onclick=e=>{ if(e.target===nominate) closeNominate(); };
 
 /* ---- search + escape + init ---- */
-qEl.addEventListener("input", ()=>{ if(!understandView.hidden){ goFind(); } else { renderLibrary(); } });
+qEl.addEventListener("input", ()=>{
+  if(!understandView.hidden){ goFind(); }
+  else if(!standardsView.hidden){ renderStandards(); }
+  else { renderLibrary(); }
+});
 document.addEventListener("keydown",e=>{
   if(e.key!=="Escape") return;
   if(nominate.classList.contains("show")){ closeNominate(); return; }

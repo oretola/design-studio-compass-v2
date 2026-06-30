@@ -304,3 +304,76 @@ const EXAMPLES = [
     resources:[], source_links:[], ask_me:"",
   },
 ];
+
+// =====================================================================
+//  STUDIO STANDARDS & RESOURCES
+//  A flat, scroll-and-grab reference list — the "known-item" half of the
+//  Compass (the EXAMPLES above are the "how did we do it" half). Put the
+//  things people just need to FIND here: current templates, software setup,
+//  file standards, fabrication guides. These show up in their own
+//  "Standards & Resources" view AND surface at the top of search results.
+// ---------------------------------------------------------------------
+//  COPY THIS TEMPLATE for a new standard (paste it inside the [ ] list):
+//
+//   {
+//     id:"short-unique-slug",
+//     category:"Software & Setup",          // groups it in the Standards view
+//     date:"2026-06-29",                     // last updated — re-stamp when the file changes
+//     title:"The thing, plainly named",
+//     summary:"One or two sentences: what it is and when to grab it.",
+//     keywords:["search","terms","software names","file types"],
+//     links:[ {label:"File or guide name", href:"#"} ],   // href = Drive share URL when live
+//     steps:[ "Optional quick how-to step." ],            // omit if it's just a download
+//     maintainer:"Who keeps this current",
+//   },
+//
+//  Categories (reuse the exact label so the filter groups them correctly):
+//    "CAD/BIM" · "3D Modeling" · "Visual Communication" · "Digital Fabrication"
+//    · "2D Graphics" · "Project Management"
+// =====================================================================
+
+const STANDARDS = [
+  {
+    id:"revit-project-template",
+    category:"CAD/BIM",
+    date:"2026-06-29",
+    title:"Revit project template (.rte)",
+    summary:"The current DJDS Revit template — preloaded families, view templates, title blocks, and our sheet standards. Start every new model from this so drawings come out consistent.",
+    keywords:["revit","rvt","rte","template","bim","families","view template","title block","sheet","model setup","autodesk"],
+    links:[
+      {label:"DJDS_Template_2026.rte", href:"#"},
+      {label:"Revit standards & setup guide (PDF)", href:"#"},
+    ],
+    maintainer:"BIM lead",
+  },
+  {
+    id:"revit-central-model-setup",
+    category:"CAD/BIM",
+    date:"2026-06-29",
+    title:"Setting up a Revit central model",
+    summary:"How to create a workshared central model and local copies, so the whole team can work in one model at once without stepping on each other.",
+    keywords:["central model","worksharing","workshared","collaboration","local copy","workset","bim 360","acc","revit server","sync"],
+    steps:[
+      "Save the project to the studio BIM folder, then turn on Worksharing (Collaborate ▸ Collaborate).",
+      "Save it as the Central Model using the studio file-naming convention.",
+      "Never work in the central directly — open it, then Save As a Local copy to your machine.",
+      "Sync to Central often, and Reload Latest before any big move.",
+    ],
+    links:[
+      {label:"Central model setup — step-by-step (PDF)", href:"#"},
+    ],
+    maintainer:"BIM lead",
+  },
+  {
+    id:"file-naming-standard",
+    category:"Project Management",
+    date:"2026-06-28",
+    title:"File & folder naming convention",
+    summary:"How we name projects, files, and sheets so anyone can find anything — date-prefixed, project-coded, and versioned.",
+    keywords:["naming","file name","folder structure","convention","version","date prefix","standard","organization","sheet numbering"],
+    links:[
+      {label:"Naming convention cheat-sheet (PDF)", href:"#"},
+    ],
+    maintainer:"Studio ops",
+  },
+];
